@@ -34,8 +34,12 @@ We chose TMDB. TMDB is data-rich, reliable, well-documented, easy to integrate, 
 
 **Easier:**
 
--
+- API is free to use
+- Faster onboarding for developers
+- well documented
 
 **More difficult:**
 
-- 
+- Ratelimited to 40 requests per second
+- less credibility
+- less feature rich
