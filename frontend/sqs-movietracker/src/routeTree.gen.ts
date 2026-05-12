@@ -9,9 +9,39 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WatchlistRouteImport } from './routes/watchlist'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ApiRouteImport } from './routes/api'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MovieIdRouteImport } from './routes/movie/$id'
 
+const WatchlistRoute = WatchlistRouteImport.update({
+  id: '/watchlist',
+  path: '/watchlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRoute = ApiRouteImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -25,32 +55,109 @@ const MovieIdRoute = MovieIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api': typeof ApiRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
+  '/watchlist': typeof WatchlistRoute
   '/movie/$id': typeof MovieIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api': typeof ApiRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
+  '/watchlist': typeof WatchlistRoute
   '/movie/$id': typeof MovieIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api': typeof ApiRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
+  '/watchlist': typeof WatchlistRoute
   '/movie/$id': typeof MovieIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/movie/$id'
+  fullPaths:
+    | '/'
+    | '/api'
+    | '/login'
+    | '/register'
+    | '/search'
+    | '/watchlist'
+    | '/movie/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/movie/$id'
-  id: '__root__' | '/' | '/movie/$id'
+  to:
+    | '/'
+    | '/api'
+    | '/login'
+    | '/register'
+    | '/search'
+    | '/watchlist'
+    | '/movie/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/api'
+    | '/login'
+    | '/register'
+    | '/search'
+    | '/watchlist'
+    | '/movie/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiRoute: typeof ApiRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
+  SearchRoute: typeof SearchRoute
+  WatchlistRoute: typeof WatchlistRoute
   MovieIdRoute: typeof MovieIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/watchlist': {
+      id: '/watchlist'
+      path: '/watchlist'
+      fullPath: '/watchlist'
+      preLoaderRoute: typeof WatchlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api': {
+      id: '/api'
+      path: '/api'
+      fullPath: '/api'
+      preLoaderRoute: typeof ApiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -70,6 +177,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiRoute: ApiRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
+  SearchRoute: SearchRoute,
+  WatchlistRoute: WatchlistRoute,
   MovieIdRoute: MovieIdRoute,
 }
 export const routeTree = rootRouteImport
