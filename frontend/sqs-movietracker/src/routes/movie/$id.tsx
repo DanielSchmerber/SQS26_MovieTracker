@@ -15,15 +15,11 @@ function MoviePage() {
         queryFn: () => fetchMovie(id),
     })
 
-
-
     if (error) return (
         <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
             <p className="text-muted-foreground">Failed to load movie.</p>
         </div>
     )
-
-
 
     return (
         <div>
@@ -88,6 +84,8 @@ function MoviePage() {
                             </div>
 
                             {/* Review list placeholder */}
+                            {//TODO replace with actual review list
+                            }
                             <div className="flex flex-col gap-6">
                                 {Array.from({ length: 3 }).map((_, i) => (
                                     <div key={i} className="flex flex-col gap-2">
@@ -103,10 +101,6 @@ function MoviePage() {
                                     </div>
                                 ))}
                             </div>
-
-                            <button className="mx-auto mt-2 rounded-xl border border-black/10 px-6 py-2 text-sm text-muted-foreground transition hover:bg-black/[0.04] dark:border-white/10 dark:hover:bg-white/[0.04]">
-                                Load more entries
-                            </button>
                         </section>
                     </div>
 
@@ -116,7 +110,7 @@ function MoviePage() {
                         {/* Global rating */}
                         <div className="rounded-xl border border-border bg-card p-5">
                             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                Global Rating
+                                Our Rating
                             </p>
                             {isLoading
                                 ? <Skeleton className="mt-2 h-12 w-28" />
@@ -151,6 +145,12 @@ function MoviePage() {
                                 Add to Watchlist
                             </button>
                         </div>
+
+                      <div className="flex flex-col gap-2">
+                        <button className="w-full rounded-xl bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition hover:opacity-90">
+                          Review
+                        </button>
+                      </div>
 
                         {/* Cast hierarchy */}
                         <section className="flex flex-col gap-3">

@@ -7,9 +7,11 @@ export const Route = createFileRoute("/search")({
   component: SearchPage,
 });
 
+
+
+
 function SearchPage() {
   const search = Route.useSearch();
-
 
   return (
     <>
