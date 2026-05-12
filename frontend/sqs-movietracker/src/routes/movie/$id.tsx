@@ -23,7 +23,7 @@ function MoviePage() {
 
     if(error) return (
         <>
-            Error :({error})
+            Error :({error.message})
         </>
     )
 
