@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovie } from "#/features/movies/movie.queries.ts";
 import { Skeleton } from "#/components/ui/skeleton.tsx";
+import { toast } from "sonner"
 
 export const Route = createFileRoute('/movie/$id')({
     component: MoviePage,
@@ -40,21 +41,8 @@ function MoviePage() {
                 <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
 
                     {/* ── Left column (title + description + reviews) ── */}
-                    <div className="md:col-span-2 flex flex-col gap-6">
+                    <div className="md:col-span-2 flex flex-col gap-6 order-2 md:order-1">
 
-                        {/* Badges: year · runtime · rating */}
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                            {isLoading
-                                ? <Skeleton className="h-4 w-40" />
-                                : <>
-                                    <span>{movie?.year}</span>
-                                    <span>·</span>
-                                    <span className="rounded border border-black/20 px-1.5 py-0.5 text-xs font-medium dark:border-white/20">
-                                        PG-13
-                                    </span>
-                                </>
-                            }
-                        </div>
 
                         {/* Title */}
                         {isLoading
@@ -80,11 +68,10 @@ function MoviePage() {
                         <section className="flex flex-col gap-4 pt-4">
                             <div className="flex items-center justify-between border-b border-border pb-2">
                                 <h2 className="text-lg font-bold">Reviews</h2>
-                                <span className="text-sm text-muted-foreground">POST ENTRY</span>
                             </div>
 
                             {/* Review list placeholder */}
-                            {//TODO replace with actual review list
+                            {// TODO replace with actual review list
                             }
                             <div className="flex flex-col gap-6">
                                 {Array.from({ length: 3 }).map((_, i) => (
@@ -105,7 +92,7 @@ function MoviePage() {
                     </div>
 
                     {/* ── Right column (rating + meta + CTAs + cast) ── */}
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-6 order-1 md:order-2">
 
                         {/* Global rating */}
                         <div className="rounded-xl border border-border bg-card p-5">
@@ -119,12 +106,6 @@ function MoviePage() {
                                     <span className="text-lg text-muted-foreground">/10</span>
                                 </div>
                             }
-                            {/* Star row placeholder */}
-                            <div className="mt-2 flex gap-0.5">
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                    <div key={i} className="h-4 w-4 rounded-sm bg-muted" />
-                                ))}
-                            </div>
                         </div>
 
                         {/* Metadata rows */}
@@ -141,7 +122,20 @@ function MoviePage() {
 
                         {/* CTA buttons */}
                         <div className="flex flex-col gap-2">
-                            <button className="w-full rounded-xl bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition hover:opacity-90">
+                            <button className="w-full rounded-xl bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition hover:opacity-90" onClick={
+                              () => {
+                                toast.promise<{ name: string }>(
+                                  () =>
+                                    new Promise((resolve) =>
+                                      setTimeout(() => resolve({ name: movie?.title || "" }), 2000)
+                                    ),
+                                  {
+                                    loading: "Adding to Watchlist...",
+                                    success: (data) => `${data.name} has been added to your Watchlist!`,
+                                    error: "Error",
+                                  },
+                                )
+                              }}>
                                 Add to Watchlist
                             </button>
                         </div>
@@ -152,35 +146,6 @@ function MoviePage() {
                         </button>
                       </div>
 
-                        {/* Cast hierarchy */}
-                        <section className="flex flex-col gap-3">
-                            <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                Cast Hierarchy
-                            </h3>
-                            <div className="flex flex-col gap-3">
-                                {Array.from({ length: 2 }).map((_, i) => (
-                                    <div key={i} className="flex items-center gap-3">
-                                        <Skeleton className="h-10 w-10 rounded-full" />
-                                        <div className="flex flex-col gap-1">
-                                            <Skeleton className="h-3 w-28" />
-                                            <Skeleton className="h-3 w-20" />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-
-                        {/* Metadata detail block */}
-                        <section className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4">
-                            <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                Metadata
-                            </h3>
-                            <div className="flex flex-col gap-1.5">
-                                {Array.from({ length: 4 }).map((_, i) => (
-                                    <Skeleton key={i} className="h-3 w-full" />
-                                ))}
-                            </div>
-                        </section>
                     </div>
 
                 </div>

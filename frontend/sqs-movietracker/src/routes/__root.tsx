@@ -2,6 +2,7 @@ import {
   HeadContent,
   Scripts,
   createRootRouteWithContext,
+  Link
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
@@ -15,7 +16,8 @@ import { Background } from '#/components/Background.tsx'
 import { TopNav } from '#/components/Topbar.tsx'
 import { BottomNav } from '#/components/Bottomnav.tsx'
 import { AuthProvider } from '#/features/auth/auth.context.tsx'
-import { Link } from '@tanstack/react-router'
+
+import { Toaster } from '#/components/ui/sonner.tsx'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -73,7 +75,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <BottomNav></BottomNav>
           </Background>
         </AuthProvider>
-
+        <Toaster />
         <TanStackDevtools
           config={{
             position: 'bottom-right',

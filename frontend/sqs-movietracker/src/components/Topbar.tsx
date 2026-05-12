@@ -44,7 +44,7 @@ export function TopNav() {
             MovieTracker
           </div>
 
-          <nav className="hidden items-center gap-6 md:flex">
+          <nav className="hidden items-center gap-6 md:flex ">
             <Link
               to="/"
               className="text-sm text-neutral-500 transition hover:text-black dark:hover:text-white"
