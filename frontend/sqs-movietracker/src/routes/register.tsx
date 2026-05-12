@@ -12,7 +12,8 @@ import {
   CardTitle,
 } from "#/components/ui/card.tsx";
 import { useAuth } from "#/features/auth/auth.context.tsx";
-import { registerSchema, type RegisterFormValues } from "#/features/auth/auth.schemas.ts";
+import { registerSchema  } from "#/features/auth/auth.schemas.ts";
+import type {RegisterFormValues} from "#/features/auth/auth.schemas.ts";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,

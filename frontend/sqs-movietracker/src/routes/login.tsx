@@ -12,7 +12,8 @@ import {
   CardTitle,
 } from "#/components/ui/card.tsx";
 import { useAuth } from "#/features/auth/auth.context.tsx";
-import { loginSchema, type LoginFormValues } from "#/features/auth/auth.schemas.ts";
+import { loginSchema  } from "#/features/auth/auth.schemas.ts";
+import type {LoginFormValues} from "#/features/auth/auth.schemas.ts";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
