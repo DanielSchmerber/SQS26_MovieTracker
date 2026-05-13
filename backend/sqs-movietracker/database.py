@@ -1,11 +1,11 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 DATABASE_URL = "sqlite:///./test.db"
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False}  # needed for SQLite
+    connect_args={"check_same_thread": False}
 )
 
 SessionLocal = sessionmaker(
@@ -14,11 +14,12 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 
-Base = declarative_base()
-
+class Base(DeclarativeBase):
+    pass
 
 def get_db():
     db = SessionLocal()
+
     try:
         yield db
     finally:

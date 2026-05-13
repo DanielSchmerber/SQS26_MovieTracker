@@ -8,6 +8,8 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+
+
 class Movie(BaseModel):
     id: str
     title: str

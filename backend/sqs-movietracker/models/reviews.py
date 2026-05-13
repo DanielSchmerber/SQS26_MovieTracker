@@ -4,7 +4,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 from database import Base
 
 
-class Review(Base):
+class ReviewEntry(Base):
     __tablename__ = "reviews"
 
     id: Mapped[int] = mapped_column(primary_key=True)
