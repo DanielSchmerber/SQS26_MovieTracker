@@ -25,7 +25,7 @@ app.add_middleware(
 )
 
 
-@app.get("/movie/{movie_id}", response_model=Movie)
+@app.get("/api/movie/{movie_id}", response_model=Movie)
 async def get_movie(movie_id: str):
     return Movie(
         id=movie_id,

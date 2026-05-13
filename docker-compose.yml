@@ -1,0 +1,61 @@
+services:
+
+  traefik:
+    image: traefik:v3.7.1
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    environment:
+      - DOCKER_API_VERSION=1.45
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - proxy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend/sqs-movietracker
+      dockerfile: Dockerfile
+    container_name: frontend
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # URL zum Backend – innerhalb von Docker über den Service-Namen erreichbar
+      - API_URL=http://backend:4000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`localhost`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+    networks:
+      - proxy
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend/sqs-movietracker
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      - PORT=8000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    driver: bridge
