@@ -1,0 +1,48 @@
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+dist
+build
+
+# Virtual environments
+.venv
+venv
+env
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Environment & Secrets
+.env
+.env.*
+*.pem
+*.key
+*.cert
+*.crt
+secrets/
+
+# Logs & Debug
+*.log
+
+# Test & Lint cache
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Docs
+*.md
+LICENSE
