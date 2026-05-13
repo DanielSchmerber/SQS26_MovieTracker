@@ -25,6 +25,10 @@ COPY --from=builder /install /usr/local
 
 COPY . .
 
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser \
+    && chown -R appuser:appgroup /app
+USER appuser
+
 EXPOSE 8000
 
 CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT} --workers 1"]
