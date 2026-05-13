@@ -26,8 +26,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      # URL zum Backend – innerhalb von Docker über den Service-Namen erreichbar
-      - API_URL=http://backend:4000
+      # URL funktioniert nur in serverseitigen Node Prozessen.
+      - API_URL=http://backend:8000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`localhost`)"
