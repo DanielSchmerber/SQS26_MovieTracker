@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
+
+# Install pip version 24.2
 RUN pip install pip==24.2 --prefix=/install --no-cache-dir --only-binary :all: -r requirements.txt
 
 
