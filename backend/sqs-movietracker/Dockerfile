@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
-# Install pip version 24.2
-RUN pip install pip==24.2 --prefix=/install --no-cache-dir --only-binary :all: -r requirements.txt
+RUN pip install --prefix=/install --no-cache-dir --require-hashes --only-binary :all: -r requirements.txt
 
 
 # Stage 2: Production
