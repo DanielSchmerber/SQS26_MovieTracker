@@ -16,10 +16,16 @@ function MoviePage() {
         queryFn: () => fetchMovie(id),
     })
 
-    if (error) return (
-        <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
-            <p className="text-muted-foreground">Failed to load movie.</p>
-        </div>
+    if(isLoading) return (
+        <>
+        Loading...
+        </>
+    )
+
+    if(error) return (
+        <>
+            Error :({error.message})
+        </>
     )
 
     return (
