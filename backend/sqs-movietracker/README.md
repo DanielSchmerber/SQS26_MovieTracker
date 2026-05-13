@@ -2,8 +2,7 @@
 
 ## Create and activate virtual environment
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv venv source venv/bin/activate
 ```
 
 ## Install requirements
@@ -13,5 +12,8 @@ pip install -r requirements.txt
 
 ## Run
 ```bash
-uvicorn main:app --reload --port:8000
+uvicorn main:app --reload --port 8000
 ```
+
+## Setup DB
+alembic upgrade head
