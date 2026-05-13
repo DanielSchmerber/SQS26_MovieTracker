@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from database import Base, engine
+
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
 
 class Movie(BaseModel):
