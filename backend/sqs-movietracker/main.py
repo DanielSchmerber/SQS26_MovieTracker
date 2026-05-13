@@ -8,15 +8,4 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-
-# needed until reverse proxy turns frontend and backend into same origin
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-    ],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 app.include_router(movie_controller.router)

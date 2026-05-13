@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from models.movie import Movie
 from services import movie_service
 
-router = APIRouter(prefix="/movie")
+router = APIRouter(prefix="/api/movie")
 
 
 @router.get("/{movie_id}", response_model=Movie)
