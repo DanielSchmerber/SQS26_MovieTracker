@@ -7,5 +7,5 @@ class Movie(BaseModel):
     description: str
     year: int
     poster: str
-    cover: str
+    backdrop: str
     tmdbRating: float

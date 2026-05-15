@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\" -Exclude \"venv\" -Recurse -Filter \"*.py\")",
+      "Bash(Select-Object FullName)",
+      "Bash(venv\\\\Scripts\\\\python.exe -c \"from main import app; import uvicorn\")",
+      "Bash(python -m uvicorn main:app --port 8001)",
+      "Bash(curl -s http://localhost:8001/movie/123)",
+      "Bash(tasklist /FI \"PID eq 21744\" /FI \"PID eq 23680\")",
+      "Bash(git -C \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\" log --all --oneline)",
+      "Read(//c/Users/danie/Desktop/SQS/SQS26_MovieTracker/**)",
+      "Bash(git add *)"
+    ]
+  }
+}

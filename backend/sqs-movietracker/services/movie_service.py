@@ -31,11 +31,13 @@ class MovieService:
                 if poster_path
                 else ""
             ),
-            cover=(
+            backdrop=(
                 f"https://image.tmdb.org/t/p/original{backdrop_path}"
                 if backdrop_path
                 else ""
             ),
+
+
             tmdbRating=float(movie.get("vote_average", 0)),
 
         )
