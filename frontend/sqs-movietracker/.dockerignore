@@ -1,0 +1,32 @@
+# Dependencies & Build output
+node_modules
+.output
+dist
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Environment & Secrets
+.env
+.env.*
+*.pem
+*.key
+*.cert
+*.crt
+secrets/
+
+# Logs & Debug
+*.log
+npm-debug.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Docs
+*.md
+LICENSE
