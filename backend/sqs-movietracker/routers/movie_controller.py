@@ -1,8 +1,9 @@
 import httpx
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Depends
 
+from dependencies import get_movie_service
 from models.movie import Movie
-
+from services.movie_service import MovieService
 
 router = APIRouter(prefix="/movie")
 
@@ -13,9 +14,9 @@ router = APIRouter(prefix="/movie")
     responses={404: {"description": "Movie not found"},
                502: {"description": "Upstream TMDB error"}}
 )
-async def get_movie(movie_id: str, request: Request):
+async def get_movie(movie_id: str, service: MovieService = Depends(get_movie_service)):
     try:
-        return await request.app.state.movie_service.get_movie(movie_id)
+        return await service.get_movie(movie_id)
     except ValueError:
         raise HTTPException(status_code=404, detail=f"Movie '{movie_id}' not found")
     except httpx.HTTPStatusError as e:

@@ -1,5 +1,8 @@
 from fastapi_cache.decorator import cache
 from tenacity import stop_after_attempt, retry, wait_exponential
+from sqlalchemy import func
+from sqlalchemy.orm import Session
+from models import ReviewEntry
 from models.movie import Movie
 from services.util.tmdbclient import TMDBClient
 
@@ -9,15 +12,21 @@ class MovieService:
     def __init__(self):
         self.tmdb_client = TMDBClient()
 
+    def get_rating(self, movie_id: str, db: Session) -> float:
+        result = db.query(func.avg(ReviewEntry.rating)).filter(
+            ReviewEntry.movie_id == movie_id
+        ).scalar()
+        return float(result) if result is not None else 0.0
+
     @cache(expire=3600)
     @retry(stop=stop_after_attempt(3),
            wait=wait_exponential(min=0.5, max=5))
     async def get_movie(self, movie_id: str) -> Movie:
-        print("searching for movie")
         movie = await self.tmdb_client.get(f"movie/{movie_id}")
 
         if not movie:
             raise ValueError(f"No movie found for {movie_id}")
+
         poster_path = movie.get("poster_path")
         backdrop_path = movie.get("backdrop_path")
 
@@ -36,8 +45,5 @@ class MovieService:
                 if backdrop_path
                 else ""
             ),
-
-
             tmdbRating=float(movie.get("vote_average", 0)),
-
         )
