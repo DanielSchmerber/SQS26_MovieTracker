@@ -5,7 +5,7 @@ export interface Movie {
     year : number,
 
     poster: string,
-    cover: string,
+    backdrop: string,
 
     tmdbRating: number,
 }

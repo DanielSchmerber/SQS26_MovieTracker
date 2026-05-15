@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchMovie } from "#/features/movies/movie.queries.ts";
 import { Skeleton } from "#/components/ui/skeleton.tsx";
 import { toast } from "sonner"
+import { ErrorDisplay } from '#/components/ErrorDisplay.tsx'
 
 export const Route = createFileRoute('/movie/$id')({
     component: MoviePage,
@@ -16,30 +17,39 @@ function MoviePage() {
         queryFn: () => fetchMovie(id),
     })
 
-    if(isLoading) return (
-        <>
-        Loading...
-        </>
-    )
-
     if(error) return (
         <>
-            Error :({error.message})
+            <ErrorDisplay message={error.message}></ErrorDisplay>
         </>
     )
 
     return (
         <div>
-            {/* Cover image */}
-            <div className="h-72 w-full overflow-hidden md:h-96">
+            {/* Backdrop + centered poster */}
+            <div className="relative h-72 w-full overflow-hidden md:h-96">
                 {isLoading
                     ? <Skeleton className="h-full w-full rounded-none" />
                     : <img
-                        src={movie?.cover}
+                        src={movie?.backdrop || movie?.poster}
                         alt=""
                         className="h-full w-full object-cover"
                     />
                 }
+
+                <div className="absolute inset-0 flex items-center">
+                    <div className="mx-auto w-full max-w-7xl px-6">
+                    <div className="w-28 h-40 md:w-36 md:h-52 rounded-xl overflow-hidden shadow-2xl ring-4 ring-background">
+                        {isLoading
+                            ? <Skeleton className="h-full w-full" />
+                            : <img
+                                src={movie?.poster || movie?.backdrop}
+                                alt={movie?.title}
+                                className="h-full w-full object-cover"
+                            />
+                        }
+                    </div>
+                    </div>
+                </div>
             </div>
 
             {/* Page body */}
@@ -48,7 +58,6 @@ function MoviePage() {
 
                     {/* ── Left column (title + description + reviews) ── */}
                     <div className="md:col-span-2 flex flex-col gap-6 order-2 md:order-1">
-
 
                         {/* Title */}
                         {isLoading
