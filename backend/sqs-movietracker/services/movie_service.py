@@ -18,6 +18,11 @@ class MovieService:
         ).scalar()
         return float(result) if result is not None else 0.0
 
+
+    @cache(expire=3600)
+    async def search_movie() -> list[Movie]:
+        return []
+
     @cache(expire=3600)
     @retry(stop=stop_after_attempt(3),
            wait=wait_exponential(min=0.5, max=5))
