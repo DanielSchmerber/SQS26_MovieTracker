@@ -11,7 +11,12 @@ const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [
     devtools(),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+    nitro({
+      rollupConfig: { external: [/^@sentry\//] },
+      routeRules: {
+        '/api/**': { proxy: 'http://127.0.0.1:8000/**' },
+      },
+    }),
     tailwindcss(),
     tanstackStart(),
     viteReact(),

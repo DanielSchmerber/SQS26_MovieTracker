@@ -15,7 +15,7 @@ export function BottomNav() {
         <div className="flex items-center gap-4">
 
           <Link
-            to="/api"
+            to="/apidoc"
             className="transition hover:text-black dark:hover:text-white"
           >
             API

@@ -7,7 +7,7 @@ class WatchlistEntry(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    movie_id: Mapped[int]
+    movie_id: Mapped[int] = mapped_column(index=True)
 
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id")
