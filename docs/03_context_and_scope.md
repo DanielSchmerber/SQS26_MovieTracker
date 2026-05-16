@@ -10,7 +10,7 @@
 
 
 
-| Component |   Description/Responsability |
+| Component/Element |   Description/Responsability |
 |----|--------------|
 | Web Browser | User interface access through HTTP/HTTPS |
 | Traefik |	Reverse proxy and request routing |
