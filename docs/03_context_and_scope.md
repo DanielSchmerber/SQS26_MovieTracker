@@ -12,7 +12,6 @@
 
 | Component |   Description/Responsability |
 |----|--------------|
-
 | Web Browser | User interface access through HTTP/HTTPS |
 | Traefik |	Reverse proxy and request routing |
 |TanStack | Frontend	Frontend user interface and client-side interactions |
