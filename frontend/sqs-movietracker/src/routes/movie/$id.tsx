@@ -45,6 +45,7 @@ function MoviePage() {
                                 src={movie?.poster || movie?.backdrop}
                                 alt={movie?.title}
                                 className="h-full w-full object-cover"
+                                style={{ viewTransitionName: `movie-poster-${id}` }}
                             />
                         }
                     </div>

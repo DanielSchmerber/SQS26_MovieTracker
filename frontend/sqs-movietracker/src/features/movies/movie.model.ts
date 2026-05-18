@@ -9,3 +9,10 @@ export interface Movie {
 
     tmdbRating: number,
 }
+
+export interface MovieSearchResponse {
+    page: number,
+    pages: number,
+    total_results: number,
+    results: Movie[],
+}
