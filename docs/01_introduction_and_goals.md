@@ -1,8 +1,8 @@
 # 01 - Introduction and goals
 
-Movie Tracker is a web application designed to help users search for movies, explore movie details, and manage a personal watchlist. The application integrates with the external TMDB (The Movie Database) API to retrieve movie information, ratings, and reviews from users who have watched the movies.
+Movie Tracker is a web application designed to help users search for movies, explore movie details, and manage a personal watchlist. The application integrates with the external TMDB (The Movie Database) API to retrieve movie information.
 
-The platform allows anonymous users to search for movies and access detailed movie information without authentication. However, authenticated users gain additional functionality, such as maintaining a personal watchlist where they can save and manage movies they have watched or want to watch in the future.
+The platform allows anonymous users to search for movies and access the detailed movie information without authentication. However, authenticated users gain additional functionality, such as maintaining a personal watchlist where they can save and manage movies they have watched or want to watch in the future.
 
 The primary goals of the Movie Tracker project are:
 
@@ -15,8 +15,6 @@ Provide users with a simple and intuitive way to search for movies and access de
 Use the TMDB API as a reliable external source for:
 
 - Movie metadata
-- Ratings
-- Movie reviews
 
 #### G3 – Personalized Watchlist Management
 
@@ -51,6 +49,7 @@ Protect user-specific features, such as watchlist management, through user authe
 | F5 | View Watchlist ||
 | F6 | Add Movie to Watchlist ||
 | F7 | Remove Movie from Watchlist ||
+| F8 | Rate movie ||
 
 ## 1.2 Quality goals
 
@@ -68,6 +67,6 @@ Protect user-specific features, such as watchlist management, through user authe
 
 | Role | Contact | Expectations |
 |----|--------------|---------------|
-| End users | - | Search movies, view ratings and reviews, manage watchlists easily  |
+| End users | - | Search movies, rate movies and view reviews, manage watchlists easily  |
 | Developer | - |   |
 | Teacher | - |  Run the project without any issue |
