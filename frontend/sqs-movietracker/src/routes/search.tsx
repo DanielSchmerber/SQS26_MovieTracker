@@ -4,6 +4,7 @@ import { searchMovies } from "#/features/movies/movie.queries.ts";
 import { ErrorDisplay } from '#/components/ErrorDisplay.tsx'
 import { useState } from 'react'
 import { MovieComponent } from '#/components/MovieComponent.tsx'
+import {PaginationBar} from "#/components/Paginationbar.tsx";
 
 export const Route = createFileRoute("/search")({
   validateSearch: (search): { title?: string } => ({
@@ -45,8 +46,7 @@ function SearchPage() {
         />
       ))}
 
-      <button onClick={() => setPage(page - 1)}>Previous page</button>
-      <button onClick={() => setPage(page + 1)}>Next Page</button>
+      <PaginationBar currentPage={page} totalPages={data?.pages ?? 1} setPage={setPage} />
     </div>
   );
 }
