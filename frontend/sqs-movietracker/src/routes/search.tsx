@@ -19,14 +19,14 @@ function SearchPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  if (!title) return null;
 
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: ["movies", "search", title, page],
-    queryFn: () => searchMovies(title, page),
+    queryFn: () => searchMovies(title!, page),
     enabled: !!title,
   });
 
+  if (!title) return null;
 
   if (isLoading || isFetching) return <p>Loading...</p>;
   if (isError) return <ErrorDisplay/>;
@@ -46,7 +46,7 @@ function SearchPage() {
         />
       ))}
 
-      <PaginationBar currentPage={page} totalPages={data?.pages ?? 1} setPage={setPage} />
+      <PaginationBar currentPage={page} totalPages={data?.pages ?? 1} setPage={setPage} pageRange={3} />
     </div>
   );
 }
