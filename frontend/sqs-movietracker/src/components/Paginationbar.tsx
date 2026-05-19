@@ -21,12 +21,6 @@ export function PaginationBar({ currentPage, totalPages, setPage, pageRange=3  }
     const navigateNextPage = setPage.bind(null, currentPage +1);
     const navigatePreviousPage = setPage.bind(null, currentPage -1);
 
-
-    const renderedPages = new Set<number>()
-
-    renderedPages.add(0)
-    renderedPages.add(totalPages)
-
     const pages = []
     for (let i = Math.max(1,currentPage-pageRange); i <= Math.min(totalPages,currentPage+pageRange); i++) {
         pages.push(i)
