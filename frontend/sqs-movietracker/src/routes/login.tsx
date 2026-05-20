@@ -32,13 +32,13 @@ function LoginPage() {
 
   async function onSubmit(values: LoginFormValues) {
     // TODO: replace with real API call to POST /api/auth/login
-    // On success the backend returns { name, email }
+    // On success the backend returns { name, name }
 
     if(values.password !== "password"){
       setError("password", { message: "Invalid password (its password)" });
     }
 
-    login({ name: values.email.split("@")[0], email: values.email });
+    login({ name: values.name, email: "" });
     await navigate({ to: "/" });
   }
 
@@ -52,15 +52,15 @@ function LoginPage() {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="name">Name</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                {...register("email")}
+                id="name"
+                type="name"
+                placeholder="your name"
+                {...register("name")}
               />
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
+              {errors.name && (
+                <p className="text-sm text-destructive">{errors.name.message}</p>
               )}
             </div>
 
