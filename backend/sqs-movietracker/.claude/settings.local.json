@@ -9,7 +9,17 @@
       "Bash(tasklist /FI \"PID eq 21744\" /FI \"PID eq 23680\")",
       "Bash(git -C \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\" log --all --oneline)",
       "Read(//c/Users/danie/Desktop/SQS/SQS26_MovieTracker/**)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\" | Where-Object { $_.Name -ne \"venv\" } | Format-Table Name, PSIsContainer -AutoSize)",
+      "WebFetch(domain:developer.themoviedb.org)",
+      "WebSearch",
+      "WebFetch(domain:www.themoviedb.org)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\" -Force | Where-Object { $_.Name -match \"\\(pytest|setup|pyproject|tox\\)\" })",
+      "PowerShell(@\\('tests', 'models', 'routers', 'services'\\) | ForEach-Object { Write-Host \"=== $_ ===\"; ls \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\\\\$_\" | Select-Object Name })",
+      "Bash(python -m pytest)"
     ]
   }
 }
