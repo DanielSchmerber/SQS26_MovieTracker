@@ -9,7 +9,7 @@ interface MovieComponentProps {
 
 export function MovieComponent({ movie, onClick, children }: MovieComponentProps) {
   return (
-    <div
+    <button
       onClick={onClick}
       className={`group flex gap-4 rounded-xl border border-border bg-card p-4 transition-colors duration-200 hover:bg-muted/60 ${onClick ? "cursor-pointer" : ""}`}
     >
@@ -27,6 +27,6 @@ export function MovieComponent({ movie, onClick, children }: MovieComponentProps
         <p className="line-clamp-2 text-sm text-muted-foreground">{movie.description}</p>
         {children && <div className="mt-auto pt-2">{children}</div>}
       </div>
-    </div>
+    </button>
   );
 }
