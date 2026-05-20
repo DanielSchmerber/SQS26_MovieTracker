@@ -7,7 +7,7 @@ from dependencies import get_movie_service, MovieServiceDep
 from models.movie import Movie, MovieSearchResponse
 from services.movie_service import MovieService
 
-router = APIRouter(prefix="/movie")
+router = APIRouter(prefix="api/v1/movies")
 
 
 @router.get(

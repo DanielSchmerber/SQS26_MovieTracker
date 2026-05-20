@@ -51,7 +51,7 @@ def example_search():
 @pytest.mark.asyncio
 async def test_get_movie(mock_get, example_search, client):
     mock_get.return_value = example_search
-    response = client.get("movie/search/?query=Fight")
+    response = client.get("api/v1/movies/search/?query=Fight")
 
     assert response.status_code == 200
     response_json = response.json()
@@ -69,16 +69,16 @@ async def test_get_movie_robustness(mock_get, example_search, client):
         example_search,
     ]
 
-    response = client.get("movie/search/?query=Fight")
+    response = client.get("/api/v1/movies/search/?query=Fight")
     assert response.status_code == 200
 
 
 @pytest.mark.asyncio
 async def test_get_movie_cache(mock_get, example_search, client):
     mock_get.return_value = example_search
-    response = client.get("movie/search/?query=Fight")
-    response = client.get("movie/search/?query=Fight")
-    response = client.get("movie/search/?query=Fight")
+    response = client.get("/api/v1/movies/search/?query=Fight")
+    response = client.get("/api/v1/movies/search/?query=Fight")
+    response = client.get("/api/v1/movies/search/?query=Fight")
 
     assert response.status_code == 200
     assert mock_get.call_count == 1

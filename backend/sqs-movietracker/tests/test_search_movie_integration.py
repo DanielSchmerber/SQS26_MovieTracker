@@ -34,7 +34,7 @@ def example_movie():
 @pytest.mark.asyncio
 async def test_get_movie(mock_get, example_movie, client):
     mock_get.return_value = example_movie
-    response = client.get("/movie/1")
+    response = client.get("/api/v1/movies/1")
 
     assert response.status_code == 200
     response_json = response.json()
@@ -61,10 +61,10 @@ async def test_get_movie_robustness(mock_get, example_movie, client):
 @pytest.mark.asyncio
 async def test_get_movie_cache(mock_get, example_movie, client):
     mock_get.return_value = example_movie
-    response = client.get("/movie/1")
-    response = client.get("/movie/1")
-    response = client.get("/movie/1")
-    response = client.get("/movie/1")
+    response = client.get("/api/v1/movies/movie/1")
+    response = client.get("/api/v1/movies/movie/1")
+    response = client.get("/api/v1/movies/movie/1")
+    response = client.get("/api/v1/movies/movie/1")
 
     assert response.status_code == 200
 
