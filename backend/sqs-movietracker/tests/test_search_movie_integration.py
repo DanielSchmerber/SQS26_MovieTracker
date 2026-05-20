@@ -1,6 +1,8 @@
 import pytest
 
 from fastapi.testclient import TestClient
+from fastapi_cache import FastAPICache
+
 from services.movie_service import MovieService
 from main import app
 
@@ -39,3 +41,32 @@ async def test_get_movie(mock_get, example_movie, client):
 
     assert response_json["title"] == example_movie["title"]
     assert response_json["description"] == example_movie["overview"]
+
+
+@pytest.mark.asyncio
+async def test_get_movie_robustness(mock_get, example_movie, client):
+    mock_get.side_effect = [
+        Exception("timeout"),
+        Exception("timeout"),
+        example_movie,
+    ]
+    response = client.get("/movie/1")
+
+    assert response.status_code == 200
+
+    assert response.status_code == 200
+    assert mock_get.call_count == 3
+
+
+@pytest.mark.asyncio
+async def test_get_movie_cache(mock_get, example_movie, client):
+    mock_get.return_value = example_movie
+    response = client.get("/movie/1")
+    response = client.get("/movie/1")
+    response = client.get("/movie/1")
+    response = client.get("/movie/1")
+
+    assert response.status_code == 200
+
+    #call count should remain 1, result has to be cached
+    assert mock_get.call_count == 1
