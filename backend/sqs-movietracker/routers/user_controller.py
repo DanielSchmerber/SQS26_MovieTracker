@@ -6,7 +6,7 @@ from dependencies import get_user_service
 from models.schemas.user_schemas import UserRegisterRequest, UserLoginRequest, UserResponse
 from services.user_service import UserService
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/api/v1/users", tags=["users"])
 
 
 @router.post(
