@@ -3,9 +3,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from models.user import User
 from models.schemas.user_schemas import UserRegisterRequest
+from services.token_service import TokenService
 
 
 class UserService:
+    
+    def __init__(self, token_service: TokenService):
+        self.token_service = token_service
 
     def register(self, db: Session, data: UserRegisterRequest) -> User:
         if db.query(User).filter(User.username == data.username).first():
@@ -29,5 +33,20 @@ class UserService:
 
         if not user or not check_password_hash(user.password, password):
             raise ValueError("Invalid username or password")
+
+        return user
+    
+    def get_current_user(self, db: Session, token: str) -> User:
+        if not token:
+            raise ValueError("Not authenticated")
+        try:
+            user_id = self.token_service.decode_access_token(token)
+        except ValueError as e:
+            raise ValueError(str(e))
+
+        user = db.query(User).filter(User.id == user_id).first()
+
+        if not user:
+            raise ValueError("User not found")
 
         return user

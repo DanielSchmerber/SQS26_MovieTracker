@@ -1,7 +1,7 @@
 import httpx
 from fastapi import APIRouter, HTTPException, Depends
 
-from dependencies import get_movie_service
+from dependencies.services import get_movie_service
 from models.movie import Movie
 from services.movie_service import MovieService
 
