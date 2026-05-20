@@ -7,18 +7,12 @@ from sqlalchemy.orm import Session
 from models import ReviewEntry
 from models.movie import Movie, MovieSearchResponse
 from services.util.tmdbclient import TMDBClient
-
+from typing import Annotated
 
 class MovieService:
 
     def __init__(self):
         self.tmdb_client = TMDBClient()
-
-    def get_rating(self, movie_id: str, db: Session) -> float:
-        result = db.query(func.avg(ReviewEntry.rating)).filter(
-            ReviewEntry.movie_id == movie_id
-        ).scalar()
-        return float(result) if result is not None else 0.0
 
     @cache(expire=300)
     @retry(stop=stop_after_attempt(3),
