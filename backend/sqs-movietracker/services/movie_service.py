@@ -22,7 +22,9 @@ class MovieService:
 
     @cache(expire=300)
     @retry(stop=stop_after_attempt(3),
-           wait=wait_exponential(min=0.5, max=5))
+           wait=wait_exponential(min=0.5, max=5),
+           reraise=True
+           )
     async def search_movies(
         self,
         query: str,
@@ -71,7 +73,9 @@ class MovieService:
 
     @cache(expire=3600)
     @retry(stop=stop_after_attempt(3),
-           wait=wait_exponential(min=0.5, max=5))
+           wait=wait_exponential(min=0.5, max=5),
+           reraise=True
+           )
     async def get_movie(self, movie_id: str) -> Movie:
         movie = await self.tmdb_client.get(f"movie/{movie_id}")
 
