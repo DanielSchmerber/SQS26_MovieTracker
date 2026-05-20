@@ -6,7 +6,7 @@ from dependencies.services import get_user_service
 from services.user_service import UserService
 
 
-def get_current_user(
+def auth_user(
     request: Request,
     db: Session = Depends(get_db),
     user_service: UserService = Depends(get_user_service),
