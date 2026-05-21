@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import Request, Depends
 from services.movie_service import MovieService
 from services.user_service import UserService
@@ -13,3 +15,5 @@ def get_token_service() -> TokenService:
 
 def get_user_service(token_service: TokenService = Depends(get_token_service)) -> UserService:
     return UserService(token_service)
+
+MovieServiceDep = Annotated[MovieService, Depends(get_movie_service)]
