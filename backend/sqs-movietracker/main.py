@@ -9,7 +9,7 @@ from fastapi_pagination import add_pagination
 from pyrate_limiter import Duration, Limiter, Rate
 
 from database import Base, engine
-from routers import movie_controller
+from routers import movie_controller, user_controller
 from services.movie_service import MovieService
 
 Base.metadata.create_all(bind=engine)
@@ -33,3 +33,4 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 app.include_router(movie_controller.router)
+app.include_router(user_controller.router)

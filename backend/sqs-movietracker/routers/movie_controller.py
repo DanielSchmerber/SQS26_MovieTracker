@@ -1,5 +1,3 @@
-from typing import Optional
-
 import httpx
 from fastapi import APIRouter, HTTPException, Depends, Query
 
@@ -33,7 +31,7 @@ async def search_movies(
     responses={404: {"description": "Movie not found"},
                502: {"description": "Upstream TMDB error"}}
 )
-async def get_movie(movie_id: str, service: MovieServiceDep):
+async def get_movie(movie_id: str, service: MovieService = Depends(get_movie_service)):
     try:
         return await service.get_movie(movie_id)
     except ValueError:
