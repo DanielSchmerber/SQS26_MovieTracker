@@ -1,7 +1,6 @@
 import type { Movie } from "#/features/movies/movie.model.ts";
 import * as React from 'react'
 import { Skeleton } from "#/components/ui/skeleton.tsx";
-import {useEffect} from "react";
 
 interface MovieComponentProps {
   movie: Movie;
@@ -25,8 +24,11 @@ export function MovieComponent({ movie, onClick, children }: MovieComponentProps
         <div className="absolute inset-0 rounded-lg opacity-0 ring-2 ring-white/40 transition duration-300 group-hover:opacity-100" />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <h3 className="font-bold leading-snug">{movie.title}</h3>
-        <p className="line-clamp-2 text-sm text-muted-foreground">{movie.description}</p>
+        <h3 className="font-bold leading-snug"
+            style={{ viewTransitionName: `movie-title-${movie.id}` }}
+        >{movie.title}</h3>
+        <p className="line-clamp-2 text-sm text-muted-foreground"
+        >{movie.description}</p>
         {children && <div className="mt-auto pt-2">{children}</div>}
       </div>
     </button>

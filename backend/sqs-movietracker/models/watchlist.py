@@ -1,5 +1,8 @@
+from datetime import datetime
+
+from sqlalchemy.dialects.mysql import DATETIME
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, DateTime
 from database import Base
 
 class WatchlistEntry(Base):
@@ -12,3 +15,5 @@ class WatchlistEntry(Base):
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id")
     )
+
+    added_at: Mapped[datetime] = mapped_column(DateTime())

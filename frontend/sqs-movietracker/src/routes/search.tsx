@@ -18,13 +18,11 @@ export const Route = createFileRoute("/search")({
 function SearchPage() {
   const { title } = Route.useSearch();
 
-  if (!title) return null;
-
   return <>
   <div className="mx-auto flex w-[70%] flex-col gap-3 py-6 center">
     <SearchBar />
   </div>
-    <SearchResults title={title} />
+    {title ? <SearchResults title={title} /> : <div  className="mx-auto flex w-[70%] flex-col gap-3 py-6 center">No Search results yet. Start searching for Movies</div>}
   </>;
 }
 
