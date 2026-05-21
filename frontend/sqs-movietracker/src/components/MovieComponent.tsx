@@ -1,5 +1,7 @@
 import type { Movie } from "#/features/movies/movie.model.ts";
 import * as React from 'react'
+import { Skeleton } from "#/components/ui/skeleton.tsx";
+import {useEffect} from "react";
 
 interface MovieComponentProps {
   movie: Movie;
@@ -28,5 +30,18 @@ export function MovieComponent({ movie, onClick, children }: MovieComponentProps
         {children && <div className="mt-auto pt-2">{children}</div>}
       </div>
     </button>
+  );
+}
+
+export function MovieComponentSkeleton() {
+  return (
+    <div className="flex gap-4 rounded-xl border border-border bg-card p-4">
+      <Skeleton className="h-24 w-16 shrink-0 rounded-lg" />
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <Skeleton className="h-5 w-2/3" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+      </div>
+    </div>
   );
 }
