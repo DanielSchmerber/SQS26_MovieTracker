@@ -1,4 +1,6 @@
 import httpx
+from pyrate_limiter import Duration, Rate, limiter_factory
+from pyrate_limiter.extras.httpx_limiter import AsyncRateLimiterTransport
 
 from environment import TMDB_API
 
@@ -6,6 +8,7 @@ from environment import TMDB_API
 class TMDBClient:
 
     def __init__(self):
+        limiter = limiter_factory.create_inmemory_limiter(rate_per_duration=40, duration=Duration.SECOND)
         self.client = httpx.AsyncClient(
             base_url="https://api.themoviedb.org/3/",
             headers={
@@ -13,6 +16,7 @@ class TMDBClient:
                 "Accept": "application/json",
             },
             timeout=10,
+            transport=AsyncRateLimiterTransport(limiter=limiter),
         )
 
     async def close(self):

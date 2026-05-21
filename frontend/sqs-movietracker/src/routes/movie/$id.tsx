@@ -63,7 +63,9 @@ function MoviePage() {
                         {/* Title */}
                         {isLoading
                             ? <Skeleton className="h-9 w-3/4" />
-                            : <h1 className="text-3xl font-black tracking-tight md:text-4xl">
+                            : <h1 className="text-3xl font-black tracking-tight md:text-4xl"
+                                  style={{ viewTransitionName: `movie-title-${movie?.id}` }}
+                            >
                                 {movie?.title}
                             </h1>
                         }
