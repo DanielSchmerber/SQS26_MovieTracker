@@ -12,8 +12,9 @@ import {
   CardTitle,
 } from "#/components/ui/card.tsx";
 import { useAuth } from "#/features/auth/auth.context.tsx";
-import { loginSchema  } from "#/features/auth/auth.schemas.ts";
-import type {LoginFormValues} from "#/features/auth/auth.schemas.ts";
+import { loginSchema } from "#/features/auth/auth.schemas.ts";
+import type { LoginFormValues } from "#/features/auth/auth.schemas.ts";
+import { loginUser } from "#/features/auth/auth.queries.ts";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -31,15 +32,13 @@ function LoginPage() {
   } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
 
   async function onSubmit(values: LoginFormValues) {
-    // TODO: replace with real API call to POST /api/auth/login
-    // On success the backend returns { name, name }
-
-    if(values.password !== "password"){
-      setError("password", { message: "Invalid password (its password)" });
+    try {
+      const user = await loginUser(values.username, values.password);
+      login(user);
+      await navigate({ to: "/" });
+    } catch (err) {
+      setError("root", { message: err instanceof Error ? err.message : "Login failed" });
     }
-
-    login({ name: values.name, email: "" });
-    await navigate({ to: "/" });
   }
 
   return (
@@ -52,15 +51,15 @@ function LoginPage() {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="name"
-                type="name"
-                placeholder="your name"
-                {...register("name")}
+                id="username"
+                type="text"
+                placeholder="your username"
+                {...register("username")}
               />
-              {errors.name && (
-                <p className="text-sm text-destructive">{errors.name.message}</p>
+              {errors.username && (
+                <p className="text-sm text-destructive">{errors.username.message}</p>
               )}
             </div>
 

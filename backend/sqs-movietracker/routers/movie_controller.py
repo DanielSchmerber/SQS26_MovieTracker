@@ -3,7 +3,7 @@ from typing import Optional
 import httpx
 from fastapi import APIRouter, HTTPException, Depends, Query
 
-from dependencies.services import MovieServiceDep, get_movie_service
+from dependencies.services import MovieServiceDep
 from models.movie import Movie, MovieSearchResponse
 from services.movie_service import MovieService
 
