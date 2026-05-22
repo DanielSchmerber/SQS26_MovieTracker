@@ -69,5 +69,5 @@ Protect user-specific features, such as watchlist management, through user authe
 |----|--------------|---------------|
 | End users | - | Search movies, view ratings and reviews, manage watchlists easily  |
 | Developer | - |   |
-| TMDB API | - | Movie tracker avoid excessive or unnecessary requests, respect rate limits and API usage policies, and ensure that API calls do not negatively impact the availability or performance of TMDB services  |
+| TMDB API | - | Movie tracker should avoid excessive or unnecessary requests, respect rate limits and API usage policies, and ensure that API calls do not negatively impact the availability or performance of TMDB services  |
 | Teacher | - |  Run the project without any issue |

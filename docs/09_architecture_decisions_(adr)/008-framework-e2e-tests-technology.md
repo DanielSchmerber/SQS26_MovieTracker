@@ -1,44 +1,50 @@
 # Title
 
-Decision to Choose the Framework for e2e tests
+Decision to Choose the End-to-End Testing Framework
 
 
 
 ## Status
 
-
+discussion
 
 
 ## Context
 
-We need .
 
+The testing framework should:
 
-
-The reverse proxy must:
--
+- work well with GitHub CI/CD pipelines
+- provide reliable browser automation
+- support multiple browsers
 
 
 Alternatives considered included:
 
-- 
+- Cypress
+- Selenium
+- Puppeteer
 
 
 
 ## Decision
 
-We propose using 
+We propose using Playwright. Playwright provides fast test execution and automatic waiting and synchronization.
 
 
 
 ## Consequences
 
+
 **Easier:**
 
-- 
+- Cross-browser testing support
+- Integration with CI/CD pipelines
+- Reliable synchronization and waiting behavior
+- Easier maintenance of modern browser tests
 
 
 
 **More difficult:**
 
-- 
+- E2E tests may become fragile if UI changes frequently 

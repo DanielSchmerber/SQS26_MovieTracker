@@ -6,28 +6,26 @@ Decision to Choose the Code Analysis Tool
 
 ## Status
 
-
+accepted
 
 
 ## Context
 
-We need .
+We need a code analysis tool that should:
 
-
-
-The reverse proxy must:
--
-
+- support multiple technologies used in the project
+- integrate with GitHub
+- provide maintainability and security analysis
+- not require any payment for use
 
 Alternatives considered included:
 
-- 
-
+- DeepSource 
 
 
 ## Decision
 
-We propose using SonarCube
+We chose Sonarqube. Sonarqube is free and support the technologies used in our project.
 
 
 
@@ -35,10 +33,11 @@ We propose using SonarCube
 
 **Easier:**
 
-- 
+- Continuous monitoring of code quality
+- Detection of bugs and vulnerabilities
 
 
 
 **More difficult:**
 
-- 
+- Potential false positives requiring manual review
