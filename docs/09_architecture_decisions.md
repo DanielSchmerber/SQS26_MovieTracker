@@ -21,6 +21,16 @@ Read more: [004-external-service-technology](09_architecture_decisions_(adr)/004
 
 ## ADR05 - Reverse Proxy
 
-## ADR06 -
+Read more: [005-reverse-proxy-technology](09_architecture_decisions_(adr)/005-reverse-proxy-technology.md)
 
-## ADR07 -
+## ADR06 - Containerization
+
+Read more: [006-external-service-technology](09_architecture_decisions_(adr)/006-external-service-technology.md)
+
+## ADR07 - Code Analysis Tool
+
+Read more: [007-code-analysis-tool-technology](09_architecture_decisions_(adr)/007-code-analysis-tool-technology.md)
+
+## ADR08 - Framework e2e Tests
+
+Read more: [008-framework-e2e-tests-technology](09_architecture_decisions_(adr)/008-framework-e2e-tests-technology.md)

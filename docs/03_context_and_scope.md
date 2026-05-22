@@ -12,10 +12,10 @@
 
 | Component/Element |   Description/Responsability |
 |----|--------------|
-| Web Browser | User interface access through HTTP/HTTPS |
+| Web Browser | User interface access through HTTPS |
 | Traefik |	Reverse proxy and request routing |
-|TanStack | Frontend	Frontend user interface and client-side interactions |
+| TanStack/React | Frontend user interface and client-side interactions |
 | Python Backend | Business logic, authentication, API integration, watchlist management |
-| SQLite Database |	Persistent storage for users and watchlists |
-| TMDB API	| External provider of movie information, reviews, and ratings |
+| SQLite Database |	Persistent storage for users related topics(rating movies and reviews) and watchlists |
+| TMDB API	| External provider of movie information |
 | Docker |	Containerization and deployment platform |

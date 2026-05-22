@@ -1,8 +1,8 @@
 # 01 - Introduction and goals
 
-Movie Tracker is a web application designed to help users search for movies, explore movie details, and manage a personal watchlist. The application integrates with the external TMDB (The Movie Database) API to retrieve movie information.
+Movie Tracker is a web application designed to help users search for movies, explore movie details, and manage a personal watchlist. The application integrates with the external TMDB (The Movie Database) API to retrieve movie information, ratings, and reviews from users who have watched the movies.
 
-The platform allows anonymous users to search for movies and access the detailed movie information without authentication. However, authenticated users gain additional functionality, such as maintaining a personal watchlist where they can save and manage movies they have watched or want to watch in the future.
+The application allows anonymous users to search for movies and access detailed movie information without authentication. However, authenticated users gain additional functionality, such as maintaining a personal watchlist where they can save and manage movies they have watched or want to watch in the future.
 
 The primary goals of the Movie Tracker project are:
 
@@ -16,6 +16,7 @@ Use the TMDB API as a reliable external source for:
 
 - Movie metadata
 
+
 #### G3 – Personalized Watchlist Management
 
 Allow authenticated users to create and manage a personal watchlist of movies they have watched or plan to watch.
@@ -26,7 +27,7 @@ Develop a lightweight application architecture using:
 
 - Python backend services
 - SQLite database for persistence
-- TanStack frontend for a responsive user experience
+- TanStack/React frontend for a responsive user experience
 
 #### G5 – Public Access to Movie Information
 
@@ -49,14 +50,13 @@ Protect user-specific features, such as watchlist management, through user authe
 | F5 | View Watchlist ||
 | F6 | Add Movie to Watchlist ||
 | F7 | Remove Movie from Watchlist ||
-| F8 | Rate movie ||
 
 ## 1.2 Quality goals
 
 
 | Prio | Quality goals | Description |
 |----|--------------|---------------|
-| 1 | Usability | Users should easily navigate and search for movies |
+| 1 | Usability | Users should be able to navigate and search for movies without complexity |
 | 1 | Reliability | The application should consistently retrieve and display movie data |
 | 2 | Maintainability | The code should remain modular and easy to extend |
 | 3 | Security | User authentication and watchlist access must be protected |
@@ -67,6 +67,7 @@ Protect user-specific features, such as watchlist management, through user authe
 
 | Role | Contact | Expectations |
 |----|--------------|---------------|
-| End users | - | Search movies, rate movies and view reviews, manage watchlists easily  |
+| End users | - | Search movies, view ratings and reviews, manage watchlists easily  |
 | Developer | - |   |
+| TMDB API | - | Movie tracker avoid excessive or unnecessary requests, respect rate limits and API usage policies, and ensure that API calls do not negatively impact the availability or performance of TMDB services  |
 | Teacher | - |  Run the project without any issue |
