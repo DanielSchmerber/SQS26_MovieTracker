@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from sqlalchemy import select, Select
 from sqlalchemy.orm import Session
 
+
 from models import User, WatchlistEntry
 from models.movie import Movie
 from models.schemas.watchlist_schemas import WatchlistEntryResponse
@@ -23,22 +24,23 @@ class WatchlistService:
         pass
 
 
+    @staticmethod
     def get_watchlist_query(user: User) -> Select:
         return select(WatchlistEntry).where(WatchlistEntry.user_id == user.id)
 
-
+    @staticmethod
     async def enrich_entries(entries: list[WatchlistEntry], movie_service: MovieService) -> list[WatchlistEntryResponse]:
         movies = await asyncio.gather(
             *[movie_service.get_movie(str(e.movie_id)) for e in entries],
             return_exceptions=True,
         )
         return [
-            WatchlistEntryResponse(id=entry.id, added_at=entry.added_at, movie=movie)
+            WatchlistEntryResponse(id=entry.id, movie=movie)
             for entry, movie in zip(entries, movies)
             if not isinstance(movie, Exception)
         ]
 
-    async def add_to_watchlist(self, db: Session, user: User, movie_id: int, movie_service: MovieService) -> WatchlistEntry:
+    async def add_to_watchlist(self, db: Session, user: User, movie_id: int, movie_service: MovieService) -> WatchlistEntryResponse:
         try:
             movie = await movie_service.get_movie(str(movie_id))
         except Exception:
@@ -53,11 +55,11 @@ class WatchlistService:
         if existing:
             raise ValueError("Movie already in watchlist")
 
-        entry = WatchlistEntry(user_id=user.id, movie_id=movie_id, added_at=datetime.now(timezone.utc))
+        entry = WatchlistEntry(user_id=user.id, movie_id=movie_id)
         db.add(entry)
         db.commit()
         db.refresh(entry)
-        return entry
+        return WatchlistEntryResponse(id=entry.id, movie=movie)
 
     @staticmethod
     def is_in_watchlist(db: Session, user: User, movie_id: int) -> bool:

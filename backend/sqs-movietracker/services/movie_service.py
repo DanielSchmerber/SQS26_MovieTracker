@@ -66,12 +66,18 @@ class MovieService:
             results=movies,
         )
 
+    async def get_movie(self, movie_id: str) -> Movie:
+        result = await self._get_movie_cached(movie_id)
+        if isinstance(result, dict):
+            return Movie.model_validate(result)
+        return result
+
     @cache(expire=3600)
     @retry(stop=stop_after_attempt(3),
            wait=wait_exponential(min=0.5, max=5),
            reraise=True
            )
-    async def get_movie(self, movie_id: str) -> Movie:
+    async def _get_movie_cached(self, movie_id: str) -> Movie:
         movie = await self.tmdb_client.get(f"movie/{movie_id}")
 
         if not movie:

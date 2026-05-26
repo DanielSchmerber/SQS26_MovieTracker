@@ -2,9 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovie } from "#/features/movies/movie.queries.ts";
 import { Skeleton } from "#/components/ui/skeleton.tsx";
-import { toast } from "sonner"
-import { ErrorDisplay } from '#/components/ErrorDisplay.tsx'
-import { useAuth } from '#/features/auth/auth.context.tsx'
+import { ErrorDisplay } from '#/components/ErrorDisplay.tsx';
+import { WatchlistButton } from '#/components/WatchlistButton.tsx';
 
 export const Route = createFileRoute('/movie/$id')({
     component: MoviePage,
@@ -24,13 +23,8 @@ function MoviePage() {
         </>
     )
 
-    const {user} = useAuth()
-
-
     return (
         <div>
-            Hello {JSON.stringify(user)}
-
             {/* Backdrop + centered poster */}
             <div className="relative h-72 w-full overflow-hidden md:h-96">
                 {isLoading
@@ -145,22 +139,7 @@ function MoviePage() {
 
                         {/* CTA buttons */}
                         <div className="flex flex-col gap-2">
-                            <button className="w-full rounded-xl bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition hover:opacity-90" onClick={
-                              () => {
-                                toast.promise<{ name: string }>(
-                                  () =>
-                                    new Promise((resolve) =>
-                                      setTimeout(() => resolve({ name: movie?.title || "" }), 2000)
-                                    ),
-                                  {
-                                    loading: "Adding to Watchlist...",
-                                    success: (data) => `${data.name} has been added to your Watchlist!`,
-                                    error: "Error",
-                                  },
-                                )
-                              }}>
-                                Add to Watchlist
-                            </button>
+                            <WatchlistButton movieId={parseInt(id)} movieTitle={movie?.title} />
                         </div>
 
                       <div className="flex flex-col gap-2">

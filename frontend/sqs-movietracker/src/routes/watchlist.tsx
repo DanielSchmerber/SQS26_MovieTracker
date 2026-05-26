@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Trash2 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "#/features/auth/auth.context.tsx";
 import { fetchWatchlist, removeFromWatchlist } from "#/features/watchlist/watchlist.queries.ts";
@@ -64,16 +65,16 @@ function WatchlistPage() {
             <MovieComponent
               key={entry.id}
               movie={entry.movie}
-              onClick={() => navigate({ to: "/movie/$id", params: { id: entry.movie.id } })}
+              onClick={() => navigate({ to: "/movie/$id", params: { id: entry.movie.id } , viewTransition: true})}
             >
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   removeMutation.mutate(parseInt(entry.movie.id));
                 }}
-                className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+                className="text-muted-foreground hover:text-destructive transition-colors"
               >
-                Remove
+                <Trash2 size={32} />
               </button>
             </MovieComponent>
           ))}
