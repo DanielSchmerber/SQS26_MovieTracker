@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchMovie } from "#/features/movies/movie.queries.ts";
+import { fetchWatchlist, addToWatchlist, removeFromWatchlist } from "#/features/watchlist/watchlist.queries.ts";
+import { useAuth } from "#/features/auth/auth.context.tsx";
 import { Skeleton } from "#/components/ui/skeleton.tsx";
 import { toast } from "sonner"
 import { ErrorDisplay } from '#/components/ErrorDisplay.tsx'
@@ -11,11 +13,49 @@ export const Route = createFileRoute('/movie/$id')({
 
 function MoviePage() {
     const { id } = Route.useParams()
+    const { user } = useAuth()
+    const queryClient = useQueryClient()
 
     const { data: movie, isLoading, error } = useQuery({
         queryKey: ['movie', id],
         queryFn: () => fetchMovie(id),
     })
+
+    const { data: watchlist } = useQuery({
+        queryKey: ['watchlist'],
+        queryFn: fetchWatchlist,
+        enabled: !!user,
+    })
+
+    const movieIdNum = parseInt(id)
+    const watchlistEntry = watchlist?.items.find((e) => e.movie.id === id)
+    const isInWatchlist = !!watchlistEntry
+
+    const addMutation = useMutation({
+        mutationFn: () => addToWatchlist(movieIdNum),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['watchlist'] })
+            toast.success(`${movie?.title} added to your Watchlist!`)
+        },
+        onError: () => toast.error("Failed to add to watchlist"),
+    })
+
+    const removeMutation = useMutation({
+        mutationFn: () => removeFromWatchlist(movieIdNum),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['watchlist'] })
+            toast.success(`${movie?.title} removed from your Watchlist`)
+        },
+        onError: () => toast.error("Failed to remove from watchlist"),
+    })
+
+    const handleWatchlistClick = () => {
+        if (isInWatchlist) {
+            removeMutation.mutate()
+        } else {
+            addMutation.mutate()
+        }
+    }
 
     if(error) return (
         <>
@@ -140,21 +180,18 @@ function MoviePage() {
 
                         {/* CTA buttons */}
                         <div className="flex flex-col gap-2">
-                            <button className="w-full rounded-xl bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition hover:opacity-90" onClick={
-                              () => {
-                                toast.promise<{ name: string }>(
-                                  () =>
-                                    new Promise((resolve) =>
-                                      setTimeout(() => resolve({ name: movie?.title || "" }), 2000)
-                                    ),
-                                  {
-                                    loading: "Adding to Watchlist...",
-                                    success: (data) => `${data.name} has been added to your Watchlist!`,
-                                    error: "Error",
-                                  },
-                                )
-                              }}>
-                                Add to Watchlist
+                            <button
+                                disabled={!user || addMutation.isPending || removeMutation.isPending}
+                                onClick={handleWatchlistClick}
+                                className={`w-full rounded-xl px-4 py-2.5 text-sm font-semibold transition
+                                    ${!user
+                                        ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
+                                        : isInWatchlist
+                                            ? "bg-green-600 text-white hover:bg-green-700"
+                                            : "bg-foreground text-background hover:opacity-90"
+                                    }`}
+                            >
+                                {isInWatchlist ? "In Watchlist" : "Add to Watchlist"}
                             </button>
                         </div>
 

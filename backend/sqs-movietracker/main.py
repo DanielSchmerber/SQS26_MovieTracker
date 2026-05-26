@@ -6,7 +6,7 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 from fastapi_limiter.depends import RateLimiter
 from fastapi_pagination import add_pagination, Page
-from fastapi_pagination.customization import customize_params, UseParamsFields
+from fastapi_pagination.customization import UseParamsFields
 from pyrate_limiter import Duration, Limiter, Rate
 
 from database import Base, engine
@@ -26,7 +26,9 @@ async def lifespan(app: FastAPI):
 
 _rate_limiter = RateLimiter(limiter=Limiter(Rate(100, Duration.SECOND  )))
 app = FastAPI(lifespan=lifespan, dependencies=[Depends(_rate_limiter)])
-Page = customize_params(Page, UseParamsFields(size=20, max_size=20))
+Page = Page.with_custom_options(
+    UseParamsFields(size=20, max_size=20)
+)
 add_pagination(app)
 
 @app.exception_handler(Exception)

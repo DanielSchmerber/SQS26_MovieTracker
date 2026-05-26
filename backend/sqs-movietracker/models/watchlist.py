@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from sqlalchemy.dialects.mysql import DATETIME
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import ForeignKey, String, DateTime
+from sqlalchemy import ForeignKey, DateTime
 
 from database import Base
 
