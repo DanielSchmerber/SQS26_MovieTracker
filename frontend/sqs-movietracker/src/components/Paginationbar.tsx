@@ -26,7 +26,9 @@ export function PaginationBar({ currentPage, totalPages, setPage, pageRange=3  }
         pages.push(i)
     }
 
-
+    if(totalPages === 1) {
+      return <></>
+    }
 
     return <>
         <Pagination>

@@ -6,6 +6,8 @@ import { fetchWatchlist, removeFromWatchlist } from "#/features/watchlist/watchl
 import { MovieComponent, MovieComponentSkeleton } from "#/components/MovieComponent.tsx";
 import { Button } from "#/components/ui/button.tsx";
 import { toast } from "sonner";
+import { useState } from 'react'
+import { PaginationBar } from '#/components/Paginationbar.tsx'
 
 export const Route = createFileRoute("/watchlist")({
   component: WatchlistPage,
@@ -15,6 +17,7 @@ function WatchlistPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
 
   const { data: watchlist, isLoading } = useQuery({
     queryKey: ["watchlist"],
@@ -30,6 +33,9 @@ function WatchlistPage() {
     },
     onError: () => toast.error("Failed to remove from watchlist"),
   });
+
+
+
 
   if (!user) {
     return (
@@ -80,6 +86,8 @@ function WatchlistPage() {
           ))}
         </div>
       )}
+
+      <PaginationBar currentPage={page} totalPages={watchlist?.pages ?? 1} setPage={setPage} pageRange={3} />
     </div>
   );
 }
