@@ -19,7 +19,14 @@
       "Bash(Sort-Object)",
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\" -Force | Where-Object { $_.Name -match \"\\(pytest|setup|pyproject|tox\\)\" })",
       "PowerShell(@\\('tests', 'models', 'routers', 'services'\\) | ForEach-Object { Write-Host \"=== $_ ===\"; ls \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\\\\$_\" | Select-Object Name })",
-      "Bash(python -m pytest)"
+      "Bash(python -m pytest)",
+      "Bash(pip show *)",
+      "Bash(python -c \"import fastapi_limiter; print\\(dir\\(fastapi_limiter\\)\\)\")",
+      "Bash(python -c \"import pkgutil; import fastapi_limiter; [print\\(m.name\\) for m in pkgutil.walk_packages\\(fastapi_limiter.__path__, prefix='fastapi_limiter.'\\)]\")",
+      "Bash(python *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(pip index *)"
     ]
   }
 }

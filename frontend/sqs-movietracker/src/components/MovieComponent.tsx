@@ -1,5 +1,6 @@
 import type { Movie } from "#/features/movies/movie.model.ts";
 import * as React from 'react'
+import { Skeleton } from "#/components/ui/skeleton.tsx";
 
 interface MovieComponentProps {
   movie: Movie;
@@ -23,10 +24,26 @@ export function MovieComponent({ movie, onClick, children }: MovieComponentProps
         <div className="absolute inset-0 rounded-lg opacity-0 ring-2 ring-white/40 transition duration-300 group-hover:opacity-100" />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <h3 className="font-bold leading-snug">{movie.title}</h3>
-        <p className="line-clamp-2 text-sm text-muted-foreground">{movie.description}</p>
+        <h3 className="font-bold leading-snug"
+            style={{ viewTransitionName: `movie-title-${movie.id}` }}
+        >{movie.title}</h3>
+        <p className="line-clamp-2 text-sm text-muted-foreground"
+        >{movie.description}</p>
         {children && <div className="mt-auto pt-2">{children}</div>}
       </div>
     </button>
+  );
+}
+
+export function MovieComponentSkeleton() {
+  return (
+    <div className="flex gap-4 rounded-xl border border-border bg-card p-4">
+      <Skeleton className="h-24 w-16 shrink-0 rounded-lg" />
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <Skeleton className="h-5 w-2/3" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+      </div>
+    </div>
   );
 }

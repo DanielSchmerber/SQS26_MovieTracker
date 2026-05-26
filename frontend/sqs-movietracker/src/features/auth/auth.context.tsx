@@ -1,25 +1,22 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import type { User, AuthContextType } from "#/features/auth/auth.model.ts";
+import { logoutUser, getMe } from "#/features/auth/auth.queries.ts";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => {
-    try {
-      const raw = localStorage.getItem("movietracker_user");
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    getMe().then(setUser);
+  }, []);
 
   function login(user: User) {
-    localStorage.setItem("movietracker_user", JSON.stringify(user));
     setUser(user);
   }
 
-  function logout() {
-    localStorage.removeItem("movietracker_user");
+  async function logout() {
+    await logoutUser();
     setUser(null);
   }
 

@@ -30,8 +30,8 @@ export function TopNav() {
     applyTheme(theme);
   }, [theme]);
 
-  function handleLogout() {
-    logout();
+  async function handleLogout() {
+    await logout();
     navigate({ to: "/" });
   }
 
@@ -106,7 +106,7 @@ export function TopNav() {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-black/[0.03] px-3 py-2 dark:border-white/10 dark:bg-white/[0.03]">
                 <User size={16} className="text-neutral-400" />
-                <span className="text-sm font-medium">{user.name}</span>
+                <span className="text-sm font-medium">{user.username}</span>
               </div>
               <button
                 onClick={handleLogout}
