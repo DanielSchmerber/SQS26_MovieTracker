@@ -6,6 +6,7 @@ from sqlalchemy import ForeignKey, String, DateTime
 
 from database import Base
 
+
 class WatchlistEntry(Base):
     __tablename__ = "watchlist"
 

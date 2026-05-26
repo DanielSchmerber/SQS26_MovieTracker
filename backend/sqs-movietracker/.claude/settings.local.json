@@ -26,7 +26,12 @@
       "Bash(python *)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(pip index *)"
+      "Bash(pip index *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\" -Recurse -Filter \"*.py\")",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(Get-Unique)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\" -Exclude venv,source -Recurse -Filter \"*.py\")",
+      "Bash(Select-Object -First 30)"
     ]
   }
 }
