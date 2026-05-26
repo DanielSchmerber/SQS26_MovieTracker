@@ -48,7 +48,7 @@ function SearchResults({ title }: { title: string }) {
           key={movie.id}
           movie={movie}
           onClick={() => {
-            queryClient.setQueryData(['movie', movie.id], movie);
+            queryClient.setQueryData(['movie', String(movie.id)], movie);
             navigate({ to: "/movie/$id", params: { id: movie.id }, viewTransition: true });
           }}
         />

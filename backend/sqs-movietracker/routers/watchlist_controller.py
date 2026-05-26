@@ -41,6 +41,16 @@ async def add_to_watchlist(
         raise HTTPException(status_code=status, detail=str(e))
 
 
+@router.get("/{movie_id}", response_model=bool)
+def is_in_watchlist(
+    movie_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(auth_user),
+    watchlist_service: WatchlistService = Depends(get_watchlist_service),
+):
+    return watchlist_service.is_in_watchlist(db, current_user, movie_id)
+
+
 @router.delete("/{movie_id}", status_code=204)
 def remove_from_watchlist(
     movie_id: int,

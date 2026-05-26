@@ -59,6 +59,13 @@ class WatchlistService:
         db.refresh(entry)
         return entry
 
+    @staticmethod
+    def is_in_watchlist(db: Session, user: User, movie_id: int) -> bool:
+        return db.query(WatchlistEntry).filter(
+            WatchlistEntry.user_id == user.id,
+            WatchlistEntry.movie_id == movie_id,
+        ).first() is not None
+
     def remove_from_watchlist(self, db: Session, user: User, movie_id: int) -> None:
         entry = db.query(WatchlistEntry).filter(
             WatchlistEntry.user_id == user.id,

@@ -16,7 +16,7 @@ export function MovieComponent({ movie, onClick, children }: MovieComponentProps
     >
       <div className="relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-lg">
         <img
-          src={movie.poster}
+          src={movie.poster || undefined}
           alt={movie.title}
           className="h-full w-full object-cover transition duration-300 group-hover:brightness-110"
           style={{ viewTransitionName: `movie-poster-${movie.id}` }}

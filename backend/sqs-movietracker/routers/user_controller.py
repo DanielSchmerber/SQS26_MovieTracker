@@ -26,6 +26,9 @@ def register(
     service: UserService = Depends(get_user_service),
     db: Session = Depends(get_db),
 ):
+
+    print("Registering user")
+
     try:
         user = service.register(db, data)
         return user

@@ -31,7 +31,9 @@
       "Bash(Select-Object -ExpandProperty Name)",
       "Bash(Get-Unique)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\danie\\\\Desktop\\\\SQS\\\\SQS26_MovieTracker\\\\backend\\\\sqs-movietracker\" -Exclude venv,source -Recurse -Filter \"*.py\")",
-      "Bash(Select-Object -First 30)"
+      "Bash(Select-Object -First 30)",
+      "PowerShell(python -c \"import fastapi_pagination.customization; print\\(dir\\(fastapi_pagination.customization\\)\\)\")",
+      "WebFetch(domain:uriyyo-fastapi-pagination.netlify.app)"
     ]
   }
 }
