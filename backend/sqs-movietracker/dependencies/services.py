@@ -5,6 +5,7 @@ from services.movie_service import MovieService
 from services.user_service import UserService
 from services.token_service import TokenService
 from services.watchlist_service import WatchlistService
+from services.review_service import ReviewService
 
 # Movie service is stateful due to caching, so we store it in the app state
 def get_movie_service(request: Request) -> MovieService:
@@ -19,5 +20,8 @@ def get_user_service(token_service: TokenService = Depends(get_token_service)) -
 
 def get_watchlist_service() -> WatchlistService:
     return WatchlistService()
+
+def get_review_service() -> ReviewService:
+    return ReviewService()
 
 MovieServiceDep = Annotated[MovieService, Depends(get_movie_service)]

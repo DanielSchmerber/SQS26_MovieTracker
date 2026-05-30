@@ -11,7 +11,7 @@ from fastapi_pagination.customization import CustomizedPage, UseParamsFields
 from pyrate_limiter import Duration, Limiter, Rate
 
 from database import Base, engine
-from routers import movie_controller, user_controller, watchlist_controller
+from routers import movie_controller, user_controller, watchlist_controller, review_controller
 from services.movie_service import MovieService
 
 Base.metadata.create_all(bind=engine)
@@ -34,3 +34,4 @@ add_pagination(app)
 app.include_router(movie_controller.router)
 app.include_router(user_controller.router)
 app.include_router(watchlist_controller.router)
+app.include_router(review_controller.router)

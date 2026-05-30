@@ -10,8 +10,20 @@ interface MovieComponentProps {
 
 export function MovieComponent({ movie, onClick, children }: MovieComponentProps) {
   return (
-    <button
+    <div
       onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
       className={`group flex gap-4 rounded-xl border border-border bg-card p-4 transition-colors duration-200 hover:bg-muted/60 ${onClick ? "cursor-pointer" : ""}`}
     >
       <div className="relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-lg">
@@ -31,7 +43,7 @@ export function MovieComponent({ movie, onClick, children }: MovieComponentProps
         >{movie.description}</p>
         {children && <div className="mt-auto pt-2">{children}</div>}
       </div>
-    </button>
+    </div>
   );
 }
 
