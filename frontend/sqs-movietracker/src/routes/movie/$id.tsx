@@ -1,9 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovie } from "#/features/movies/movie.queries.ts";
+import { fetchRating } from "#/features/reviews/review.queries.ts";
 import { Skeleton } from "#/components/ui/skeleton.tsx";
 import { ErrorDisplay } from '#/components/ErrorDisplay.tsx';
 import { WatchlistButton } from '#/components/WatchlistButton.tsx';
+import { ReviewSection } from '#/components/ReviewSection.tsx';
 
 export const Route = createFileRoute('/movie/$id')({
     component: MoviePage,
@@ -15,6 +17,11 @@ function MoviePage() {
     const { data: movie, isLoading, error } = useQuery({
         queryKey: ['movie', id],
         queryFn: () => fetchMovie(id),
+    })
+
+    const { data: ourRating, isLoading: ratingLoading } = useQuery({
+        queryKey: ['rating', parseInt(id)],
+        queryFn: () => fetchRating(parseInt(id)),
     })
 
     if(error) return (
@@ -82,47 +89,35 @@ function MoviePage() {
                             </p>
                         }
 
-                        {/* Reviews */}
-                        <section className="flex flex-col gap-4 pt-4">
-                            <div className="flex items-center justify-between border-b border-border pb-2">
-                                <h2 className="text-lg font-bold">Reviews</h2>
-                            </div>
-
-                            {// TODO replace with actual review list
-                            }
-                            <div className="flex flex-col gap-6">
-                                {Array.from({ length: 3 }).map((_, i) => (
-                                    <div key={i} className="flex flex-col gap-2">
-                                        <div className="flex items-center gap-2">
-                                            <Skeleton className="h-8 w-8 rounded-full" />
-                                            <div className="flex flex-col gap-1">
-                                                <Skeleton className="h-3 w-24" />
-                                                <Skeleton className="h-3 w-16" />
-                                            </div>
-                                        </div>
-                                        <Skeleton className="h-4 w-full" />
-                                        <Skeleton className="h-4 w-4/5" />
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
+                        <ReviewSection movieId={parseInt(id)} />
                     </div>
 
                     {/* ── Right column (rating + meta + CTAs + cast) ── */}
                     <div className="flex flex-col gap-6 order-1 md:order-2">
 
-                        {/* Global rating */}
+                        {/* Our rating */}
                         <div className="rounded-xl border border-border bg-card p-5">
                             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                                 Our Rating
                             </p>
-                            {isLoading
+                            {ratingLoading
                                 ? <Skeleton className="mt-2 h-12 w-28" />
                                 : <div className="mt-1 flex items-baseline gap-1">
-                                    <span className="text-5xl font-black">{movie?.tmdbRating}</span>
-                                    <span className="text-lg text-muted-foreground">/10</span>
+                                    <span className="text-5xl font-black">
+                                        {ourRating === -1 ? "—" : ourRating?.toFixed(1)}
+                                    </span>
+                                    {ourRating !== -1 && (
+                                        <span className="text-lg text-muted-foreground">/10</span>
+                                    )}
                                 </div>
                             }
+                            <div className="mt-3 flex items-center gap-1.5 border-t border-border pt-3">
+                                <span className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">TMDB</span>
+                                {isLoading
+                                    ? <Skeleton className="h-3 w-10" />
+                                    : <span className="text-sm font-semibold">{movie?.tmdbRating}</span>
+                                }
+                            </div>
                         </div>
 
                         {/* Metadata rows */}
@@ -141,12 +136,6 @@ function MoviePage() {
                         <div className="flex flex-col gap-2">
                             <WatchlistButton movieId={parseInt(id)} movieTitle={movie?.title} />
                         </div>
-
-                      <div className="flex flex-col gap-2">
-                        <button className="w-full rounded-xl bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition hover:opacity-90">
-                          Review
-                        </button>
-                      </div>
 
                     </div>
 
