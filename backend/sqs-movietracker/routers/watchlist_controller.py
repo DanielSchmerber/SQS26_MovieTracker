@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi_pagination import Page, create_page, paginate, resolve_params
+from fastapi_pagination import Page, create_page, resolve_params
 from fastapi_pagination.customization import CustomizedPage, UseParamsFields
 from sqlalchemy.orm import Session
 
@@ -28,9 +28,12 @@ async def get_watchlist(
 ):
     stmt = WatchlistService.get_watchlist_query(current_user)
     entries = list(db.execute(stmt).scalars())
-    page = paginate(entries)
-    enriched = await watchlist_service.enrich_entries(page.items, movie_service)
-    return create_page(enriched, total=page.total, params=resolve_params())
+    params = resolve_params()
+    total = len(entries)
+    offset = (params.page - 1) * params.size
+    sliced = entries[offset:offset + params.size]
+    enriched = await watchlist_service.enrich_entries(sliced, movie_service)
+    return create_page(enriched, total=total, params=params)
 
 
 @router.post("/", response_model=WatchlistEntryResponse, status_code=201)

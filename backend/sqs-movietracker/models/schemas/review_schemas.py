@@ -15,6 +15,7 @@ class ReviewUpdateRequest(BaseModel):
 class ReviewResponse(BaseModel):
     id: int
     user_id: int
+    username: str
     movie_id: int
     rating: int
     comment: str | None
