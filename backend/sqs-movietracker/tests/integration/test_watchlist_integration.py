@@ -9,7 +9,7 @@ from models import User, WatchlistEntry
 
 MOVIE_ID = 550
 
-MOCK_USER = User(id=99, username="testuser", email="test@test.com", password="x")
+MOCK_USER = User(id=99, username="testuser", email="test@test.com", password="x") # NOSONAR
 
 TMDB_MOVIE = {
     "id": MOVIE_ID,
