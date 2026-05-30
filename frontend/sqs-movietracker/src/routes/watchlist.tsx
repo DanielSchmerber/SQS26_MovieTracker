@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Trash2 } from "lucide-react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { useAuth } from "#/features/auth/auth.context.tsx";
 import { fetchWatchlist, removeFromWatchlist } from "#/features/watchlist/watchlist.queries.ts";
 import { MovieComponent, MovieComponentSkeleton } from "#/components/MovieComponent.tsx";
@@ -20,9 +20,10 @@ function WatchlistPage() {
   const [page, setPage] = useState(1);
 
   const { data: watchlist, isLoading } = useQuery({
-    queryKey: ["watchlist"],
-    queryFn: fetchWatchlist,
+    queryKey: ["watchlist", page],
+    queryFn: () => fetchWatchlist(page),
     enabled: !!user,
+    placeholderData: keepPreviousData,
   });
 
   const removeMutation = useMutation({

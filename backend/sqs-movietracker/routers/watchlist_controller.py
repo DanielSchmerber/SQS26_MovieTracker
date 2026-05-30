@@ -1,8 +1,6 @@
-import math
-
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi_pagination import Page, Params
-from sqlalchemy import func, select as sa_select
+from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi_pagination import Page, create_page, paginate, resolve_params
+from fastapi_pagination.customization import CustomizedPage, UseParamsFields
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -15,22 +13,24 @@ from services.watchlist_service import WatchlistService
 
 router = APIRouter(prefix="/api/v1/watchlist", tags=["watchlist"])
 
+WatchlistPage = CustomizedPage[
+    Page[WatchlistEntryResponse],
+    UseParamsFields(size=Query(10, ge=1, le=10)),
+]
 
-@router.get("/", response_model=Page[WatchlistEntryResponse])
+
+@router.get("/", response_model=WatchlistPage)
 async def get_watchlist(
-    params: Params = Depends(),
     db: Session = Depends(get_db),
     current_user: User = Depends(auth_user),
     watchlist_service: WatchlistService = Depends(get_watchlist_service),
     movie_service: MovieService = Depends(get_movie_service),
 ):
     stmt = WatchlistService.get_watchlist_query(current_user)
-    total = db.scalar(sa_select(func.count()).select_from(stmt.subquery()))
-    offset = (params.page - 1) * params.size
-    entries = list(db.execute(stmt.offset(offset).limit(params.size)).scalars())
-    enriched = await watchlist_service.enrich_entries(entries, movie_service)
-    pages = math.ceil(total / params.size) if total > 0 else 0
-    return Page(items=enriched, total=total, page=params.page, size=params.size, pages=pages)
+    entries = list(db.execute(stmt).scalars())
+    page = paginate(entries)
+    enriched = await watchlist_service.enrich_entries(page.items, movie_service)
+    return create_page(enriched, total=page.total, params=resolve_params())
 
 
 @router.post("/", response_model=WatchlistEntryResponse, status_code=201)

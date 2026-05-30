@@ -1,7 +1,7 @@
 import type { WatchlistEntry, WatchlistPage } from "#/features/watchlist/watchlist.model.ts";
 
-export const fetchWatchlist = async (): Promise<WatchlistPage> => {
-    const response = await fetch("/api/watchlist/", { credentials: "include" });
+export const fetchWatchlist = async (page = 1): Promise<WatchlistPage> => {
+    const response = await fetch(`/api/watchlist/?page=${page}`, { credentials: "include" });
     if (!response.ok) throw new Error("Failed to fetch watchlist");
     return response.json();
 };

@@ -23,7 +23,6 @@ class WatchlistService:
     def __init__(self):
         pass
 
-
     @staticmethod
     def get_watchlist_query(user: User) -> Select:
         return select(WatchlistEntry).where(WatchlistEntry.user_id == user.id)
