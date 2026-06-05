@@ -12,8 +12,9 @@ import {
   CardTitle,
 } from "#/components/ui/card.tsx";
 import { useAuth } from "#/features/auth/auth.context.tsx";
-import { registerSchema  } from "#/features/auth/auth.schemas.ts";
-import type {RegisterFormValues} from "#/features/auth/auth.schemas.ts";
+import { registerSchema } from "#/features/auth/auth.schemas.ts";
+import type { RegisterFormValues } from "#/features/auth/auth.schemas.ts";
+import { registerUser } from "#/features/auth/auth.queries.ts";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
@@ -27,13 +28,17 @@ function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setError,
   } = useForm<RegisterFormValues>({ resolver: zodResolver(registerSchema) });
 
   async function onSubmit(values: RegisterFormValues) {
-    // TODO: replace with real API call to POST /api/auth/register
-    // On success the backend returns { name, email }
-    login({ name: values.name, email: values.email });
-    await navigate({ to: "/" });
+    try {
+      const user = await registerUser(values.username, values.email, values.password);
+      login(user);
+      await navigate({ to: "/" });
+    } catch (err) {
+      setError("root", { message: err instanceof Error ? err.message : "Registration failed" });
+    }
   }
 
   return (
@@ -46,15 +51,15 @@ function RegisterPage() {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="name"
+                id="username"
                 type="text"
-                placeholder="Your name"
-                {...register("name")}
+                placeholder="Your username"
+                {...register("username")}
               />
-              {errors.name && (
-                <p className="text-sm text-destructive">{errors.name.message}</p>
+              {errors.username && (
+                <p className="text-sm text-destructive">{errors.username.message}</p>
               )}
             </div>
 

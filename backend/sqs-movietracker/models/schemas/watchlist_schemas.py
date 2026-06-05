@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from models.movie import Movie
+
 
 class WatchlistAddRequest(BaseModel):
     movie_id: int
@@ -7,7 +9,5 @@ class WatchlistAddRequest(BaseModel):
 
 class WatchlistEntryResponse(BaseModel):
     id: int
-    user_id: int
-    movie_id: int
+    movie: Movie
 
-    model_config = {"from_attributes": True}

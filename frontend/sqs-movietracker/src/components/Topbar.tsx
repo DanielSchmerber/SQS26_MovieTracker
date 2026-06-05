@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Moon, Sun, Monitor, Search, User, LogOut } from "lucide-react";
+import { Moon, Sun, Monitor, User, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "#/features/auth/auth.context.tsx";
 
@@ -30,8 +30,8 @@ export function TopNav() {
     applyTheme(theme);
   }, [theme]);
 
-  function handleLogout() {
-    logout();
+  async function handleLogout() {
+    await logout();
     navigate({ to: "/" });
   }
 
@@ -70,16 +70,6 @@ export function TopNav() {
 
         {/* Right */}
         <div className="flex items-center gap-3">
-          {/* Search */}
-          <div className="hidden items-center gap-2 rounded-xl border border-black/10 bg-black/[0.03] px-3 py-2 md:flex dark:border-white/10 dark:bg-white/[0.03]">
-            <Search size={16} className="text-neutral-400" />
-
-            <input
-              placeholder="Placeholder..."
-              className="w-40 bg-transparent text-sm outline-none placeholder:text-neutral-400"
-            />
-          </div>
-
           {/* Theme */}
           <div className="flex items-center rounded-xl border border-black/10 bg-black/[0.03] p-1 dark:border-white/10 dark:bg-white/[0.03]">
             <ThemeButton
@@ -106,7 +96,7 @@ export function TopNav() {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-black/[0.03] px-3 py-2 dark:border-white/10 dark:bg-white/[0.03]">
                 <User size={16} className="text-neutral-400" />
-                <span className="text-sm font-medium">{user.name}</span>
+                <span className="text-sm font-medium">{user.username}</span>
               </div>
               <button
                 onClick={handleLogout}

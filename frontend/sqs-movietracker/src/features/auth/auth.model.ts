@@ -1,10 +1,11 @@
 export interface User {
-  name: string;
+  id: number;
+  username: string;
   email: string;
 }
 
 export interface AuthContextType {
   user: User | null;
   login: (user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }

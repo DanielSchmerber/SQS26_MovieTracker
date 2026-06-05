@@ -45,6 +45,7 @@ class MovieService:
                 title=movie["title"],
                 description=movie.get("overview", ""),
                 year=int(release_date[:4]),
+                month=int(release_date[5:7]) if len(release_date) >= 7 else 1,
                 poster=(
                     f"https://image.tmdb.org/t/p/w500{poster_path}"
                     if poster_path
@@ -65,12 +66,18 @@ class MovieService:
             results=movies,
         )
 
+    async def get_movie(self, movie_id: str) -> Movie:
+        result = await self._get_movie_cached(movie_id)
+        if isinstance(result, dict):
+            return Movie.model_validate(result)
+        return result
+
     @cache(expire=3600)
     @retry(stop=stop_after_attempt(3),
            wait=wait_exponential(min=0.5, max=5),
            reraise=True
            )
-    async def get_movie(self, movie_id: str) -> Movie:
+    async def _get_movie_cached(self, movie_id: str) -> Movie:
         movie = await self.tmdb_client.get(f"movie/{movie_id}")
 
         if not movie:
@@ -79,11 +86,13 @@ class MovieService:
         poster_path = movie.get("poster_path")
         backdrop_path = movie.get("backdrop_path")
 
+        release_date = movie.get("release_date", "")
         return Movie(
             id=str(movie["id"]),
             title=movie["title"],
             description=movie.get("overview", ""),
-            year=int(movie["release_date"][:4]),
+            year=int(release_date[:4]) if release_date else 0,
+            month=int(release_date[5:7]) if len(release_date) >= 7 else 1,
             poster=(
                 f"https://image.tmdb.org/t/p/w500{poster_path}"
                 if poster_path

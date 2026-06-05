@@ -5,11 +5,13 @@ from fastapi.responses import JSONResponse
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 from fastapi_limiter.depends import RateLimiter
-from fastapi_pagination import add_pagination
+from fastapi import Query as QueryField
+from fastapi_pagination import add_pagination, Page
+from fastapi_pagination.customization import CustomizedPage, UseParamsFields
 from pyrate_limiter import Duration, Limiter, Rate
 
 from database import Base, engine
-from routers import movie_controller, user_controller
+from routers import movie_controller, user_controller, watchlist_controller, review_controller
 from services.movie_service import MovieService
 
 Base.metadata.create_all(bind=engine)
@@ -25,12 +27,11 @@ async def lifespan(app: FastAPI):
 
 _rate_limiter = RateLimiter(limiter=Limiter(Rate(100, Duration.SECOND  )))
 app = FastAPI(lifespan=lifespan, dependencies=[Depends(_rate_limiter)])
+Page = CustomizedPage[Page, UseParamsFields(size=QueryField(5, ge=1, le=20))]
 add_pagination(app)
-
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    return JSONResponse(status_code=500, content={"detail": "Internal server error"})
 
 
 app.include_router(movie_controller.router)
 app.include_router(user_controller.router)
+app.include_router(watchlist_controller.router)
+app.include_router(review_controller.router)
