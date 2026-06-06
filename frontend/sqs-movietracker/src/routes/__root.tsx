@@ -61,7 +61,7 @@ function NotFound() {
   )
 }
 
-function RootDocument({ children }: { children: Readonly<React.ReactNode> }) {
+function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
