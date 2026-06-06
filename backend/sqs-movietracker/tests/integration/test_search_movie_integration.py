@@ -50,9 +50,7 @@ async def test_get_movie_robustness(mock_get, example_movie, client):
         Exception("timeout"),
         example_movie,
     ]
-    response = client.get("/movie/1")
-
-    assert response.status_code == 200
+    response = client.get("/api/v1/movies/1")
 
     assert response.status_code == 200
     assert mock_get.call_count == 3
@@ -61,12 +59,10 @@ async def test_get_movie_robustness(mock_get, example_movie, client):
 @pytest.mark.asyncio
 async def test_get_movie_cache(mock_get, example_movie, client):
     mock_get.return_value = example_movie
-    response = client.get("/api/v1/movies/movie/1")
-    response = client.get("/api/v1/movies/movie/1")
-    response = client.get("/api/v1/movies/movie/1")
-    response = client.get("/api/v1/movies/movie/1")
+    response = client.get("/api/v1/movies/1")
+    response = client.get("/api/v1/movies/1")
+    response = client.get("/api/v1/movies/1")
+    response = client.get("/api/v1/movies/1")
 
     assert response.status_code == 200
-
-    #call count should remain 1, result has to be cached
     assert mock_get.call_count == 1
