@@ -11,7 +11,7 @@ import { logoutUser, getMe } from "#/features/auth/auth.queries.ts";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: Readonly<React.ReactNode> }) {
+export function AuthProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
