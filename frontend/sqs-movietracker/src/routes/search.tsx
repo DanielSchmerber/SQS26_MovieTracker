@@ -30,7 +30,7 @@ function SearchPage() {
   </>;
 }
 
-function SearchResults({ title }: { title: string }) {
+function SearchResults({ title }: { title: Readonly<string> }) {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const queryClient = useQueryClient();

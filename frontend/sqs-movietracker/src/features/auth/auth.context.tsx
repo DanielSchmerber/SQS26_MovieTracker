@@ -1,27 +1,39 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import type { User, AuthContextType } from "#/features/auth/auth.model.ts";
 import { logoutUser, getMe } from "#/features/auth/auth.queries.ts";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: Readonly<React.ReactNode> }) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     getMe().then(setUser);
   }, []);
 
-  function login(user: User) {
-    setUser(user);
-  }
+  const login = useCallback((authUser: User) => {
+    setUser(authUser);
+  }, []);
 
-  async function logout() {
+  const logout = useCallback(async () => {
     await logoutUser();
     setUser(null);
-  }
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({ user, login, logout }),
+    [user, login, logout]
+  );
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
