@@ -6,7 +6,7 @@ Decision to Choose the End-to-End Testing Framework
 
 ## Status
 
-discussion
+accepted
 
 
 ## Context

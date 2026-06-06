@@ -6,7 +6,7 @@ Decision to Choose the System's Containerization Platform
 
 ## Status
 
-discussion
+accepted
 
 
 

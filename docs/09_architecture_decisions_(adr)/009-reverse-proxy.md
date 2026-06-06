@@ -6,7 +6,7 @@ Decision to Choose the System's Reverse Proxy
 
 ## Status
 
-discussion
+accepted
 
 
 ## Context
