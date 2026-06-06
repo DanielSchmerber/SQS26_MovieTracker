@@ -8,7 +8,19 @@ interface WatchlistButtonProps {
     movieTitle?: string;
 }
 
-export function WatchlistButton({ movieId, movieTitle }: WatchlistButtonProps) {
+function getWatchlistButtonClass(user: unknown, watched?: boolean): string {
+    if (!user) {
+        return "bg-muted text-muted-foreground cursor-not-allowed opacity-50";
+    }
+
+    if (watched) {
+        return "bg-green-600 text-white hover:bg-green-700";
+    }
+
+    return "bg-foreground text-background hover:opacity-90";
+}
+
+export function WatchlistButton({ movieId, movieTitle }: Readonly<WatchlistButtonProps>) {
     const { user } = useAuth();
     const queryClient = useQueryClient();
 
@@ -51,12 +63,7 @@ export function WatchlistButton({ movieId, movieTitle }: WatchlistButtonProps) {
             disabled={!user || isPending}
             onClick={handleClick}
             className={`w-full rounded-xl px-4 py-2.5 text-sm font-semibold transition
-                ${!user
-                    ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
-                    : watched
-                        ? "bg-green-600 text-white hover:bg-green-700"
-                        : "bg-foreground text-background hover:opacity-90"
-                }`}
+                ${getWatchlistButtonClass(user, watched)}`}
         >
             {watched ? "Watched" : "Add to Watchlist"}
         </button>

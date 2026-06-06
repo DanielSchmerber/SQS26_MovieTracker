@@ -2,7 +2,7 @@ import type {Movie, MovieSearchResponse} from "#/features/movies/movie.model.ts"
 
 export const fetchMovie = async (id: string): Promise<Movie> => {
 
-    const response = await fetch(`/api/movies/${id}`);
+    const response = await fetch(`/api/v1/movies/${id}`);
 
     if (!response.ok) {
         throw new Error("Failed to fetch movie");
@@ -20,7 +20,7 @@ export const searchMovies = async (
     const params = new URLSearchParams({ query, page: String(page) });
     if (year !== undefined) params.set("year", String(year));
 
-    const response = await fetch(`/api/movies/search?${params}`);
+    const response = await fetch(`/api/v1/movies/search?${params}`);
 
     if (!response.ok) {
         throw new Error("Failed to search movies");

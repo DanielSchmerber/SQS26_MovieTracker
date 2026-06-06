@@ -8,7 +8,7 @@ interface SearchBarProps {
   autoFocus?: boolean
 }
 
-export function SearchBar({ initialQuery = '', autoFocus = false }: SearchBarProps) {
+export function SearchBar({ initialQuery = '', autoFocus = false }: Readonly<SearchBarProps>) {
   const [query, setQuery] = useState(initialQuery)
   const navigate = useNavigate()
 

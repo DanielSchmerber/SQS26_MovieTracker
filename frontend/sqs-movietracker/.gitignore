@@ -10,6 +10,5 @@ dist-ssr
 .output
 .vinxi
 .claude
-package-lock.json
 __unconfig*
 todos.json

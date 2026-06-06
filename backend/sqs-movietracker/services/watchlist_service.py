@@ -21,6 +21,7 @@ def verify_movie(movie: Movie | None, now: datetime) -> None:
 class WatchlistService:
 
     def __init__(self):
+        # No state for now, might change in the future
         pass
 
     @staticmethod

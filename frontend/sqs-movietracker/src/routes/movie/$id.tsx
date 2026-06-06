@@ -20,14 +20,12 @@ function MoviePage() {
     })
 
     const { data: ourRating, isLoading: ratingLoading } = useQuery({
-        queryKey: ['rating', parseInt(id)],
-        queryFn: () => fetchRating(parseInt(id)),
+        queryKey: ['rating', Number.parseInt(id)],
+        queryFn: () => fetchRating(Number.parseInt(id)),
     })
 
     if(error) return (
-        <>
-            <ErrorDisplay message={error.message}></ErrorDisplay>
-        </>
+        <ErrorDisplay message={error.message}></ErrorDisplay>
     )
 
     return (
@@ -89,7 +87,7 @@ function MoviePage() {
                             </p>
                         }
 
-                        <ReviewSection movieId={parseInt(id)} />
+                        <ReviewSection movieId={Number.parseInt(id)} />
                     </div>
 
                     {/* ── Right column (rating + meta + CTAs + cast) ── */}
@@ -134,7 +132,7 @@ function MoviePage() {
 
                         {/* CTA buttons */}
                         <div className="flex flex-col gap-2">
-                            <WatchlistButton movieId={parseInt(id)} movieTitle={movie?.title} />
+                            <WatchlistButton movieId={Number.parseInt(id)} movieTitle={movie?.title} />
                         </div>
 
                     </div>

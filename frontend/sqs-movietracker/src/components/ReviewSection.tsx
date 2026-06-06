@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +33,8 @@ const FLAVOR: Record<number, string> = {
     10: "Masterpiece",
 };
 
+const REVIEW_SKELETON_KEYS = ["review-skeleton-1", "review-skeleton-2", "review-skeleton-3"];
+
 function selectedButtonClass(n: number, selected: boolean): string {
     if (!selected) return "bg-muted text-muted-foreground hover:bg-foreground/20";
     if (n <= 2) return "bg-red-600 text-white";
@@ -53,7 +56,7 @@ interface ReviewSectionProps {
     movieId: number;
 }
 
-export function ReviewSection({ movieId }: ReviewSectionProps) {
+export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
@@ -77,6 +80,13 @@ export function ReviewSection({ movieId }: ReviewSectionProps) {
     });
 
     const selectedRating = watch("rating");
+    let selectedRatingIcon = "";
+
+    if (selectedRating === 1) {
+        selectedRatingIcon = "💀 ";
+    } else if (selectedRating === 10) {
+        selectedRatingIcon = "✨ ";
+    }
 
     const mutation = useMutation({
         mutationFn: (data: ReviewFormValues) => addReview(data),
@@ -100,6 +110,13 @@ export function ReviewSection({ movieId }: ReviewSectionProps) {
     }
 
     const withComments = reviews?.filter((r) => r.comment);
+    let reviewsContent: ReactNode = withComments?.map((r) => <ReviewCard key={r.id} review={r} />);
+
+    if (isLoading) {
+        reviewsContent = REVIEW_SKELETON_KEYS.map((key) => <ReviewCardSkeleton key={key} />);
+    } else if (withComments?.length === 0) {
+        reviewsContent = <p className="text-sm text-muted-foreground">No reviews yet.</p>;
+    }
 
     return (
         <section className="flex flex-col gap-4 pt-4">
@@ -131,7 +148,7 @@ export function ReviewSection({ movieId }: ReviewSectionProps) {
                                     </div>
                                     {selectedRating >= 1 && (
                                         <p className={`text-sm ${flavorClass(selectedRating)}`}>
-                                            {selectedRating === 1 ? "💀 " : selectedRating === 10 ? "✨ " : ""}
+                                            {selectedRatingIcon}
                                             {FLAVOR[selectedRating]}
                                         </p>
                                     )}
@@ -173,13 +190,7 @@ export function ReviewSection({ movieId }: ReviewSectionProps) {
             </div>
 
             <div className="flex flex-col gap-6">
-                {isLoading ? (
-                    Array.from({ length: 3 }).map((_, i) => <ReviewCardSkeleton key={i} />)
-                ) : withComments?.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No reviews yet.</p>
-                ) : (
-                    withComments?.map((r) => <ReviewCard key={r.id} review={r} />)
-                )}
+                {reviewsContent}
             </div>
         </section>
     );

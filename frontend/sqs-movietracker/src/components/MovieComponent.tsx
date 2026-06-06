@@ -8,12 +8,10 @@ interface MovieComponentProps {
   children?: React.ReactNode;
 }
 
-export function MovieComponent({ movie, onClick, children }: MovieComponentProps) {
+export function MovieComponent({ movie, onClick, children }: Readonly<MovieComponentProps>) {
   return (
-    <div
+    <button
       onClick={onClick}
-      role={onClick ? "button" : undefined}
-      tabIndex={onClick ? 0 : undefined}
       onKeyDown={
         onClick
           ? (e) => {
@@ -43,7 +41,7 @@ export function MovieComponent({ movie, onClick, children }: MovieComponentProps
         >{movie.description}</p>
         {children && <div className="mt-auto pt-2">{children}</div>}
       </div>
-    </div>
+    </button>
   );
 }
 

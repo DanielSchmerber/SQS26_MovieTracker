@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Annotated, Optional
 
 import httpx
 from fastapi import APIRouter, HTTPException, Depends, Query
@@ -18,8 +18,8 @@ router = APIRouter(prefix="/api/v1/movies", tags=["movies"])
 async def search_movies(
     query: str,
     service: MovieServiceDep,
-    year: Optional[int] = Query(default=None, ge=1888),
-    page: int = Query(default=1, ge=1, le=500),
+    year: Annotated[Optional[int], Query(ge=1888)] = None,
+    page: Annotated[int, Query(ge=1, le=500)] = 1,
 ):
     try:
         return await service.search_movies(query, year, page)

@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -15,8 +17,8 @@ router = APIRouter(prefix="/api/v1/reviews", tags=["reviews"])
 @router.get("/{movie_id}", response_model=list[ReviewResponse])
 def get_reviews(
     movie_id: int,
-    db: Session = Depends(get_db),
-    review_service: ReviewService = Depends(get_review_service),
+    db: Annotated[Session, Depends(get_db)],
+    review_service: Annotated[ReviewService, Depends(get_review_service)],
 ):
     return review_service.get_reviews(db, movie_id)
 
@@ -24,8 +26,8 @@ def get_reviews(
 @router.get("/{movie_id}/rating", response_model=float)
 def get_rating(
     movie_id: int,
-    db: Session = Depends(get_db),
-    review_service: ReviewService = Depends(get_review_service),
+    db: Annotated[Session, Depends(get_db)],
+    review_service: Annotated[ReviewService, Depends(get_review_service)],
 ):
     return review_service.get_rating(db, movie_id)
 
@@ -33,10 +35,10 @@ def get_rating(
 @router.post("/", response_model=ReviewResponse, status_code=201)
 def add_review(
     data: ReviewCreateRequest,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_user),
-    review_service: ReviewService = Depends(get_review_service),
-    watchlist_service: WatchlistService = Depends(get_watchlist_service),
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(auth_user)],
+    review_service: Annotated[ReviewService, Depends(get_review_service)],
+    watchlist_service: Annotated[WatchlistService, Depends(get_watchlist_service)],
 ):
     try:
         return review_service.add_review(db, watchlist_service, current_user, data)
@@ -45,13 +47,13 @@ def add_review(
         raise HTTPException(status_code=status, detail=str(e))
 
 
-@router.put("/{review_id}", response_model=ReviewResponse)
+@router.put("/{review_id}", response_model=ReviewResponse, responses={403: {"description": "Forbidden"}, 404: {"description": "Review not found"}})
 def update_review(
     review_id: int,
     data: ReviewUpdateRequest,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_user),
-    review_service: ReviewService = Depends(get_review_service),
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(auth_user)],
+    review_service: Annotated[ReviewService, Depends(get_review_service)],
 ):
     try:
         return review_service.update_review(db, current_user, review_id, data)
@@ -61,12 +63,12 @@ def update_review(
         raise HTTPException(status_code=403, detail=str(e))
 
 
-@router.delete("/{review_id}", status_code=204)
+@router.delete("/{review_id}", status_code=204, responses={403: {"description": "Forbidden"}, 404: {"description": "Review not found"}})
 def delete_review(
     review_id: int,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_user),
-    review_service: ReviewService = Depends(get_review_service),
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(auth_user)],
+    review_service: Annotated[ReviewService, Depends(get_review_service)],
 ):
     try:
         review_service.delete_review(db, current_user, review_id)

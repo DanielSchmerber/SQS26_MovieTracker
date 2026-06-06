@@ -1,4 +1,5 @@
 import pytest
+import math
 from fastapi.testclient import TestClient
 
 from database import Base, engine, SessionLocal
@@ -90,7 +91,7 @@ async def test_get_rating_returns_average(watched_client):
     watched_client.post("/api/v1/reviews/", json={"movie_id": MOVIE_ID, "rating": 6})
     response = watched_client.get(f"/api/v1/reviews/{MOVIE_ID}/rating")
     assert response.status_code == 200
-    assert response.json() == 6.0
+    assert math.isclose(response.json(), 6.0)
 
 
 @pytest.mark.asyncio
@@ -101,7 +102,7 @@ async def test_get_rating_averages_multiple_reviews(watched_client):
         db.commit()
     response = watched_client.get(f"/api/v1/reviews/{MOVIE_ID}/rating")
     assert response.status_code == 200
-    assert response.json() == 8.0
+    assert math.isclose(response.json(), 8.0)
 
 
 # ── POST review ───────────────────────────────────────────────────────────────
