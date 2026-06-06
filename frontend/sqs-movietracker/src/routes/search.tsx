@@ -8,6 +8,10 @@ import {PaginationBar} from "#/components/Paginationbar.tsx";
 import {SearchBar} from "#/components/SearchBar.tsx";
 import { Skeleton } from "#/components/ui/skeleton.tsx";
 
+function buildMovieSkeletonKeys(count: number): string[] {
+  return Array.from({ length: count }, (_, index) => `movie-skeleton-${index + 1}`);
+}
+
 export const Route = createFileRoute("/search")({
   validateSearch: (search): { title?: string } => ({
     ...(typeof search.title === "string" && search.title ? { title: search.title } : {}),
@@ -63,8 +67,8 @@ function SearchResultsSkeleton() {
   return (
     <div className="mx-auto flex w-[70%] flex-col gap-3 py-6">
       <Skeleton className="h-5 w-32" />
-      {Array.from({ length: 6 }).map((_, i) => (
-        <MovieComponentSkeleton key={i} />
+      {buildMovieSkeletonKeys(6).map((key) => (
+        <MovieComponentSkeleton key={key} />
       ))}
     </div>
   );

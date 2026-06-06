@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi_pagination import Page, create_page, resolve_params
 from fastapi_pagination.customization import CustomizedPage, UseParamsFields
 from sqlalchemy.orm import Session
+from typing import Annotated
 
 from database import get_db
 from dependencies.auth import auth_user
@@ -21,10 +22,10 @@ WatchlistPage = CustomizedPage[
 
 @router.get("/", response_model=WatchlistPage)
 async def get_watchlist(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_user),
-    watchlist_service: WatchlistService = Depends(get_watchlist_service),
-    movie_service: MovieService = Depends(get_movie_service),
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(auth_user)],
+    watchlist_service: Annotated[WatchlistService, Depends(get_watchlist_service)],
+    movie_service: Annotated[MovieService, Depends(get_movie_service)],
 ):
     stmt = WatchlistService.get_watchlist_query(current_user)
     entries = list(db.execute(stmt).scalars())
@@ -39,10 +40,10 @@ async def get_watchlist(
 @router.post("/", response_model=WatchlistEntryResponse, status_code=201)
 async def add_to_watchlist(
     data: WatchlistAddRequest,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_user),
-    watchlist_service: WatchlistService = Depends(get_watchlist_service),
-    movie_service: MovieService = Depends(get_movie_service),
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(auth_user)],
+    watchlist_service: Annotated[WatchlistService, Depends(get_watchlist_service)],
+    movie_service: Annotated[MovieService, Depends(get_movie_service)],
 ):
     try:
         return await watchlist_service.add_to_watchlist(db, current_user, data.movie_id, movie_service)
@@ -54,19 +55,19 @@ async def add_to_watchlist(
 @router.get("/{movie_id}", response_model=bool)
 def is_in_watchlist(
     movie_id: int,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_user),
-    watchlist_service: WatchlistService = Depends(get_watchlist_service),
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(auth_user)],
+    watchlist_service: Annotated[WatchlistService, Depends(get_watchlist_service)],
 ):
     return watchlist_service.is_in_watchlist(db, current_user, movie_id)
 
 
-@router.delete("/{movie_id}", status_code=204)
+@router.delete("/{movie_id}", status_code=204, responses={404: {"description": "Movie not found in watchlist"}})
 def remove_from_watchlist(
     movie_id: int,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(auth_user),
-    watchlist_service: WatchlistService = Depends(get_watchlist_service),
+    db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[User, Depends(auth_user)],
+    watchlist_service: Annotated[WatchlistService, Depends(get_watchlist_service)],
 ):
     try:
         watchlist_service.remove_from_watchlist(db, current_user, movie_id)

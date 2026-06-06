@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends, Response, Request
 from sqlalchemy.orm import Session
 
+from typing import Annotated
+
 from database import get_db
 from dependencies.services import get_token_service, get_user_service
 from models.schemas.user_schemas import UserRegisterRequest, UserLoginRequest, UserResponse
@@ -23,8 +25,8 @@ router = APIRouter(prefix="/api/v1/users", tags=["users"])
 )
 def register(
     data: UserRegisterRequest,
-    service: UserService = Depends(get_user_service),
-    db: Session = Depends(get_db),
+    service: Annotated[UserService, Depends(get_user_service)],
+    db: Annotated[Session, Depends(get_db)],
 ):
 
     print("Registering user")
@@ -46,9 +48,9 @@ def register(
 def login(
     response: Response,
     data: UserLoginRequest,
-    user_service: UserService = Depends(get_user_service),
-    token_service: TokenService = Depends(get_token_service),
-    db: Session = Depends(get_db),
+    user_service: Annotated[UserService, Depends(get_user_service)],
+    token_service: Annotated[TokenService, Depends(get_token_service)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     try:
         user = user_service.login(db, data.username, data.password)
@@ -73,5 +75,5 @@ def logout(response: Response):
     return {"message": "Logged out"}
 
 @router.get("/me", response_model=UserResponse)
-def get_me(current_user: UserResponse = Depends(auth_user)):
+def get_me(current_user: Annotated[UserResponse, Depends(auth_user)]):
     return current_user

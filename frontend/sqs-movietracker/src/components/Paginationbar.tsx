@@ -18,9 +18,17 @@ interface PaginationProps {
 
 const ELLIPSIS = "ellipsis";
 
+interface EllipsisPage {
+    type: typeof ELLIPSIS;
+    key: string;
+}
+
+type PageRangeItem = number | EllipsisPage;
+
 /**
- * Builds a compact list of page numbers with `ellipsis` placeholders, e.g.
- * `[1, "ellipsis", 4, 5, 6, "ellipsis", 20]`. The first and last pages are
+ * Builds a compact list of page numbers with unique ellipsis placeholders, e.g.
+ * `[1, { type: "ellipsis", key: "ellipsis-before-4" }, 4, 5, 6, ...]`.
+ * The first and last pages are
  * always shown, plus a window of `pageRange` pages on each side of the
  * current page. Adjacent gaps collapse into a single page rather than an
  * ellipsis, so the row never grows unbounded.
@@ -29,15 +37,15 @@ function buildPageRange(
     currentPage: number,
     totalPages: number,
     pageRange: number,
-): Array<number | typeof ELLIPSIS> {
+): PageRangeItem[] {
     const start = Math.max(2, currentPage - pageRange);
     const end = Math.min(totalPages - 1, currentPage + pageRange);
 
-    const pages: Array<number | typeof ELLIPSIS> = [1];
+    const pages: PageRangeItem[] = [1];
 
     // A gap of exactly one page (e.g. page 2) is shown as the page itself.
     if (start > 3) {
-        pages.push(ELLIPSIS);
+        pages.push({ type: ELLIPSIS, key: `ellipsis-before-${start}` });
     } else if (start === 3) {
         pages.push(2);
     }
@@ -47,7 +55,7 @@ function buildPageRange(
     }
 
     if (end < totalPages - 2) {
-        pages.push(ELLIPSIS);
+        pages.push({ type: ELLIPSIS, key: `ellipsis-after-${end}` });
     } else if (end === totalPages - 2) {
         pages.push(totalPages - 1);
     }
@@ -62,7 +70,7 @@ export function PaginationBar({
     totalPages,
     setPage,
     pageRange = 1,
-}: PaginationProps) {
+}: Readonly<PaginationProps>) {
     if (totalPages <= 1) {
         return null;
     }
@@ -87,12 +95,8 @@ export function PaginationBar({
                     />
                 </PaginationItem>
 
-                {pages.map((page, index) =>
-                    page === ELLIPSIS ? (
-                        <PaginationItem key={`ellipsis-${index}`}>
-                            <PaginationEllipsis />
-                        </PaginationItem>
-                    ) : (
+                {pages.map((page) =>
+                    typeof page === "number" ? (
                         <PaginationItem key={page}>
                             <PaginationLink
                                 href="#"
@@ -104,6 +108,10 @@ export function PaginationBar({
                             >
                                 {page}
                             </PaginationLink>
+                        </PaginationItem>
+                    ) : (
+                        <PaginationItem key={page.key}>
+                            <PaginationEllipsis />
                         </PaginationItem>
                     ),
                 )}

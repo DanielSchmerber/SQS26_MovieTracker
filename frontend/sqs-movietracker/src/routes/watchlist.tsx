@@ -13,6 +13,10 @@ export const Route = createFileRoute("/watchlist")({
   component: WatchlistPage,
 });
 
+function buildMovieSkeletonKeys(count: number): string[] {
+  return Array.from({ length: count }, (_, index) => `movie-skeleton-${index + 1}`);
+}
+
 function WatchlistPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -56,8 +60,8 @@ function WatchlistPage() {
 
       {isLoading && (
         <div className="mt-6 flex flex-col gap-3">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <MovieComponentSkeleton key={i} />
+          {buildMovieSkeletonKeys(4).map((key) => (
+            <MovieComponentSkeleton key={key} />
           ))}
         </div>
       )}
@@ -77,7 +81,7 @@ function WatchlistPage() {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  removeMutation.mutate(parseInt(entry.movie.id));
+                  removeMutation.mutate(Number.parseInt(entry.movie.id));
                 }}
                 className="text-muted-foreground hover:text-destructive transition-colors"
               >
