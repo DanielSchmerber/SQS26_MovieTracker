@@ -8,6 +8,7 @@ from environment import JWT_SECRET, JWT_ALGORITHM, JWT_EXPIRY_MINUTES
 class TokenService:
 
     def create_access_token(self, user_id: int) -> str:
+        """Creates a JWT access token for the given user_id."""
         payload = {
             "sub": str(user_id),
             "iat": datetime.now(timezone.utc),
