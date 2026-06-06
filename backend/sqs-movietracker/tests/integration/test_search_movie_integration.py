@@ -50,9 +50,7 @@ async def test_get_movie_robustness(mock_get, example_movie, client):
         Exception("timeout"),
         example_movie,
     ]
-    response = client.get("/movie/1")
-
-    assert response.status_code == 200
+    response = client.get("/api/v1/movies/1")
 
     assert response.status_code == 200
     assert mock_get.call_count == 3
