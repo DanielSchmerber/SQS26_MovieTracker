@@ -1,0 +1,10 @@
+# 8 - Crosscutting Concepts
+
+## 8.1 Domain Terminology
+
+
+| Term | Definition | 
+|----|--------------|
+| Single Page Application (SPA) | A web application implementation that consists of loading a single HTML page and dynamically updating its content via JavaScript as the user interacts with it |
+|<terms>| -|
+
