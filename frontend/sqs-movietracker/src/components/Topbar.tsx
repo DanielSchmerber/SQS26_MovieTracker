@@ -5,6 +5,12 @@ import { useAuth } from "#/features/auth/auth.context.tsx";
 
 type Theme = "light" | "dark" | "system";
 
+interface ThemeButtonProps {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+}
+
 export function TopNav() {
   const [theme, setTheme] = useState<Theme>("system");
   const { user, logout } = useAuth();
@@ -17,7 +23,7 @@ export function TopNav() {
       root.classList.remove("light", "dark");
 
       if (mode === "system") {
-        const isDark = window.matchMedia(
+        const isDark = globalThis.matchMedia(
           "(prefers-color-scheme: dark)"
         ).matches;
 
@@ -124,11 +130,7 @@ function ThemeButton({
   active,
   onClick,
   icon,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-}) {
+}: Readonly<ThemeButtonProps>) {
   return (
     <button
       onClick={onClick}
