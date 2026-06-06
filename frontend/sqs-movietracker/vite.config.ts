@@ -14,7 +14,7 @@ const config = defineConfig({
     nitro({
       rollupConfig: { external: [/^@sentry\//] },
       routeRules: {
-        '/api/**': { proxy: 'http://127.0.0.1:8000/api/v1/**' },
+        '/api/**': { proxy: 'http://127.0.0.1:8000/api/**' },
       },
     }),
     tailwindcss(),

@@ -1,7 +1,7 @@
 import type { User } from "#/features/auth/auth.model.ts";
 
 export const loginUser = async (username: string, password: string): Promise<User> => {
-    const response = await fetch("/api/users/login", {
+    const response = await fetch("/api/v1/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -17,7 +17,7 @@ export const loginUser = async (username: string, password: string): Promise<Use
 };
 
 export const registerUser = async (username: string, email: string, password: string): Promise<User> => {
-    const response = await fetch("/api/users/register", {
+    const response = await fetch("/api/v1/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -33,14 +33,14 @@ export const registerUser = async (username: string, email: string, password: st
 };
 
 export const logoutUser = async (): Promise<void> => {
-    await fetch("/api/users/logout", {
+    await fetch("/api/v1/users/logout", {
         method: "POST",
         credentials: "include",
     });
 };
 
 export const getMe = async (): Promise<User | null> => {
-    const response = await fetch("/api/users/me", {
+    const response = await fetch("/api/v1/users/me", {
         credentials: "include",
     });
 
