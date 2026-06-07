@@ -60,9 +60,9 @@ async def test_get_movie_robustness(mock_get, example_movie, client):
 async def test_get_movie_cache(mock_get, example_movie, client):
     mock_get.return_value = example_movie
     responses = [
-        client.get("/api/v1/movies/movie/1"),
-        client.get("/api/v1/movies/movie/1"),
-        client.get("/api/v1/movies/movie/1"),
+        client.get("/api/v1/movies/1"),
+        client.get("/api/v1/movies/1"),
+        client.get("/api/v1/movies/1"),
     ]
 
     assert all(response.status_code == 200 for response in responses)
