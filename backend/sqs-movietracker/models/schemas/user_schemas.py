@@ -5,7 +5,7 @@ USERNAME_REGEX = r"^[a-zA-Z0-9_]+$"
 
 class UserRegisterRequest(BaseModel):
     username: str = Field(
-        min_length=3,
+        min_length=2,
         max_length=20,
         pattern=USERNAME_REGEX,
     )
@@ -22,7 +22,7 @@ class UserRegisterRequest(BaseModel):
 
 class UserLoginRequest(BaseModel):
     username: str = Field(
-        min_length=3,
+        min_length=2,
         max_length=20,
         pattern=USERNAME_REGEX,
     )
