@@ -52,6 +52,11 @@ def test_register(client):
     assert data["username"] == USERNAME
     assert data["email"] == EMAIL
     assert "password" not in data
+    assert "access_token" in client.cookies
+
+    me_response = client.get("/api/v1/users/me")
+    assert me_response.status_code == 200
+    assert me_response.json()["username"] == USERNAME
 
 
 def test_two_character_username_can_register_and_login(client):

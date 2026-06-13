@@ -374,6 +374,10 @@ markupsafe==3.0.3 \
     #   jinja2
     #   mako
     #   werkzeug
+networkx==3.6.1 \
+    --hash=sha256:26b7c357accc0c8cde558ad486283728b65b6a95d85ee1cd66bafab4c8168509 \
+    --hash=sha256:d47fbf302e7d9cbbb9e2555a0d267983d2aa476bac30e90dfbe5669bd57f3762
+    # via pytestarch
 packaging==26.2 \
     --hash=sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e \
     --hash=sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661
@@ -651,6 +655,10 @@ pytest-asyncio==1.3.0 \
 pytest-mock==3.15.1 \
     --hash=sha256:0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d \
     --hash=sha256:1849a238f6f396da19762269de72cb1814ab44416fa73a8686deac10b0d87a0f
+    # via -r requirements.in
+pytestarch==4.0.1 \
+    --hash=sha256:2f288eb8a8a818d3d89a45180d1756c4db2885a7a1281c4ac019665ed97db6b9 \
+    --hash=sha256:4dd5adc363b3e1fde72d4b34564f03e62f715cc5e38f1c3a347b0f1cc92168fe
     # via -r requirements.in
 python-dateutil==2.9.0.post0 \
     --hash=sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3 \
