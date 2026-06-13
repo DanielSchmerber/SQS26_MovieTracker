@@ -19,9 +19,6 @@ services:
     restart: unless-stopped
 
   frontend:
-    build:
-      context: ./frontend/sqs-movietracker
-      dockerfile: Dockerfile
     container_name: frontend
     environment:
       - NODE_ENV=production
@@ -48,14 +45,12 @@ services:
     restart: unless-stopped
 
   backend:
-    build:
-      context: ./backend/sqs-movietracker
-      dockerfile: Dockerfile
     container_name: backend
     environment:
       - PORT=8000
     env_file:
-      - .env
+      - path: .env
+        required: false
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend-http.rule=Host(`localhost`) && PathPrefix(`/api`)"
