@@ -1,0 +1,12 @@
+services:
+  frontend:
+    build:
+      context: ./frontend/sqs-movietracker
+      dockerfile: Dockerfile
+    image: sqs26-movietracker-frontend:dev
+
+  backend:
+    build:
+      context: ./backend/sqs-movietracker
+      dockerfile: Dockerfile
+    image: sqs26-movietracker-backend:dev

@@ -1,0 +1,6 @@
+services:
+  frontend:
+    image: ghcr.io/danielschmerber/sqs26_movietracker/frontend:latest
+
+  backend:
+    image: ghcr.io/danielschmerber/sqs26_movietracker/backend:latest
