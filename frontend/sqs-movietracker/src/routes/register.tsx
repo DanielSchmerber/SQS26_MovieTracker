@@ -33,7 +33,7 @@ function RegisterPage() {
 
   async function onSubmit(values: RegisterFormValues) {
     try {
-      const user = await registerUser(values.username, values.email, values.password);
+      const user = await registerUser(values.username, values.email, values.password, values.confirmPassword);
       login(user);
       await navigate({ to: "/" });
     } catch (err) {
