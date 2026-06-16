@@ -12,6 +12,7 @@ Das Projekt besteht aus:
 - Docker Compose für den Entwicklungs- und Produktivbetrieb.
 
 ## Schnellstart
+Alle in diesem Readme beschreibenen Befehle sind auf einem Bash terminal auszuführen.
 
 ### Voraussetzungen
 
