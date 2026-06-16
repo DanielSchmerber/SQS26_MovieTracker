@@ -88,11 +88,18 @@ jobs:
       - name: Lint
         run: npx eslint src
 
-      - name: Run unit tests
-        run: npm test -- --passWithNoTests
+      - name: Run unit tests with coverage
+        run: npm run test:coverage
 
       - name: Build
         run: npm run build
+
+      - name: Upload frontend coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: frontend/sqs-movietracker/coverage/lcov.info
+          if-no-files-found: error
 
   sonar:
     name: SonarQube analysis
@@ -112,6 +119,12 @@ jobs:
         with:
           name: backend-coverage
           path: backend/sqs-movietracker
+
+      - name: Download frontend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage
+          path: frontend/sqs-movietracker/coverage
 
       - name: Analyze with SonarQube
         uses: SonarSource/sonarqube-scan-action@v7
