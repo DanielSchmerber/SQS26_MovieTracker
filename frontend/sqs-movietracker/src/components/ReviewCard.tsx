@@ -17,7 +17,7 @@ export function ReviewCardSkeleton() {
     );
 }
 
-export function ReviewCard({ review }: { review: Readonly<ReviewEntry> }) {
+export function ReviewCard({ review }: Readonly<{ review: ReviewEntry }>) {
     return (
         <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">

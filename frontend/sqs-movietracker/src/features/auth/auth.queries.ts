@@ -16,12 +16,12 @@ export const loginUser = async (username: string, password: string): Promise<Use
     return response.json();
 };
 
-export const registerUser = async (username: string, email: string, password: string): Promise<User> => {
+export const registerUser = async (username: string, email: string, password: string, confirm_password: string): Promise<User> => {
     const response = await fetch("/api/v1/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, confirm_password }),
     });
 
     if (!response.ok) {
