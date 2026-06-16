@@ -23,5 +23,5 @@ class TokenService:
             return int(payload["sub"])
         except jwt.ExpiredSignatureError:
             raise ValueError("Token has expired")
-        except jwt.InvalidTokenError:
+        except (KeyError, TypeError, ValueError, jwt.InvalidTokenError):
             raise ValueError("Invalid token")
