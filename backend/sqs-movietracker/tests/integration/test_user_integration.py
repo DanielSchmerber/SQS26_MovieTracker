@@ -1,8 +1,12 @@
+from datetime import datetime, timedelta, timezone
+
+import jwt
 import pytest
 from fastapi.testclient import TestClient
 
 from database import Base, engine, SessionLocal
 from dependencies.auth import auth_user
+from environment import JWT_ALGORITHM, JWT_SECRET
 from main import app
 from models import User
 
@@ -75,6 +79,20 @@ def test_login(registered_client):
     assert "access_token" in registered_client.cookies
 
 
+def test_login_sets_hardened_access_token_cookie(registered_client):
+    response = registered_client.post(
+        "/api/v1/users/login",
+        json={"username": USERNAME, "password": PASSWORD},
+    )
+
+    assert response.status_code == 200
+    cookie = response.headers["set-cookie"].lower()
+    assert "access_token=" in cookie
+    assert "httponly" in cookie
+    assert "secure" in cookie
+    assert "samesite=strict" in cookie
+
+
 def test_login_wrong_password_returns_401(registered_client):
     response = registered_client.post(
         "/api/v1/users/login",
@@ -119,3 +137,72 @@ def test_get_me_returns_current_user(registered_client):
 def test_get_me_unauthenticated_returns_401(client):
     response = client.get("/api/v1/users/me")
     assert response.status_code == 401
+
+
+def test_get_me_ignores_bearer_token_without_auth_cookie(client):
+    response = client.get(
+        "/api/v1/users/me",
+        headers={"Authorization": "Bearer attacker-controlled-token"},
+    )
+
+    assert response.status_code == 401
+    assert response.json()["detail"] == "Not authenticated"
+
+
+@pytest.mark.parametrize(
+    "token",
+    [
+        "not-a-jwt",
+        jwt.encode(
+            {
+                "sub": "99",
+                "iat": datetime.now(timezone.utc),
+                "exp": datetime.now(timezone.utc) + timedelta(minutes=5),
+            },
+            "wrong-secret",
+            algorithm=JWT_ALGORITHM,
+        ),
+        jwt.encode(
+            {
+                "sub": "99",
+                "iat": datetime.now(timezone.utc) - timedelta(hours=2),
+                "exp": datetime.now(timezone.utc) - timedelta(minutes=1),
+            },
+            JWT_SECRET,
+            algorithm=JWT_ALGORITHM,
+        ),
+        jwt.encode(
+            {
+                "sub": "not-an-integer",
+                "iat": datetime.now(timezone.utc),
+                "exp": datetime.now(timezone.utc) + timedelta(minutes=5),
+            },
+            JWT_SECRET,
+            algorithm=JWT_ALGORITHM,
+        ),
+    ],
+)
+def test_get_me_rejects_invalid_auth_cookies(client, token):
+    client.cookies.set("access_token", token)
+
+    response = client.get("/api/v1/users/me")
+
+    assert response.status_code == 401
+
+
+def test_get_me_rejects_valid_token_for_unknown_user(client):
+    token = jwt.encode(
+        {
+            "sub": "999999",
+            "iat": datetime.now(timezone.utc),
+            "exp": datetime.now(timezone.utc) + timedelta(minutes=5),
+        },
+        JWT_SECRET,
+        algorithm=JWT_ALGORITHM,
+    )
+    client.cookies.set("access_token", token)
+
+    response = client.get("/api/v1/users/me")
+
+    assert response.status_code == 401
+    assert response.json()["detail"] == "User not found"
