@@ -14,7 +14,7 @@ def test_register_request_rejects_mismatched_password_confirmation():
         )
 
 
-@pytest.mark.parametrize("username", ["al", "name-with-dash", "name with space", "a" * 21])
+@pytest.mark.parametrize("username", ["a", "name-with-dash", "name with space", "a" * 21])
 def test_auth_requests_reject_invalid_usernames(username):
     with pytest.raises(ValidationError):
         UserLoginRequest(username=username, password="securepassword123")

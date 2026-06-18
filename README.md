@@ -98,7 +98,7 @@ werden.
 Backend-Tests werden aus demselben Verzeichnis ausgeführt:
 
 ```bash
-pytest
+python -m pytest tests
 ```
 
 ### Frontend

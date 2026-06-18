@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { useAuth } from "#/features/auth/auth.context.tsx";
 import { addReview, fetchReviews } from "#/features/reviews/review.queries.ts";
+import { isInWatchlist } from "#/features/watchlist/watchlist.queries.ts";
 import { toast } from "sonner";
 import { ReviewSection } from "./ReviewSection";
 
@@ -14,6 +15,10 @@ vi.mock("#/features/auth/auth.context.tsx", () => ({
 vi.mock("#/features/reviews/review.queries.ts", () => ({
     addReview: vi.fn(),
     fetchReviews: vi.fn(),
+}));
+
+vi.mock("#/features/watchlist/watchlist.queries.ts", () => ({
+    isInWatchlist: vi.fn(),
 }));
 
 vi.mock("sonner", () => ({
@@ -76,6 +81,7 @@ describe("ReviewSection", () => {
     it("submits a new review for authenticated users", async () => {
         vi.mocked(useAuth).mockReturnValue({ user, ...authActions });
         vi.mocked(fetchReviews).mockResolvedValue([]);
+        vi.mocked(isInWatchlist).mockResolvedValue(true);
         vi.mocked(addReview).mockResolvedValue({
             id: 3,
             user_id: 1,
