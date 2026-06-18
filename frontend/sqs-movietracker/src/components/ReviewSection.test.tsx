@@ -24,6 +24,7 @@ vi.mock("sonner", () => ({
 }));
 
 const user = { id: 1, username: "movieFan", email: "fan@example.com" };
+const authActions = { login: vi.fn(), logout: vi.fn() };
 
 function renderWithClient(ui: React.ReactElement) {
     const queryClient = new QueryClient({
@@ -43,11 +44,11 @@ function renderWithClient(ui: React.ReactElement) {
 describe("ReviewSection", () => {
     afterEach(() => {
         cleanup();
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it("renders only reviews that have comments", async () => {
-        vi.mocked(useAuth).mockReturnValue({ user: null, login: vi.fn(), logout: vi.fn() });
+        vi.mocked(useAuth).mockReturnValue({ user: null, ...authActions });
         vi.mocked(fetchReviews).mockResolvedValue([
             { id: 1, user_id: 1, username: "Ada", movie_id: 5, rating: 9, comment: "Sharp and beautiful." },
             { id: 2, user_id: 2, username: "Ben", movie_id: 5, rating: 8, comment: null },
@@ -62,7 +63,7 @@ describe("ReviewSection", () => {
     });
 
     it("shows an empty state when there are no written comments", async () => {
-        vi.mocked(useAuth).mockReturnValue({ user: null, login: vi.fn(), logout: vi.fn() });
+        vi.mocked(useAuth).mockReturnValue({ user: null, ...authActions });
         vi.mocked(fetchReviews).mockResolvedValue([
             { id: 1, user_id: 1, username: "Ada", movie_id: 5, rating: 9, comment: null },
         ]);
@@ -73,7 +74,7 @@ describe("ReviewSection", () => {
     });
 
     it("submits a new review for authenticated users", async () => {
-        vi.mocked(useAuth).mockReturnValue({ user, login: vi.fn(), logout: vi.fn() });
+        vi.mocked(useAuth).mockReturnValue({ user, ...authActions });
         vi.mocked(fetchReviews).mockResolvedValue([]);
         vi.mocked(addReview).mockResolvedValue({
             id: 3,
@@ -86,7 +87,8 @@ describe("ReviewSection", () => {
 
         renderWithClient(<ReviewSection movieId={5} />);
 
-        fireEvent.click(await screen.findByRole("button", { name: "Write a review" }));
+        expect(await screen.findByRole("button", { name: "Write a review" })).toBeTruthy();
+        fireEvent.click(screen.getByRole("button", { name: "Write a review" }));
         fireEvent.click(screen.getByRole("button", { name: "8" }));
         fireEvent.change(screen.getByPlaceholderText("What did you think?"), {
             target: { value: "Loved the pacing." },
