@@ -13,6 +13,8 @@ from models import User
 USERNAME = "integrationuser"
 EMAIL = "integration@test.com"
 PASSWORD = "securepassword123"
+SHORT_USERNAME = "ab"
+SHORT_EMAIL = "short@test.com"
 
 REGISTER_PAYLOAD = {
     "username": USERNAME,
@@ -27,7 +29,9 @@ def clean_db():
     Base.metadata.create_all(bind=engine)
     yield
     with SessionLocal() as db:
-        db.query(User).filter(User.username == USERNAME).delete()
+        db.query(User).filter(User.username.in_([USERNAME, SHORT_USERNAME])).delete(
+            synchronize_session=False
+        )
         db.commit()
 
 
@@ -52,6 +56,27 @@ def test_register(client):
     assert data["username"] == USERNAME
     assert data["email"] == EMAIL
     assert "password" not in data
+    assert "access_token" in client.cookies
+
+    me_response = client.get("/api/v1/users/me")
+    assert me_response.status_code == 200
+    assert me_response.json()["username"] == USERNAME
+
+
+def test_two_character_username_can_register_and_login(client):
+    payload = {
+        **REGISTER_PAYLOAD,
+        "username": SHORT_USERNAME,
+        "email": SHORT_EMAIL,
+    }
+    register_response = client.post("/api/v1/users/register", json=payload)
+    assert register_response.status_code == 201
+
+    login_response = client.post(
+        "/api/v1/users/login",
+        json={"username": SHORT_USERNAME, "password": PASSWORD},
+    )
+    assert login_response.status_code == 200
 
 
 def test_register_duplicate_username_returns_409(registered_client):

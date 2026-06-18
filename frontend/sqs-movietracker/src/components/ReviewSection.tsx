@@ -19,6 +19,7 @@ import {
 } from "#/components/ui/dialog.tsx";
 import { Button } from "#/components/ui/button.tsx";
 import { Label } from "#/components/ui/label.tsx";
+import { isInWatchlist } from '#/features/watchlist/watchlist.queries.ts'
 
 const FLAVOR: Record<number, string> = {
     1:  "Unwatchable",
@@ -58,6 +59,13 @@ interface ReviewSectionProps {
 
 export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
     const { user } = useAuth();
+
+    const { data: watched } = useQuery({
+      queryKey: ["watchlist", movieId],
+      queryFn: () => isInWatchlist(movieId),
+      enabled: !!user,
+    });
+
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
 
@@ -118,14 +126,16 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
         reviewsContent = <p className="text-sm text-muted-foreground">No reviews yet.</p>;
     }
 
+
     return (
         <section className="flex flex-col gap-4 pt-4">
             <div className="flex items-center justify-between border-b border-border pb-2">
                 <h2 className="text-lg font-bold">Reviews</h2>
                 {user && (
+                    !watched ? <Button size="sm" variant="outline" disabled={true}>Add to watchlist to review</Button>:
                     <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset({ movie_id: movieId }); }}>
                         <DialogTrigger asChild>
-                            <Button size="sm" variant="outline">Write a review</Button>
+                          <Button size="sm" variant="outline">Write a review</Button>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>

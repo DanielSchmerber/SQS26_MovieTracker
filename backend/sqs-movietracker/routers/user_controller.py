@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Response, Request
+from fastapi import APIRouter, HTTPException, Depends, Response
 from sqlalchemy.orm import Session
 
 from typing import Annotated
@@ -15,6 +15,22 @@ from environment import JWT_EXPIRY_MINUTES
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
 
 
+def set_access_token_cookie(
+    response: Response,
+    token_service: TokenService,
+    user_id: int,
+) -> None:
+    access_token = token_service.create_access_token(user_id)
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=True,
+        samesite="strict",
+        max_age=JWT_EXPIRY_MINUTES * 60,
+    )
+
+
 @router.post(
     "/register",
     response_model=UserResponse,
@@ -24,15 +40,15 @@ router = APIRouter(prefix="/api/v1/users", tags=["users"])
     },
 )
 def register(
+    response: Response,
     data: UserRegisterRequest,
     service: Annotated[UserService, Depends(get_user_service)],
+    token_service: Annotated[TokenService, Depends(get_token_service)],
     db: Annotated[Session, Depends(get_db)],
 ):
-
-    print("Registering user")
-
     try:
         user = service.register(db, data)
+        set_access_token_cookie(response, token_service, user.id)
         return user
     except ValueError as e:
         raise HTTPException(status_code=409, detail=str(e))
@@ -54,16 +70,7 @@ def login(
 ):
     try:
         user = user_service.login(db, data.username, data.password)
-        access_token = token_service.create_access_token(user.id)
-        response.set_cookie(
-            key="access_token",
-            value=access_token,
-            httponly=True,
-            secure=True,
-            samesite="strict",
-            max_age=JWT_EXPIRY_MINUTES * 60,
-        )
-
+        set_access_token_cookie(response, token_service, user.id)
         return user
     
     except ValueError as e:
