@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, model_validator
 
 USERNAME_REGEX = r"^[a-zA-Z0-9_]+$"
 
@@ -18,6 +18,12 @@ class UserRegisterRequest(BaseModel):
         min_length=8,
         max_length=128,
     )
+
+    @model_validator(mode="after")
+    def passwords_match(self):
+        if self.password != self.confirm_password:
+            raise ValueError("Passwords do not match")
+        return self
 
 
 class UserLoginRequest(BaseModel):

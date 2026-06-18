@@ -132,70 +132,73 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
             <div className="flex items-center justify-between border-b border-border pb-2">
                 <h2 className="text-lg font-bold">Reviews</h2>
                 {user && (
-                    !watched ? <Button size="sm" variant="outline" disabled={true}>Add to watchlist to review</Button>:
-                    <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset({ movie_id: movieId }); }}>
-                        <DialogTrigger asChild>
-                          <Button size="sm" variant="outline">Write a review</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Rate this movie</DialogTitle>
-                            </DialogHeader>
-                            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-                                <div className="flex flex-col gap-2">
-                                    <Label>Rating</Label>
-                                    <div className="flex gap-1.5 flex-wrap">
-                                        {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                                            <button
-                                                key={n}
-                                                type="button"
-                                                onClick={() => setValue("rating", n, { shouldValidate: true })}
-                                                className={`h-8 w-8 rounded text-sm font-semibold transition ${selectedButtonClass(n, selectedRating === n)}`}
-                                            >
-                                                {n}
-                                            </button>
-                                        ))}
-                                    </div>
-                                    {selectedRating >= 1 && (
-                                        <p className={`text-sm ${flavorClass(selectedRating)}`}>
-                                            {selectedRatingIcon}
-                                            {FLAVOR[selectedRating]}
-                                        </p>
-                                    )}
-                                    {errors.rating && (
-                                        <p className="text-sm text-destructive">{errors.rating.message}</p>
-                                    )}
-                                </div>
+                    watched ?
+                    (
+                      <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset({ movie_id: movieId }); }}>
+                          <DialogTrigger asChild>
+                            <Button size="sm" variant="outline">Write a review</Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                              <DialogHeader>
+                                  <DialogTitle>Rate this movie</DialogTitle>
+                              </DialogHeader>
+                              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                                  <div className="flex flex-col gap-2">
+                                      <Label>Rating</Label>
+                                      <div className="flex gap-1.5 flex-wrap">
+                                          {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                                              <button
+                                                  key={n}
+                                                  type="button"
+                                                  onClick={() => setValue("rating", n, { shouldValidate: true })}
+                                                  className={`h-8 w-8 rounded text-sm font-semibold transition ${selectedButtonClass(n, selectedRating === n)}`}
+                                              >
+                                                  {n}
+                                              </button>
+                                          ))}
+                                      </div>
+                                      {selectedRating >= 1 && (
+                                          <p className={`text-sm ${flavorClass(selectedRating)}`}>
+                                              {selectedRatingIcon}
+                                              {FLAVOR[selectedRating]}
+                                          </p>
+                                      )}
+                                      {errors.rating && (
+                                          <p className="text-sm text-destructive">{errors.rating.message}</p>
+                                      )}
+                                  </div>
 
-                                <div className="flex flex-col gap-2">
-                                    <Label htmlFor="comment">
-                                        Comment{" "}
-                                        <span className="text-muted-foreground font-normal">(optional)</span>
-                                    </Label>
-                                    <textarea
-                                        id="comment"
-                                        rows={4}
-                                        placeholder="What did you think?"
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
-                                        {...register("comment")}
-                                    />
-                                    {errors.comment && (
-                                        <p className="text-sm text-destructive">{errors.comment.message}</p>
-                                    )}
-                                </div>
+                                  <div className="flex flex-col gap-2">
+                                      <Label htmlFor="comment">
+                                          Comment{" "}
+                                          <span className="text-muted-foreground font-normal">(optional)</span>
+                                      </Label>
+                                      <textarea
+                                          id="comment"
+                                          rows={4}
+                                          placeholder="What did you think?"
+                                          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
+                                          {...register("comment")}
+                                      />
+                                      {errors.comment && (
+                                          <p className="text-sm text-destructive">{errors.comment.message}</p>
+                                      )}
+                                  </div>
 
-                                {errors.root && (
-                                    <p className="text-sm text-destructive">{errors.root.message}</p>
-                                )}
+                                  {errors.root && (
+                                      <p className="text-sm text-destructive">{errors.root.message}</p>
+                                  )}
 
-                                <DialogFooter showCloseButton>
-                                    <Button type="submit" disabled={mutation.isPending}>
-                                        {mutation.isPending ? "Submitting…" : "Submit"}
-                                    </Button>
-                                </DialogFooter>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
+                                  <DialogFooter showCloseButton>
+                                      <Button type="submit" disabled={mutation.isPending}>
+                                          {mutation.isPending ? "Submitting…" : "Submit"}
+                                      </Button>
+                                  </DialogFooter>
+                              </form>
+                          </DialogContent>
+                      </Dialog>
+                    ) :
+                    <Button size="sm" variant="outline" disabled={true}>Add to watchlist to review</Button>
                 )}
             </div>
 
