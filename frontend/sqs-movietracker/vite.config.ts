@@ -39,7 +39,7 @@ const config = defineConfig(({ mode }) => {
           'src/client/axios.ts',
           'src/components/ui/**',
           'src/features/**/*.model.ts',
-          'src/integrations/**',
+          'src/integrations/tanstack-query/**',
           'src/**/*.d.ts',
         ],
       },
