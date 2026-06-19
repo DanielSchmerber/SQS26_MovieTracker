@@ -34,34 +34,30 @@ The runtime configuration is loaded from a .env file located in the project's ro
 
 ## 7.4 Network Topology
 
-                                                  Internet / User
+                    ┌──────────────────────┐
+                    │        User          │
+                    │      Browser         │
+                    └──────────┬───────────┘
+                               │
+                         HTTPS :443
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │       Traefik        │
+                    │   Reverse Proxy      │
+                    │ TLS Termination      │
+                    └──────────┬───────────┘
+                               │
+                     Docker Network: proxy
+                               │
+           ┌───────────────────┴───────────────────┐
+           │                                       │
+           │ Host(localhost)                       │ Host(localhost)
+           │ Path=/                                │ Path=/api
+           ▼                                       ▼
 
-                     ┌──────────────────────┐
-                     │       Browser        │
-                     │   Chrome / Firefox   │
-                     └──────────┬───────────┘
-                                │
-                    HTTPS :80   │    HTTPS :443
-                                │
-                                ▼
-
-                     ┌──────────────────────┐
-                     │       Traefik        │
-                     │    Reverse Proxy     │
-                     │   TLS Termination    │
-                     │   Dashboard :8080    │
-                     └──────────┬───────────┘
-                                │
-                                │
-                    Docker Network: proxy
-                                │
-           ┌────────────────────┴────────────────────┐
-           │                                         │
-           ▼                                         ▼
-
- ┌─────────────────────┐               ┌─────────────────────┐
- │      Frontend       │               │       Backend       │
- │ React + TanStack    │               │       FastAPI       │
- │      Port 3000      │               │      Port 8000      │
- └─────────────────────┘               └─────────────────────┘
-
+   ┌─────────────────────┐          ┌─────────────────────┐
+   │      Frontend       │          │       Backend       │
+   │   React + TanStack  │          │       FastAPI       │
+   │      Port 3000      │          │      Port 8000      │
+   └─────────────────────┘          └─────────────────────┘
