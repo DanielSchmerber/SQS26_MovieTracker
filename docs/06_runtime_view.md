@@ -1,12 +1,16 @@
 # 6 - Runtime View
 
-## Add movie to a Watchlist
+## 1. Scenario:  Add movie to a Watchlist
 
 
 ![Runtime diagram](diagrams/sequence_diagram_add_movie_to_watchlist.png)
 
 
+## 2. Scenario:  Delete movie from Watchlist
 
-## View movie detail
+![Runtime diagram delete](diagrams/sequence_diagram_delete_movie_to_watchlist.png)
+
+
+## 3. Scenario:  View movie detail
 
 ![Runtime diagram movie detail](diagrams/sequence_diagram_view_movie_detail.png)
