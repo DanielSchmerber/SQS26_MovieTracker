@@ -34,30 +34,5 @@ The runtime configuration is loaded from a .env file located in the project's ro
 
 ## 7.4 Network Topology
 
-                    ┌──────────────────────┐
-                    │        User          │
-                    │      Browser         │
-                    └──────────┬───────────┘
-                               │
-                         HTTPS :443
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │       Traefik        │
-                    │   Reverse Proxy      │
-                    │ TLS Termination      │
-                    └──────────┬───────────┘
-                               │
-                     Docker Network: proxy
-                               │
-           ┌───────────────────┴───────────────────┐
-           │                                       │
-           │ Host(localhost)                       │ Host(localhost)
-           │ Path=/                                │ Path=/api
-           ▼                                       ▼
+![alt text](diagrams/network_topology.png)
 
-   ┌─────────────────────┐          ┌─────────────────────┐
-   │      Frontend       │          │       Backend       │
-   │   React + TanStack  │          │       FastAPI       │
-   │      Port 3000      │          │      Port 8000      │
-   └─────────────────────┘          └─────────────────────┘
