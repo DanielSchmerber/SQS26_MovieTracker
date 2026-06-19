@@ -16,8 +16,7 @@
 
 ## 5.2.1 Router Layer
 
-| Router                      | Prefix              | Purpose                                                                                                                                                                                                                  |
-| --------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Router                      | Prefix              | Purpose  |                                                                                                                                                               |----|----|----|
 | **movie_controller.py**     | `/api/v1/movies`    | Provides movie search and movie detail endpoints. Retrieves movie information from TMDB through the MovieService. Publicly accessible.                                                                                   |
 | **user_controller.py**      | `/api/v1/users`     | Handles user registration, login, logout, and retrieval of the currently authenticated user. Creates and manages JWT authentication cookies and delegates authentication operations to the UserService and TokenService. |
 | **watchlist_controller.py** | `/api/v1/watchlist` | Manages user watchlists, including adding movies, removing movies, checking watchlist membership, and retrieving watchlist entries. Requires authentication.                                                             |
