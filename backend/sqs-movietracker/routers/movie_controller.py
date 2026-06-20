@@ -1,11 +1,10 @@
 from typing import Annotated, Optional
 
 import httpx
-from fastapi import APIRouter, HTTPException, Depends, Query
+from fastapi import APIRouter, HTTPException, Query
 
 from dependencies.services import MovieServiceDep
 from models.movie import Movie, MovieSearchResponse
-from services.movie_service import MovieService
 
 router = APIRouter(prefix="/api/v1/movies", tags=["movies"])
 

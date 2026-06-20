@@ -2,12 +2,8 @@ from typing import List, Optional
 
 from fastapi_cache.decorator import cache
 from tenacity import stop_after_attempt, retry, wait_exponential
-from sqlalchemy import func
-from sqlalchemy.orm import Session
-from models import ReviewEntry
 from models.movie import Movie, MovieSearchResponse
 from services.util.tmdbclient import TMDBClient
-from typing import Annotated
 
 class MovieService:
 
