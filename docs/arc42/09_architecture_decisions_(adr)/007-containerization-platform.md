@@ -1,16 +1,17 @@
-# Title
+# ADR07 - Conatainerization Platform
+## Title
 
 Decision to Choose the System's Containerization Platform
 
 
 
-## Status
+### Status
 
 accepted
 
 
 
-## Context
+### Context
 
 We require a containerization solution to ensure consistent development, testing, and deployment environments.
 
@@ -35,7 +36,7 @@ Alternatives considered included:
 - Native host deployments (harder to reproduce consistently across environments)
 
 
-## Decision
+### Decision
 
 We propose using Docker as the primary containerization platform.
 
@@ -43,7 +44,7 @@ Docker provides a mature ecosystem, and broad community adoption. Its integratio
 
 
 
-## Consequences
+### Consequences
 
 **Easier:**
 
