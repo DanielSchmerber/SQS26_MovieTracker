@@ -1,15 +1,16 @@
-# Title
+# ADR09 - Framework end-to-end tests
+## Title
 
 Decision to Choose the End-to-End Testing Framework
 
 
 
-## Status
+### Status
 
 accepted
 
 
-## Context
+### Context
 
 
 The testing framework should:
@@ -27,13 +28,13 @@ Alternatives considered included:
 
 
 
-## Decision
+### Decision
 
 We propose using Playwright. Playwright provides fast test execution and automatic waiting and synchronization.
 
 
 
-## Consequences
+### Consequences
 
 
 **Easier:**
