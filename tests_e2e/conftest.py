@@ -25,6 +25,7 @@ def test_user():
     }
 
 
+
 @pytest.fixture(scope="session")
 def registered_user(browser, test_user):
     context = browser.new_context(
@@ -72,3 +73,34 @@ def authenticated_page(browser, registered_user):
     ).click()
 
     return page
+
+
+@pytest.fixture()
+def authenticated_xss_page(browser):
+    timestamp = int(time.time() * 1000)
+
+    username = f"xss_{timestamp}"
+    password = "Password123!"
+
+    context = browser.new_context(
+        ignore_https_errors=True
+    )
+
+    page = context.new_page()
+
+    # register
+    page.goto(f"{BASE_URL}/register")
+
+    page.get_by_role("textbox", name="Username", exact=True).fill(username)
+    page.get_by_role("textbox", name="Email", exact=True).fill(f"{username}@test.com")
+    page.get_by_role("textbox", name="Password", exact=True).fill(password)
+    page.get_by_role("textbox", name="Confirm password", exact=True).fill(password)
+
+    page.get_by_role(
+        "button",
+        name="Create account"
+    ).click()
+
+    yield page
+
+    context.close()

@@ -301,6 +301,13 @@ def test_remove_movie_from_watchlist_t21(authenticated_page):
         f"{BASE_URL}/movie/{MOVIE_ID}"
     )
 
+    expect(
+        page.get_by_role(
+            "button",
+            name="Watched"
+        )
+    ).to_be_visible(timeout=10000)
+
     watched_button = page.get_by_role(
         "button",
         name="Watched"
@@ -315,3 +322,8 @@ def test_remove_movie_from_watchlist_t21(authenticated_page):
             name="Add to Watchlist"
         )
     ).to_be_visible()
+
+
+
+
+
