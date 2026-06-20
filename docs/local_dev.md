@@ -106,5 +106,6 @@ npx shadcn@latest add button
 └── movietracker.sh              Docker stack management script
 ```
 
-!!!tip
-Detailed architecture and quality documentation can be found in the `/docs/arc42/` directory.
+!!! tip
+
+    Detailed architecture and quality documentation can be found in the `/docs/arc42/` directory.
