@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useAuth } from "#/features/auth/auth.context.tsx";
-import { fetchReviews, addReview } from "#/features/reviews/review.queries.ts";
+import { fetchReviews, addReview, updateReview } from "#/features/reviews/review.queries.ts";
 import { reviewSchema } from "#/features/reviews/review.schema.ts";
 import type { ReviewFormValues } from "#/features/reviews/review.schema.ts";
 import { ReviewCard, ReviewCardSkeleton } from "#/components/ReviewCard.tsx";
@@ -73,6 +73,7 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
         queryKey: ["reviews", movieId],
         queryFn: () => fetchReviews(movieId),
     });
+    const currentReview = reviews?.find((review) => review.user_id === user?.id);
 
     const {
         register,
@@ -96,12 +97,29 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
         selectedRatingIcon = "✨ ";
     }
 
+    function resetForm() {
+        reset(
+            currentReview
+                ? { movie_id: movieId, rating: currentReview.rating, comment: currentReview.comment ?? "" }
+                : { movie_id: movieId },
+        );
+    }
+
     const mutation = useMutation({
-        mutationFn: (data: ReviewFormValues) => addReview(data),
+        mutationFn: (data: ReviewFormValues) =>
+            currentReview
+                ? updateReview(currentReview.id, {
+                    rating: data.rating,
+                    comment: data.comment,
+                })
+                : addReview({
+                    ...data,
+                    comment: data.comment === "" ? undefined : data.comment,
+                }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reviews", movieId] });
             queryClient.invalidateQueries({ queryKey: ["rating", movieId] });
-            toast.success("Review added!");
+            toast.success(currentReview ? "Review updated!" : "Review added!");
             reset({ movie_id: movieId });
             setOpen(false);
         },
@@ -111,10 +129,7 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
     });
 
     async function onSubmit(values: ReviewFormValues) {
-        await mutation.mutateAsync({
-            ...values,
-            comment: values.comment === "" ? undefined : values.comment,
-        });
+        await mutation.mutateAsync(values);
     }
 
     const withComments = reviews?.filter((r) => r.comment);
@@ -132,70 +147,73 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
             <div className="flex items-center justify-between border-b border-border pb-2">
                 <h2 className="text-lg font-bold">Reviews</h2>
                 {user && (
-                    !watched ? <Button size="sm" variant="outline" disabled={true}>Add to watchlist to review</Button>:
-                    <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset({ movie_id: movieId }); }}>
-                        <DialogTrigger asChild>
-                          <Button size="sm" variant="outline">Write a review</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Rate this movie</DialogTitle>
-                            </DialogHeader>
-                            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-                                <div className="flex flex-col gap-2">
-                                    <Label>Rating</Label>
-                                    <div className="flex gap-1.5 flex-wrap">
-                                        {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                                            <button
-                                                key={n}
-                                                type="button"
-                                                onClick={() => setValue("rating", n, { shouldValidate: true })}
-                                                className={`h-8 w-8 rounded text-sm font-semibold transition ${selectedButtonClass(n, selectedRating === n)}`}
-                                            >
-                                                {n}
-                                            </button>
-                                        ))}
-                                    </div>
-                                    {selectedRating >= 1 && (
-                                        <p className={`text-sm ${flavorClass(selectedRating)}`}>
-                                            {selectedRatingIcon}
-                                            {FLAVOR[selectedRating]}
-                                        </p>
-                                    )}
-                                    {errors.rating && (
-                                        <p className="text-sm text-destructive">{errors.rating.message}</p>
-                                    )}
-                                </div>
+                    watched ?
+                    (
+                      <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) resetForm(); else reset({ movie_id: movieId }); }}>
+                          <DialogTrigger asChild>
+                            <Button size="sm" variant="outline">{currentReview ? "Edit review" : "Write a review"}</Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                              <DialogHeader>
+                                  <DialogTitle>{currentReview ? "Update your review" : "Rate this movie"}</DialogTitle>
+                              </DialogHeader>
+                              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                                  <div className="flex flex-col gap-2">
+                                      <Label>Rating</Label>
+                                      <div className="flex gap-1.5 flex-wrap">
+                                          {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                                              <button
+                                                  key={n}
+                                                  type="button"
+                                                  onClick={() => setValue("rating", n, { shouldValidate: true })}
+                                                  className={`h-8 w-8 rounded text-sm font-semibold transition ${selectedButtonClass(n, selectedRating === n)}`}
+                                              >
+                                                  {n}
+                                              </button>
+                                          ))}
+                                      </div>
+                                      {selectedRating >= 1 && (
+                                          <p className={`text-sm ${flavorClass(selectedRating)}`}>
+                                              {selectedRatingIcon}
+                                              {FLAVOR[selectedRating]}
+                                          </p>
+                                      )}
+                                      {errors.rating && (
+                                          <p className="text-sm text-destructive">{errors.rating.message}</p>
+                                      )}
+                                  </div>
 
-                                <div className="flex flex-col gap-2">
-                                    <Label htmlFor="comment">
-                                        Comment{" "}
-                                        <span className="text-muted-foreground font-normal">(optional)</span>
-                                    </Label>
-                                    <textarea
-                                        id="comment"
-                                        rows={4}
-                                        placeholder="What did you think?"
-                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
-                                        {...register("comment")}
-                                    />
-                                    {errors.comment && (
-                                        <p className="text-sm text-destructive">{errors.comment.message}</p>
-                                    )}
-                                </div>
+                                  <div className="flex flex-col gap-2">
+                                      <Label htmlFor="comment">
+                                          Comment{" "}
+                                          <span className="text-muted-foreground font-normal">(optional)</span>
+                                      </Label>
+                                      <textarea
+                                          id="comment"
+                                          rows={4}
+                                          placeholder="What did you think?"
+                                          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-none"
+                                          {...register("comment")}
+                                      />
+                                      {errors.comment && (
+                                          <p className="text-sm text-destructive">{errors.comment.message}</p>
+                                      )}
+                                  </div>
 
-                                {errors.root && (
-                                    <p className="text-sm text-destructive">{errors.root.message}</p>
-                                )}
+                                  {errors.root && (
+                                      <p className="text-sm text-destructive">{errors.root.message}</p>
+                                  )}
 
-                                <DialogFooter showCloseButton>
-                                    <Button type="submit" disabled={mutation.isPending}>
-                                        {mutation.isPending ? "Submitting…" : "Submit"}
-                                    </Button>
-                                </DialogFooter>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
+                                  <DialogFooter showCloseButton>
+                                      <Button type="submit" disabled={mutation.isPending}>
+                                          {mutation.isPending ? "Submitting…" : "Submit"}
+                                      </Button>
+                                  </DialogFooter>
+                              </form>
+                          </DialogContent>
+                      </Dialog>
+                    ) :
+                    <Button size="sm" variant="outline" disabled={true}>Add to watchlist to review</Button>
                 )}
             </div>
 
