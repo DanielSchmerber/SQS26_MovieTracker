@@ -124,9 +124,9 @@ Falls die Anwendung unter einer anderen Adresse läuft, kann das Ziel mit
 E2E_BASE_URL=https://localhost pytest tests_e2e --browser chromium
 ```
 
-In GitHub Actions werden die Tests im Job `Playwright e2e tests` gegen den per
-Docker Compose gebauten Stack ausgeführt. Dafür muss im Repository Secret
-`TMDB_APIKEY` ein gültiger TMDB API Key hinterlegt sein.
+In GitHub Actions werden die Docker-Images gebaut, per Docker Compose gestartet
+und erst nach erfolgreichen Playwright-Tests nach GHCR gepusht. Dafür muss im
+Repository Secret `TMDB_APIKEY` ein gültiger TMDB API Key hinterlegt sein.
 
 ### Frontend
 
