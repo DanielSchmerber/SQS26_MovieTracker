@@ -6,22 +6,22 @@ The application allows anonymous users to search for movies and access detailed 
 
 The primary goals of the Movie Tracker project are:
 
-#### G1 – Easy Movie Discovery
+## G1 – Easy Movie Discovery
 
 Provide users with a simple and intuitive way to search for movies and access detailed movie information.
 
-#### G2 – Integration with External Movie Data
+## G2 – Integration with External Movie Data
 
 Use the TMDB API as a reliable external source for:
 
 - Movie metadata
 
 
-#### G3 – Personalized Watchlist Management
+## G3 – Personalized Watchlist Management
 
 Allow authenticated users to create and manage a personal watchlist of movies they have watched or plan to watch.
 
-#### G4 – Lightweight and Maintainable Architecture
+## G4 – Lightweight and Maintainable Architecture
 
 Develop a lightweight application architecture using:
 
@@ -29,11 +29,11 @@ Develop a lightweight application architecture using:
 - SQLite database for persistence
 - TanStack/React frontend for a responsive user experience
 
-#### G5 – Public Access to Movie Information
+## G5 – Public Access to Movie Information
 
 Enable non-authenticated users to browse and explore movie information without requiring login credentials.
 
-#### G6 – Secure User Authentication
+## G6 – Secure User Authentication
 
 Protect user-specific features, such as watchlist management, through user authentication and authorization mechanisms.
 

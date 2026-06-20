@@ -1,81 +1,86 @@
 # MovieTracker
 
-MovieTracker ist eine Webanwendung zum Suchen und Bewerten von Filmen sowie
-zum Verwalten einer persönlichen Watchlist. Die Filmdaten werden über die
-[TMDB API](https://www.themoviedb.org/) bezogen.
+MovieTracker is a web application for searching and rating movies, as well as managing a personal watchlist. Movie data is retrieved from the TMDB API.
 
-Das Projekt besteht aus:
+The project consists of:
 
-- einem React-Frontend mit TanStack Start, TypeScript und Tailwind CSS,
-- einem FastAPI-Backend mit SQLAlchemy und SQLite,
-- Traefik als Reverse Proxy sowie
-- Docker Compose für den Entwicklungs- und Produktivbetrieb.
+* a React frontend built with TanStack Start, TypeScript, and Tailwind CSS,
+* a FastAPI backend using SQLAlchemy and SQLite,
+* Traefik as a reverse proxy, and
+* Docker Compose for both development and production environments.
 
-## Schnellstart
-Alle in diesem Readme beschreibenen Befehle sind auf einem Bash terminal auszuführen.
+### Prerequisites
 
-### Voraussetzungen
+* Docker
+* Docker Compose
+* A TMDB API key 
 
-- Docker
-- Docker Compose
-- ein TMDB API Key
+## Quick Start
 
-Die Anwendung kann mit einem Befehl gestartet werden:
+All commands described in this README should be executed in a Bash terminal.
+
+First, you might need to clone the project and open it: 
+
+```bash
+git clone https://github.com/DanielSchmerber/SQS26_MovieTracker.git
+cd SQS26_MovieTracker
+```
+
+The application can be started with a single command:
 
 ```bash
 ./movietracker.sh up
 ```
 
-Beim ersten Start fragt das Skript nach dem TMDB API Key und speichert ihn in
-der lokalen `.env`-Datei. Falls noch kein `JWT_SECRET` vorhanden ist, wird
-dieses automatisch erzeugt.
+During the first startup, the script prompts for a TMDB API key and stores it in the local `.env` file. If no `JWT_SECRET` is present, one is generated automatically.
 
-Anschließend ist MovieTracker unter <https://localhost> erreichbar. Traefik
-verwendet für die lokale Umgebung ein selbstsigniertes Zertifikat, weshalb der
-Browser beim ersten Aufruf eine Zertifikatswarnung anzeigen kann.
+Afterwards, MovieTracker is available at:
 
-Der Stack wird mit folgendem Befehl wieder gestoppt und entfernt:
+```text
+https://localhost
+```
+
+Traefik uses a self-signed certificate for the local environment. As a result, the browser may display a certificate warning on the first visit.
+
+The stack can be stopped and removed using:
 
 ```bash
 ./movietracker.sh down
 ```
 
-Lokale Images und Datenbankdateien werden dabei nicht gelöscht.
+Local Docker images and database files are not deleted.
 
-## Docker-Betriebsarten
+## Docker Operating Modes
 
-Das Verwaltungsskript unterstützt einen Produktiv- und einen
-Entwicklungsmodus. Wird kein Modus angegeben, verwendet es `prod`.
+The management script supports both production and development modes. If no mode is specified, `prod` is used by default.
 
-| Befehl | Beschreibung |
-| --- | --- |
-| `./movietracker.sh up` | Startet den Produktivmodus mit den aktuellen GHCR-Images |
-| `./movietracker.sh up dev` | Baut Frontend und Backend aus dem lokalen Quellcode und startet sie |
-| `./movietracker.sh down` | Stoppt und entfernt den Stack |
+| Command                    | Description                                                        |
+| -------------------------- | ------------------------------------------------------------------ |
+| `./movietracker.sh up`     | Starts production mode using the latest GHCR images                |
+| `./movietracker.sh up dev` | Builds frontend and backend from local source code and starts them |
+| `./movietracker.sh down`   | Stops and removes the stack                                        |
 
-## Konfiguration
+## Configuration
 
-Die Laufzeitkonfiguration wird aus einer `.env`-Datei im Projektverzeichnis
-gelesen. Als Vorlage dient `.env.example`.
+The runtime configuration is loaded from a `.env` file located in the project root directory. The `.env.example` file serves as a template.
 
-| Variable | Erforderlich | Beschreibung |
-| --- | --- | --- |
-| `TMDB_APIKEY` | Ja | API Key beziehungsweise Read Access Token für die TMDB API |
-| `JWT_SECRET` | Ja | Geheimer Schlüssel zum Signieren der JWTs; wird vom Skript automatisch erzeugt |
-| `DATABASE_URL` | Nein | SQLAlchemy-Datenbank-URL, standardmäßig `sqlite:///./test.db` |
-| `JWT_ALGORITHM` | Nein | JWT-Algorithmus, standardmäßig `HS256` |
-| `JWT_EXPIRY_MINUTES` | Nein | Gültigkeitsdauer eines Tokens, standardmäßig 60 Minuten |
+| Variable             | Required | Description                                                                     |
+| -------------------- | -------- | ------------------------------------------------------------------------------- |
+| `TMDB_APIKEY`        | Yes      | API key or Read Access Token used to access the TMDB API                        |
+| `JWT_SECRET`         | Yes      | Secret key used to sign JWT tokens; automatically generated by the setup script |
+| `DATABASE_URL`       | No       | SQLAlchemy database URL. Defaults to `sqlite:///./test.db`                      |
+| `JWT_ALGORITHM`      | No       | JWT signing algorithm. Defaults to `HS256`                                      |
+| `JWT_EXPIRY_MINUTES` | No       | Token validity period in minutes. Defaults to `60` minutes                      |
 
-## Lokale Entwicklung
+## Local Development
 
-Der Docker-Dev-Modus baut beide Anwendungen aus dem aktuellen Quellcode:
+The Docker development mode builds both applications from the current source code:
 
 ```bash
 ./movietracker.sh up dev
 ```
 
-Für die getrennte Ausführung von Backend und Frontend können die folgenden
-Schritte verwendet werden.
+To run the backend and frontend separately, follow the steps below.
 
 ### Backend
 
@@ -90,12 +95,9 @@ alembic upgrade head
 uvicorn main:app --reload --port 8000 --log-level debug
 ```
 
-Das Backend benötigt die Variablen aus der `.env`-Datei. Da es aus seinem
-Unterverzeichnis gestartet wird, müssen diese entweder in der Shell gesetzt
-oder in einer `.env`-Datei innerhalb des Backend-Verzeichnisses bereitgestellt
-werden.
+The backend requires the variables defined in the `.env` file. Since it is started from its own subdirectory, these variables must either be set in the shell or provided through a `.env` file within the backend directory.
 
-Backend-Tests werden aus demselben Verzeichnis ausgeführt:
+Backend tests are executed from the same directory:
 
 ```bash
 python -m pytest tests
@@ -103,7 +105,7 @@ python -m pytest tests
 
 ### Frontend
 
-In einem zweiten Terminal:
+In a second terminal:
 
 ```bash
 cd frontend/sqs-movietracker
@@ -111,37 +113,41 @@ npm install
 npm run dev
 ```
 
-Der lokale Frontend-Server ist unter <http://localhost:3000> erreichbar und
-leitet API-Anfragen an das Backend auf Port 8000 weiter.
+The local frontend server is available at:
 
-Weitere Frontend-Befehle:
+```text
+http://localhost:3000
+```
 
-| Befehl | Beschreibung |
-| --- | --- |
-| `npm run build` | Erstellt den Produktions-Build |
-| `npm run test` | Führt die Vitest-Tests aus |
-| `npm run lint` | Prüft den Quellcode mit ESLint |
-| `npm run format` | Formatiert den Quellcode und führt automatische ESLint-Korrekturen aus |
-| `npm run check` | Prüft die Formatierung mit Prettier |
+API requests are forwarded to the backend running on port `8000`.
 
-Neue shadcn/ui-Komponenten können beispielsweise so hinzugefügt werden:
+Additional frontend commands:
+
+| Command          | Description                                                |
+| ---------------- | ---------------------------------------------------------- |
+| `npm run build`  | Creates a production build                                 |
+| `npm run test`   | Runs the Vitest test suite                                 |
+| `npm run lint`   | Checks the source code using ESLint                        |
+| `npm run format` | Formats the source code and applies automatic ESLint fixes |
+| `npm run check`  | Verifies formatting using Prettier                         |
+
+New shadcn/ui components can be added, for example, using:
 
 ```bash
 npx shadcn@latest add button
 ```
 
-## Projektstruktur
+## Project Structure
 
 ```text
 .
-├── backend/sqs-movietracker/   FastAPI-Backend
-├── frontend/sqs-movietracker/  React-Frontend
-├── docs/                       Architekturdokumentation
-├── docker-compose.yml          Gemeinsame Compose-Konfiguration
-├── docker-compose.dev.yml      Compose Ergänzung für Dev Modus
-├── docker-compose.prod.yml     Compose Ergänzung für Prod Modus
-└── movietracker.sh              Verwaltungs-Skript des Docker-Stacks
+├── backend/sqs-movietracker/    FastAPI backend
+├── frontend/sqs-movietracker/   React frontend
+├── docs/                        Architecture documentation
+├── docker-compose.yml           Shared Docker Compose configuration
+├── docker-compose.dev.yml       Docker Compose extension for development mode
+├── docker-compose.prod.yml      Docker Compose extension for production mode
+└── movietracker.sh              Docker stack management script
 ```
 
-Die ausführliche Architektur- und Qualitätsdokumentation befindet sich im
-Verzeichnis `docs/`.
+[!TIP] Detailed architecture and quality documentation can be found in the `/docs/arc42/` directory.
