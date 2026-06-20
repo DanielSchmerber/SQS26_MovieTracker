@@ -2,7 +2,7 @@
 
 ## 10.1 Quality Requirements Overview
 
-#### Quality Requirements
+### Quality Requirements
 
 - **Usability**
   - Simple movie search
@@ -24,7 +24,7 @@
 
 ## 10.2 Quality scenarios
 
-#### [Reliability]
+### Reliability
 
 **Scenario ID :** SC1
 
@@ -40,7 +40,7 @@
 
 **Response Measure :** The system retries communication up to 3 times before returning an error
 
-#### [Security]
+### Security
 
 **Scenario ID:** SC2
 

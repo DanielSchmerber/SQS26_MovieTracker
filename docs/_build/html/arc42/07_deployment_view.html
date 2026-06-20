@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7 - Deployment view &mdash; SQS MovieTracker 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8 - Crosscutting Concepts" href="08_concepts.html" />
+    <link rel="prev" title="6 - Runtime View" href="06_runtime_view.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SQS MovieTracker
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../local_dev.html">Local Development</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Architecture</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_introduction_and_goals.html">01 - Introduction and goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_architecture_and_constrains.html">2 - Architecture Constrains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_context_and_scope.html">3 - Context and Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_solution_strategy.html">4 - Solution Strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_building_block_view.html">5 - Building Block View</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_building_block_view.html#level-1-whitebox-overall-system">5.1 Level 1 - Whitebox Overall System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_building_block_view.html#level-2-web-application-whitebox">5.2 Level 2 -  Web application (Whitebox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_building_block_view.html#level-3-models-whitebox">5.3  Level 3 - Models (Whitebox)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_runtime_view.html">6 - Runtime View</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7 - Deployment view</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#infrastructure-overview">7.1 Infrastructure overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#container-architecture">7.2 Container Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker-compose-services">7.2.1 Docker Compose Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-configuration">7.3 Environment Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#network-topology">7.4 Network Topology</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="08_concepts.html">8 - Crosscutting Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions.html">09 - Architecture decisions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_quality.html">10 - Quality Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_risks_and_technical_debt.html">11 - Risks and Technical Debt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_glossary.html">Glossary</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Architecture Decision Records</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/001-architecture-pattern.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/002-backend-technology.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/003-frontend-technology.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/004-database-technology.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/005-reverse-proxy.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/006-external-service-technology.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/007-containerization-platform.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/008-code-analysis-tool-technology.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/009-framework-e2e-tests-technology.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/010-unit-and-integration-test-technology.html">Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_architecture_decisions_%28adr%29/011-architecture-test-technology.html">Title</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SQS MovieTracker</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">7 - Deployment view</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/arc42/07_deployment_view.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deployment-view">
+<h1>7 - Deployment view<a class="headerlink" href="#deployment-view" title="Link to this heading"></a></h1>
+<section id="infrastructure-overview">
+<h2>7.1 Infrastructure overview<a class="headerlink" href="#infrastructure-overview" title="Link to this heading"></a></h2>
+<p><img alt="deployment" src="../_images/deployment_diagram.png" /></p>
+</section>
+<section id="container-architecture">
+<h2>7.2 Container Architecture<a class="headerlink" href="#container-architecture" title="Link to this heading"></a></h2>
+<section id="docker-compose-services">
+<h3>7.2.1 Docker Compose Services<a class="headerlink" href="#docker-compose-services" title="Link to this heading"></a></h3>
+<p>The docker-compose.yml defines three services :</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Service</p></th>
+<th class="head"><p>Image/Build</p></th>
+<th class="head"><p>Port</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>backend</p></td>
+<td><p>Build from  /backend/sqs-movietracker/Dockerfile</p></td>
+<td><p>8000</p></td>
+<td><p>FastAPI REST API with SQLAlchemy and SQLite</p></td>
+</tr>
+<tr class="row-odd"><td><p>frontend</p></td>
+<td><p>Build from /frontend/sqs-movietracker/Dockerfile</p></td>
+<td><p>3000</p></td>
+<td><p>React/TanStack</p></td>
+</tr>
+<tr class="row-even"><td><p>traefik</p></td>
+<td><p>traefik:v3.7.1</p></td>
+<td><p>80 ,  443 , 8080</p></td>
+<td><p>Reverse Proxy</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="environment-configuration">
+<h2>7.3 Environment Configuration<a class="headerlink" href="#environment-configuration" title="Link to this heading"></a></h2>
+<p>The runtime configuration is loaded from a .env file located in the project’s root directory. The .env.example file serves as a template.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TMDB_APIKEY</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>API key or Read Access Token used to access the TMDB API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">JWT_SECRET</span></code></p></td>
+<td><p>Yes</p></td>
+<td><p>Secret key used to sign JWT tokens; automatically generated by the setup script.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATABASE_URL</span></code></p></td>
+<td><p>No</p></td>
+<td><p>SQLAlchemy database URL. Defaults to <code class="docutils literal notranslate"><span class="pre">sqlite:///./test.db</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">JWT_ALGORITHM</span></code></p></td>
+<td><p>No</p></td>
+<td><p>JWT signing algorithm. Defaults to <code class="docutils literal notranslate"><span class="pre">HS256</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">JWT_EXPIRY_MINUTES</span></code></p></td>
+<td><p>No</p></td>
+<td><p>Token validity period in minutes. Defaults to <code class="docutils literal notranslate"><span class="pre">60</span></code> minutes.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="network-topology">
+<h2>7.4 Network Topology<a class="headerlink" href="#network-topology" title="Link to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                ┌──────────────────────┐
+                │        User          │
+                │      Browser         │
+                └──────────┬───────────┘
+                           │
+                     HTTPS :443
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │       Traefik        │
+                │   Reverse Proxy      │
+                │ TLS Termination      │
+                └──────────┬───────────┘
+                           │
+                 Docker Network: proxy
+                           │
+       ┌───────────────────┴───────────────────┐
+       │                                       │
+       │ Host(localhost)                       │ Host(localhost)
+       │ Path=/                                │ Path=/api
+       ▼                                       ▼
+</pre></div>
+</div>
+<p>┌─────────────────────┐          ┌─────────────────────┐
+│      Frontend       │          │       Backend       │
+│   React + TanStack  │          │       FastAPI       │
+│      Port 3000      │          │      Port 8000      │
+└─────────────────────┘          └─────────────────────┘</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="06_runtime_view.html" class="btn btn-neutral float-left" title="6 - Runtime View" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="08_concepts.html" class="btn btn-neutral float-right" title="8 - Crosscutting Concepts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
