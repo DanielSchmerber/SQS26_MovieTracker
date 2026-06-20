@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useAuth } from "#/features/auth/auth.context.tsx";
-import { fetchReviews, addReview } from "#/features/reviews/review.queries.ts";
+import { fetchReviews, addReview, updateReview } from "#/features/reviews/review.queries.ts";
 import { reviewSchema } from "#/features/reviews/review.schema.ts";
 import type { ReviewFormValues } from "#/features/reviews/review.schema.ts";
 import { ReviewCard, ReviewCardSkeleton } from "#/components/ReviewCard.tsx";
@@ -73,6 +73,7 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
         queryKey: ["reviews", movieId],
         queryFn: () => fetchReviews(movieId),
     });
+    const currentReview = reviews?.find((review) => review.user_id === user?.id);
 
     const {
         register,
@@ -96,12 +97,29 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
         selectedRatingIcon = "✨ ";
     }
 
+    function resetForm() {
+        reset(
+            currentReview
+                ? { movie_id: movieId, rating: currentReview.rating, comment: currentReview.comment ?? "" }
+                : { movie_id: movieId },
+        );
+    }
+
     const mutation = useMutation({
-        mutationFn: (data: ReviewFormValues) => addReview(data),
+        mutationFn: (data: ReviewFormValues) =>
+            currentReview
+                ? updateReview(currentReview.id, {
+                    rating: data.rating,
+                    comment: data.comment,
+                })
+                : addReview({
+                    ...data,
+                    comment: data.comment === "" ? undefined : data.comment,
+                }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reviews", movieId] });
             queryClient.invalidateQueries({ queryKey: ["rating", movieId] });
-            toast.success("Review added!");
+            toast.success(currentReview ? "Review updated!" : "Review added!");
             reset({ movie_id: movieId });
             setOpen(false);
         },
@@ -111,10 +129,7 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
     });
 
     async function onSubmit(values: ReviewFormValues) {
-        await mutation.mutateAsync({
-            ...values,
-            comment: values.comment === "" ? undefined : values.comment,
-        });
+        await mutation.mutateAsync(values);
     }
 
     const withComments = reviews?.filter((r) => r.comment);
@@ -134,13 +149,13 @@ export function ReviewSection({ movieId }: Readonly<ReviewSectionProps>) {
                 {user && (
                     watched ?
                     (
-                      <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset({ movie_id: movieId }); }}>
+                      <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) resetForm(); else reset({ movie_id: movieId }); }}>
                           <DialogTrigger asChild>
-                            <Button size="sm" variant="outline">Write a review</Button>
+                            <Button size="sm" variant="outline">{currentReview ? "Edit review" : "Write a review"}</Button>
                           </DialogTrigger>
                           <DialogContent>
                               <DialogHeader>
-                                  <DialogTitle>Rate this movie</DialogTitle>
+                                  <DialogTitle>{currentReview ? "Update your review" : "Rate this movie"}</DialogTitle>
                               </DialogHeader>
                               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
                                   <div className="flex flex-col gap-2">

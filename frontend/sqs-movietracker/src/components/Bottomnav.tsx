@@ -10,7 +10,7 @@ export function BottomNav() {
           PLACEHOLDER
         </div>
 
-        <div>PLACEHOLDER PLACEHOLDER PLACEHOLDER</div>
+        <div>© 2026 Movietracker</div>
 
         <div className="flex items-center gap-4">
 

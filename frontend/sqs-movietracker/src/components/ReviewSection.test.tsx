@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { useAuth } from "#/features/auth/auth.context.tsx";
-import { addReview, fetchReviews } from "#/features/reviews/review.queries.ts";
+import { addReview, fetchReviews, updateReview } from "#/features/reviews/review.queries.ts";
 import { isInWatchlist } from "#/features/watchlist/watchlist.queries.ts";
 import { toast } from "sonner";
 import { ReviewSection } from "./ReviewSection";
@@ -15,6 +15,7 @@ vi.mock("#/features/auth/auth.context.tsx", () => ({
 vi.mock("#/features/reviews/review.queries.ts", () => ({
     addReview: vi.fn(),
     fetchReviews: vi.fn(),
+    updateReview: vi.fn(),
 }));
 
 vi.mock("#/features/watchlist/watchlist.queries.ts", () => ({
@@ -109,5 +110,48 @@ describe("ReviewSection", () => {
             }),
         );
         expect(toast.success).toHaveBeenCalledWith("Review added!");
+    });
+
+    it("updates the current user's existing review", async () => {
+        vi.mocked(useAuth).mockReturnValue({ user, ...authActions });
+        vi.mocked(fetchReviews).mockResolvedValue([
+            {
+                id: 4,
+                user_id: 1,
+                username: "movieFan",
+                movie_id: 5,
+                rating: 6,
+                comment: "It was fine.",
+            },
+        ]);
+        vi.mocked(isInWatchlist).mockResolvedValue(true);
+        vi.mocked(updateReview).mockResolvedValue({
+            id: 4,
+            user_id: 1,
+            username: "movieFan",
+            movie_id: 5,
+            rating: 9,
+            comment: "Much better on rewatch.",
+        });
+
+        renderWithClient(<ReviewSection movieId={5} />);
+
+        expect(await screen.findByRole("button", { name: "Edit review" })).toBeTruthy();
+        fireEvent.click(screen.getByRole("button", { name: "Edit review" }));
+        expect(screen.getByDisplayValue("It was fine.")).toBeTruthy();
+        fireEvent.click(screen.getByRole("button", { name: "9" }));
+        fireEvent.change(screen.getByPlaceholderText("What did you think?"), {
+            target: { value: "Much better on rewatch." },
+        });
+        fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+
+        await waitFor(() =>
+            expect(updateReview).toHaveBeenCalledWith(4, {
+                rating: 9,
+                comment: "Much better on rewatch.",
+            }),
+        );
+        expect(addReview).not.toHaveBeenCalled();
+        expect(toast.success).toHaveBeenCalledWith("Review updated!");
     });
 });
