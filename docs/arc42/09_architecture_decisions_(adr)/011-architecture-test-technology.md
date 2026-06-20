@@ -1,15 +1,16 @@
-# Title
+# ADR11 - Architecture Testing Framework
+## Title
 
 Decision to Choose the Architecture Testing Framework
 
 
 
-## Status
+### Status
 
 accepted
 
 
-## Context
+### Context
 
 We need a testing tool to verify architecture rules in the MovieTracker backend.
 
@@ -37,7 +38,7 @@ Alternatives considered included:
 
 
 
-## Decision
+### Decision
 
 We chose pytestarch. Pytestarch is a pytest-compatible tool for defining and checking architecture constraints in Python projects.
 
@@ -45,7 +46,7 @@ Pytestarch fits our project because our backend tests already use pytest. It all
 
 
 
-## Consequences
+### Consequences
 
 **Easier:**
 
