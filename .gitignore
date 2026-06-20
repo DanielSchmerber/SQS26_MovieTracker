@@ -3,3 +3,5 @@
 .env
 *.db
 docs/_build/
+__pycache__
+venv/
