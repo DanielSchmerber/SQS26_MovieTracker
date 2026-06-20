@@ -1,9 +1,6 @@
-import re
 import time
+import re
 from playwright.sync_api import expect
-
-
-BASE_URL = "https://localhost"
 
 MOVIE_NAME = "Dirty Dancing"
 
@@ -13,8 +10,8 @@ INVALID_PASSWORD = "wrong_password"
 MOVIE_ID = 88
 
 
-def login(page, username, password):
-    page.goto(f"{BASE_URL}/login")
+def login(page, base_url, username, password):
+    page.goto(f"{base_url}/login")
 
     page.get_by_role("textbox", name="Username", exact=True).fill(username)
     page.get_by_role("textbox", name="Password", exact=True).fill(password)
@@ -26,18 +23,18 @@ def login(page, username, password):
    
 
 
-def test_register_page_loads_t01(page):
-    page.goto(f"{BASE_URL}/register")
+def test_register_page_loads_t01(page, base_url):
+    page.goto(f"{base_url}/register")
 
     expect(
         page.locator('div[data-slot="card-title"]')).to_have_text("Create an account")
     
 
-def test_register_new_user_t02(page):
+def test_register_new_user_t02(page, base_url):
     username = f"test_user_{int(time.time())}"
     email = f"{username}@test.com"
 
-    page.goto(f"{BASE_URL}/register")
+    page.goto(f"{base_url}/register")
 
     page.get_by_label("Username").fill(username)
     page.get_by_label("Email").fill(email)
@@ -61,8 +58,8 @@ def test_register_new_user_t02(page):
     )
 
 
-def test_register_password_mismatch_t03(page):
-    page.goto(f"{BASE_URL}/register")
+def test_register_password_mismatch_t03(page, base_url):
+    page.goto(f"{base_url}/register")
 
     page.get_by_label("Username").fill("user")
     page.get_by_label("Email").fill("user@test.com")
@@ -84,8 +81,8 @@ def test_register_password_mismatch_t03(page):
     ).to_be_visible()
 
 
-def test_register_link_to_login_t04(page):
-    page.goto(f"{BASE_URL}/register")
+def test_register_link_to_login_t04(page, base_url):
+    page.goto(f"{base_url}/register")
 
     page.get_by_role(
         "link",
@@ -97,9 +94,9 @@ def test_register_link_to_login_t04(page):
     )
 
 
-def test_invalid_movie_displays_error_t05(page):
+def test_invalid_movie_displays_error_t05(page, base_url):
     page.goto(
-        f"{BASE_URL}/movie/6666666666"
+        f"{base_url}/movie/6666666666"
     )
 
     expect(
@@ -107,17 +104,18 @@ def test_invalid_movie_displays_error_t05(page):
     ).to_be_visible(timeout=50_000)
 
 
-def test_login_page_loads_t06(page):
-    page.goto(f"{BASE_URL}/login")
+def test_login_page_loads_t06(page, base_url):
+    page.goto(f"{base_url}/login")
 
     expect(
         page.locator('div[data-slot="card-title"]')).to_have_text("Welcome back")
     
 
 
-def test_login_valid_credentials_t07(page, registered_user):
+def test_login_valid_credentials_t07(page, base_url, registered_user):
     login(
         page,
+        base_url,
         registered_user["username"],
         registered_user["password"]
     )
@@ -127,9 +125,10 @@ def test_login_valid_credentials_t07(page, registered_user):
     )
 
 
-def test_login_invalid_password_t08(page, registered_user):
+def test_login_invalid_password_t08(page, base_url, registered_user):
     login(
         page,
+        base_url,
         registered_user["username"],
         INVALID_PASSWORD
     )
@@ -139,9 +138,10 @@ def test_login_invalid_password_t08(page, registered_user):
     ).to_be_visible()
 
 
-def test_login_invalid_username_t09(page, registered_user):
+def test_login_invalid_username_t09(page, base_url, registered_user):
     login(
         page,
+        base_url,
         INVALID_USERNAME,
         registered_user["password"]
     )
@@ -151,9 +151,10 @@ def test_login_invalid_username_t09(page, registered_user):
     ).to_be_visible()
 
 
-def test_login_invalid_username_invalid_password_t10(page):
+def test_login_invalid_username_invalid_password_t10(page, base_url):
     login(
         page,
+        base_url,
         INVALID_USERNAME,
         INVALID_PASSWORD
     )
@@ -165,8 +166,8 @@ def test_login_invalid_username_invalid_password_t10(page):
 
 
 
-def test_search_page_without_query_t11(page):
-    page.goto(f"{BASE_URL}/search")
+def test_search_page_without_query_t11(page, base_url):
+    page.goto(f"{base_url}/search")
 
     expect(
         page.get_by_text(
@@ -175,8 +176,8 @@ def test_search_page_without_query_t11(page):
     ).to_be_visible()
 
 
-def test_search_movie_t12(page):
-    page.goto(BASE_URL)
+def test_search_movie_t12(page, base_url):
+    page.goto(base_url)
 
     page.get_by_placeholder(
         "Search for a movie…"
@@ -192,9 +193,9 @@ def test_search_movie_t12(page):
     )
 
 
-def test_search_results_are_displayed_t13(page):
+def test_search_results_are_displayed_t13(page, base_url):
     page.goto(
-        f"{BASE_URL}/search?title={MOVIE_NAME}"
+        f"{base_url}/search?title={MOVIE_NAME}"
     )
 
     expect(
@@ -202,9 +203,9 @@ def test_search_results_are_displayed_t13(page):
     ).to_be_visible()
 
 
-def test_movie_result_can_be_opened_t14(page):
+def test_movie_result_can_be_opened_t14(page, base_url):
     page.goto(
-        f"{BASE_URL}/search?title={MOVIE_NAME}"
+        f"{base_url}/search?title={MOVIE_NAME}"
     )
 
     page.get_by_role("button").filter(
@@ -217,9 +218,9 @@ def test_movie_result_can_be_opened_t14(page):
 
 
 
-def test_movie_details_page_loads_t15(page):
+def test_movie_details_page_loads_t15(page, base_url):
     page.goto(
-        f"{BASE_URL}/movie/{MOVIE_ID}"
+        f"{base_url}/movie/{MOVIE_ID}"
     )
 
     expect(
@@ -227,9 +228,9 @@ def test_movie_details_page_loads_t15(page):
     ).to_be_visible()
 
 
-def test_movie_description_displayed_t16(page):
+def test_movie_description_displayed_t16(page, base_url):
     page.goto(
-        f"{BASE_URL}/movie/{MOVIE_ID}"
+        f"{base_url}/movie/{MOVIE_ID}"
     )
 
     expect(
@@ -237,9 +238,9 @@ def test_movie_description_displayed_t16(page):
     ).to_be_visible()
 
 
-def test_movie_poster_displayed_t17(page):
+def test_movie_poster_displayed_t17(page, base_url):
     page.goto(
-        f"{BASE_URL}/movie/{MOVIE_ID}"
+        f"{base_url}/movie/{MOVIE_ID}"
     )
 
     expect(
@@ -247,9 +248,9 @@ def test_movie_poster_displayed_t17(page):
     ).to_be_visible()
 
 
-def test_tmdb_rating_displayed_t18(page):
+def test_tmdb_rating_displayed_t18(page, base_url):
     page.goto(
-        f"{BASE_URL}/movie/{MOVIE_ID}"
+        f"{base_url}/movie/{MOVIE_ID}"
     )
 
     expect(
@@ -258,9 +259,9 @@ def test_tmdb_rating_displayed_t18(page):
 
 
 
-def test_watchlist_requires_login_t19(page):
+def test_watchlist_requires_login_t19(page, base_url):
     page.goto(
-        f"{BASE_URL}/watchlist"
+        f"{base_url}/watchlist"
     )
 
     expect(
@@ -270,11 +271,11 @@ def test_watchlist_requires_login_t19(page):
     ).to_be_visible()
 
 
-def test_add_movie_to_watchlist_t20(authenticated_page):
+def test_add_movie_to_watchlist_t20(authenticated_page, base_url):
     page = authenticated_page
 
     page.goto(
-        f"{BASE_URL}/movie/{MOVIE_ID}"
+        f"{base_url}/movie/{MOVIE_ID}"
     )
 
     add_button = page.get_by_role(
@@ -294,11 +295,11 @@ def test_add_movie_to_watchlist_t20(authenticated_page):
     ).to_be_visible(timeout=10000)
 
 
-def test_remove_movie_from_watchlist_t21(authenticated_page):
+def test_remove_movie_from_watchlist_t21(authenticated_page, base_url):
     page = authenticated_page
 
     page.goto(
-        f"{BASE_URL}/movie/{MOVIE_ID}"
+        f"{base_url}/movie/{MOVIE_ID}"
     )
 
     expect(

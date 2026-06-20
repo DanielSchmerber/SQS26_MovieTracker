@@ -100,6 +100,30 @@ Backend-Tests werden aus demselben Verzeichnis ausgeführt:
 pytest
 ```
 
+### End-to-End-Tests
+
+Die Playwright-Tests in `tests_e2e` laufen gegen den Docker-Stack unter
+<https://localhost>. Dafür müssen die Python-Testabhängigkeiten und der
+Chromium-Browser installiert sein:
+
+```bash
+pip install pytest pytest-playwright
+python -m playwright install chromium
+./movietracker.sh up dev
+pytest tests_e2e --browser chromium
+```
+
+Falls die Anwendung unter einer anderen Adresse läuft, kann das Ziel mit
+`E2E_BASE_URL` überschrieben werden:
+
+```bash
+E2E_BASE_URL=https://localhost pytest tests_e2e --browser chromium
+```
+
+In GitHub Actions werden die Tests im Job `Playwright e2e tests` gegen den per
+Docker Compose gebauten Stack ausgeführt. Dafür muss im Repository Secret
+`TMDB_APIKEY` ein gültiger TMDB API Key hinterlegt sein.
+
 ### Frontend
 
 In einem zweiten Terminal:
