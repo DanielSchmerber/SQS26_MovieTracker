@@ -1,16 +1,17 @@
-# Title
+#  ADR04 - Database Technology
+## Title
 
 Decision to Choose the System's Database Technology
 
 
 
-## Status
+### Status
 
 accepted
 
 
 
-## Context
+### Context
 
 We need a database to persist data for the MovieTracker application.
 
@@ -32,7 +33,7 @@ Alternatives considered included:
 
 
 
-## Decision
+### Decision
 
 We chose SQLite. It is a lightweight, file-based database that requires no additional
 
@@ -40,7 +41,7 @@ infrastructure and integrates well with Python-based backends via SQLAlchemy.
 
 
 
-## Consequences
+### Consequences
 
 **Easier:**
 
