@@ -19,7 +19,7 @@ Use the TMDB API as a reliable external source for:
 
 ## G3 – Personalized Watchlist Management
 
-Allow authenticated users to create and manage a personal watchlist of movies they have watched or plan to watch.
+Allow authenticated users to create and manage a personal watchlist of movies they have watched.
 
 ## G4 – Lightweight and Maintainable Architecture
 
