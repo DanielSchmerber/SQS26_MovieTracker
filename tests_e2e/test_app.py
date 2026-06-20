@@ -11,15 +11,6 @@ MOVIE_ID = 88
 MOVIE_ID1 = 22
 
 
-
-def login(page, username, password,  base_url):
-    page.goto(f"{base_url}/login")
-
-    page.get_by_role("textbox", name="Username", exact=True).fill(username)
-    page.get_by_role("textbox", name="Password", exact=True).fill(password)
-    page.get_by_role("button", name="Sign in").click()
-
-
 def test_register_page_loads(page,  base_url):
     page.goto(f"{base_url}/register")
     expect(page.locator('div[data-slot="card-title"]')).to_have_text("Create an account")
@@ -62,41 +53,33 @@ def test_login_page_loads(page,  base_url):
     expect(page.get_by_role("button", name="Sign in")).to_be_visible()
 
 
-def test_login_invalid_password(page, registered_user, base_url):
+def test_login_invalid_password(page, registered_user, login):
     login(
-        page,
         registered_user["username"],
         INVALID_PASSWORD,
-        base_url,
     )
     expect(page.locator(".text-sm.text-destructive")).to_be_visible(timeout=10000)
 
 
-def test_login_invalid_username(page, registered_user, base_url):
+def test_login_invalid_username(page, registered_user, login):
     login(
-        page,
         INVALID_USERNAME,
         registered_user["password"],
-        base_url,
     )
     expect(page.locator(".text-sm.text-destructive")).to_be_visible(timeout=10000)
 
 
-def test_login_invalid_username_invalid_password(page, base_url):
+def test_login_invalid_username_invalid_password(page, login):
     login(
-        page,
         INVALID_USERNAME,
         INVALID_PASSWORD,
-        base_url,
     )
     expect(page.locator(".text-sm.text-destructive")).to_be_visible(timeout=10000)
 
-def test_login_valid_credentials(page, registered_user, base_url):
+def test_login_valid_credentials(page, registered_user, login):
     login(
-        page,
         registered_user["username"],
         registered_user["password"],
-        base_url,
     )
 
     expect(page).to_have_url(re.compile(".*/$"))
@@ -142,12 +125,10 @@ def test_add_watchlist(page,  base_url):
 
 
 
-def test_add_movie_to_watchlist(page, registered_user,  base_url):
+def test_add_movie_to_watchlist(page, registered_user, base_url, login):
     login(
-        page,
         registered_user["username"],
         registered_user["password"],
-        base_url,
     )
     expect(page.get_by_role("button", name="Sign out")).to_be_visible(timeout=10000)
 
@@ -157,12 +138,10 @@ def test_add_movie_to_watchlist(page, registered_user,  base_url):
     add_button.click()
     expect(page.get_by_role("button", name="Watched")).to_be_visible(timeout=10000)
 
-def test_remove_movie_from_watchlist(page, registered_user,  base_url):
+def test_remove_movie_from_watchlist(page, registered_user, base_url, login):
     login(
-        page,
         registered_user["username"],
         registered_user["password"],
-        base_url,
     )
     expect(page.get_by_role("button", name="Sign out")).to_be_visible(timeout=10000)
 

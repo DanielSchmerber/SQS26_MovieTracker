@@ -2,16 +2,11 @@ import re
 from playwright.sync_api import expect
 
 
-def login(page, username, password, base_url):
-    page.goto(f"{base_url}/login")
-
-    page.get_by_role("textbox", name="Username", exact=True).fill(username)
-    page.get_by_role("textbox", name="Password", exact=True).fill(password)
-
-    page.get_by_role(
-        "button",
-        name="Sign in"
-    ).click()
+def test_comments_are_not_vulnerable_to_xss(page, registered_user, base_url, login):
+    login(
+        registered_user["username"],
+        registered_user["password"]
+    )
 
     expect(
         page.get_by_role(
@@ -19,14 +14,6 @@ def login(page, username, password, base_url):
             name="Sign out"
         )
     ).to_be_visible(timeout=10000)
-
-
-def test_comments_are_not_vulnerable_to_xss(page, registered_user, base_url):
-    login(
-        page,
-        registered_user["username"],
-        registered_user["password"]
-    )
 
     movie_id = 35
     xss_payload = "<script>window._xss=true</script>"

@@ -60,3 +60,15 @@ def registered_user(browser, test_user):
     return test_user
 
 
+@pytest.fixture
+def login(page: Page, base_url):
+    def perform_login(username, password):
+        page.goto(f"{base_url}/login")
+
+        page.get_by_role("textbox", name="Username", exact=True).fill(username)
+        page.get_by_role("textbox", name="Password", exact=True).fill(password)
+        page.get_by_role("button", name="Sign in").click()
+
+    return perform_login
+
+
