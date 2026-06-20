@@ -1,16 +1,17 @@
-# Title
+# ADR03 - Frontend Technology
+## Title
 
 Decision to Choose the System's Frontend Technology
 
 
 
-## Status
+### Status
 
 accepted
 
 
 
-## Context
+### Context
 
 We need a frontend framework to build the user interface for the MovieTracker application.
 
@@ -36,7 +37,7 @@ Alternatives considered included:
 
 
 
-## Decision
+### Decision
 
 We chose React with Vite and TypeScript. Its declarative, component-based model, large ecosystem,
 
@@ -44,7 +45,7 @@ and strong community support make it a pragmatic and future-proof choice.
 
 
 
-## Consequences
+### Consequences
 
 **Easier:**
 

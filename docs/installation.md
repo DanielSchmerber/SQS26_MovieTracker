@@ -32,7 +32,8 @@ cd SQS26_MovieTracker
 ./movietracker.sh up
 ```
 
-[!NOTE] During the first startup, the script prompts for a TMDB API key and stores it in the local `.env` file. If no `JWT_SECRET` is present, one is generated automatically.
+[!NOTE] 
+During the first startup, the script prompts for a TMDB API key and stores it in the local `.env` file. If no `JWT_SECRET` is present, one is generated automatically.
 
 ### 4. Access the application 
 
@@ -41,7 +42,8 @@ Under a browser of your choice:
 ```text
 https://localhost
 ```
-[!NOTE] Traefik uses a self-signed certificate for the local environment. As a result, the browser may display a certificate warning on the first visit.
+[!NOTE] 
+Traefik uses a self-signed certificate for the local environment. As a result, the browser may display a certificate warning on the first visit.
 
 ### 5. Stop the application
 
@@ -77,6 +79,8 @@ The runtime configuration is loaded from a `.env` file located in the project ro
 | `JWT_EXPIRY_MINUTES` | No       | Token validity period in minutes. Defaults to `60` minutes                      |
 
 
-[!TIP] If you would like to explore the dev mode, then read more about [local developement](local_dev.md)
+[!TIP] 
+If you would like to explore the dev mode, then read more about [local development](local_dev.md)
 
-[!TIP] Detailed architecture and quality documentation can be found in the `/docs/arc42/` directory.
+[!TIP] 
+Detailed architecture and quality documentation can be found in the `/docs/arc42/` directory.

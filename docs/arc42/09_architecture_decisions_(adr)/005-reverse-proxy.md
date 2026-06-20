@@ -1,15 +1,16 @@
-# Title
+# ADR05 - Reverse Proxy
+## Title
 
 Decision to Choose the System's Reverse Proxy
 
 
 
-## Status
+### Status
 
 accepted
 
 
-## Context
+### Context
 
 We need a reverse proxy to consolidate the system to a single origin and to simplify data access.
 
@@ -33,14 +34,14 @@ Alternatives considered included:
 
 
 
-## Decision
+### Decision
 
 We propose using Traefik as the reverse proxy.
 Traefik provides automatic service discovery, native Docker integration, straightforward configuration through labels and built in support for TLS Certificates.
 
 
 
-## Consequences
+### Consequences
 
 **Easier:**
 

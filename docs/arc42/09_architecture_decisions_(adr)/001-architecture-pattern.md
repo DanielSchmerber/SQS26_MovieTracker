@@ -1,14 +1,16 @@
-# Title
+# ADR01 - Architecture Pattern
+
+## Title
 
 Decision to Choose the Architecture Pattern
 
 
-## Status
+### Status
 
 accepted
 
 
-## Context
+### Context
 
 The architecture pattern must:
 
@@ -22,13 +24,13 @@ Alternatives considered included:
 - Hexagonal Architecture
 
 
-## Decision
+### Decision
 
 
 We chose Model-View-Controller (MVC) architecture pattern, because the project has limited complexity and a relatively small domain scope.
 
 
-## Consequences
+### Consequences
 
 **Easier:**
 

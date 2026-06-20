@@ -1,16 +1,17 @@
-# Title
+# ADR02 - Backend Technology
+## Title
 
 Decision to Choose the System's Backend Technology
 
 
 
-## Status
+### Status
 
 accepted
 
 
 
-## Context
+### Context
 
 We need a backend framework to implement a REST API for the MovieTracker application.
 
@@ -34,13 +35,13 @@ Alternatives considered included:
 
 
 
-## Decision
+### Decision
 
 We chose Python with FastAPI. FastAPI is modern, light-weight webframework for Python.
 
 
 
-## Consequences
+### Consequences
 
 **Easier:**
 

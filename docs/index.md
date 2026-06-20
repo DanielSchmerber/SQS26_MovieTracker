@@ -22,7 +22,49 @@ This documentation provides a comprehensive overview of the project, including:
 Whether you are a developer, reviewer, stakeholder or our teacher, these pages will help you understand how MovieTracker is built, deployed, tested, and maintained.
 
 We hope you find this documentation useful and informative.
- 
+
+```{toctree}
+:maxdepth: 2
+:caption: Getting Started
+
+installation
+local_dev
+```
+
+```{toctree}
+:maxdepth: 2
+:caption: Architecture
+
+arc42/01_introduction_and_goals
+arc42/02_architecture_and_constrains
+arc42/03_context_and_scope
+arc42/04_solution_strategy
+arc42/05_building_block_view
+arc42/06_runtime_view
+arc42/07_deployment_view
+arc42/08_concepts
+arc42/09_architecture_decisions
+arc42/10_quality
+arc42/11_risks_and_technical_debt
+arc42/12_glossary
+```
+
+```{toctree}
+:maxdepth: 1
+:caption: Architecture Decision Records
+
+arc42/09_architecture_decisions_(adr)/001-architecture-pattern
+arc42/09_architecture_decisions_(adr)/002-backend-technology
+arc42/09_architecture_decisions_(adr)/003-frontend-technology
+arc42/09_architecture_decisions_(adr)/004-database-technology
+arc42/09_architecture_decisions_(adr)/005-reverse-proxy
+arc42/09_architecture_decisions_(adr)/006-external-service-technology
+arc42/09_architecture_decisions_(adr)/007-containerization-platform
+arc42/09_architecture_decisions_(adr)/008-code-analysis-tool-technology
+arc42/09_architecture_decisions_(adr)/009-framework-e2e-tests-technology
+arc42/09_architecture_decisions_(adr)/010-unit-and-integration-test-technology
+arc42/09_architecture_decisions_(adr)/011-architecture-test-technology
+```
 
 ## About the students
 **Authors:** Daniel Schmerber, Bernhard Blietz, Paula Macedo da Cruz

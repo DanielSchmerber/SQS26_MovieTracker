@@ -1,15 +1,16 @@
-# Title
+# ADR10 - Unit and Integration Test
+## Title
 
 Decision to Choose the Unit and Integration Testing Framework
 
 
 
-## Status
+### Status
 
 accepted
 
 
-## Context
+### Context
 
 We need a testing framework for unit and integration tests in the MovieTracker backend.
 
@@ -37,7 +38,7 @@ Alternatives considered included:
 
 
 
-## Decision
+### Decision
 
 We chose pytest. Pytest is a widely used Python testing framework with concise test syntax, powerful fixtures and good support for test discovery.
 
@@ -45,7 +46,7 @@ Pytest fits our project because the backend is implemented with Python and FastA
 
 
 
-## Consequences
+### Consequences
 
 **Easier:**
 
