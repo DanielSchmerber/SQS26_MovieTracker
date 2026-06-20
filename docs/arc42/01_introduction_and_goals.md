@@ -2,7 +2,7 @@
 
 Movie Tracker is a web application designed to help users search for movies, explore movie details, and manage a personal watchlist. The application integrates with the external TMDB (The Movie Database) API to retrieve movie information, ratings, and reviews from users who have watched the movies.
 
-The application allows anonymous users to search for movies and access detailed movie information without authentication. However, authenticated users gain additional functionality, such as maintaining a personal watchlist where they can save and manage movies they have watched or want to watch in the future.
+The application allows anonymous users to search for movies and access detailed movie information without authentication. However, authenticated users gain additional functionality, such as maintaining a personal watchlist where they can save and manage movies they have watched.
 
 The primary goals of the Movie Tracker project are:
 
@@ -41,15 +41,15 @@ Protect user-specific features, such as watchlist management, through user authe
 
 ![Use case diagram](diagrams/use_case_diagrams.png)
 
-| Id | Requirements | Explanation |
-|----|--------------|---------------|
-| F1 | Register Account ||
-| F2 | Login ||
-| F3 | Search Movie ||
-| F4 | View Movie Details ||
-| F5 | View Watchlist ||
-| F6 | Add Movie to Watchlist ||
-| F7 | Remove Movie from Watchlist ||
+| Id | Requirements | 
+|----|--------------|
+| F1 | Register Account |
+| F2 | Login |
+| F3 | Search Movie |
+| F4 | View Movie Details |
+| F5 | View Watchlist |
+| F6 | Add Movie to Watchlist |
+| F7 | Remove Movie from Watchlist |
 
 ## 1.2 Quality goals
 
@@ -65,9 +65,9 @@ Protect user-specific features, such as watchlist management, through user authe
 ## 1.3 Stakeholders
 
 
-| Role | Contact | Expectations |
-|----|--------------|---------------|
-| End users | - | Search movies, view ratings and reviews, manage watchlists easily  |
-| Developer | - |   |
-| TMDB API | - | Movie tracker should avoid excessive or unnecessary requests, respect rate limits and API usage policies, and ensure that API calls do not negatively impact the availability or performance of TMDB services  |
-| Teacher | - |  Run the project without any issue |
+| Role  | Expectations |
+|----|---------------|
+| End users | Search movies, view ratings and reviews, manage watchlists easily  |
+| Developer |   |
+| TMDB API  | Movie tracker should avoid excessive or unnecessary requests, respect rate limits and API usage policies, and ensure that API calls do not negatively impact the availability or performance of TMDB services  |
+| Teacher |  Run the project without any issue |
