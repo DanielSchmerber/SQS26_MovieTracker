@@ -26,7 +26,10 @@ async def lifespan(app: FastAPI):
 
 
 _rate_limiter = RateLimiter(limiter=Limiter(Rate(100, Duration.SECOND  )))
-app = FastAPI(lifespan=lifespan, dependencies=[Depends(_rate_limiter)])
+app = FastAPI(lifespan=lifespan,
+              dependencies=[Depends(_rate_limiter)],
+              openapi_url="/api/openapi.json",
+              )
 Page = CustomizedPage[Page, UseParamsFields(size=QueryField(5, ge=1, le=20))]
 add_pagination(app)
 
