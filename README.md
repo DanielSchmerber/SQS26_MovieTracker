@@ -10,6 +10,13 @@ The project consists of:
 * Traefik as a reverse proxy, and
 * Docker Compose for both development and production environments.
 
+## Documentation
+
+Comprehensive project documentation are available on Read the Docs:
+
+https://sqs26-movietracker.readthedocs.io/en/latest/
+
+
 ### Prerequisites
 
 * Docker
