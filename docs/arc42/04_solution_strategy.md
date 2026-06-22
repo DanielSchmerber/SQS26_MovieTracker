@@ -1,5 +1,11 @@
 # 4 - Solution Strategy
 
+The solution strategy summarizes the main architectural choices used to meet the functional and quality goals. MovieTracker consists of a React/TanStack frontend, a FastAPI backend, SQLite for local persistence, and TMDB as the external movie data provider.
+
+The container diagram shows these main components and their communication paths.
+
+![MovieTracker container diagram](diagrams/MovietrackerContainerDiagram.png)
+
 | Goal / Requirement | Architectural Approach | Details |
 |---|---|---|
 | Lightweight backend implementation | Python FastAPI backend | The backend is implemented using Python and FastAPI to provide high performance, asynchronous request handling, and simplified API development. |

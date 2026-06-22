@@ -2,13 +2,15 @@
 
 ## 7.1 Infrastructure overview
 
-![deployment](diagrams/deployment_diagram.png)
+The application runs as three Docker containers. GitHub Actions builds and tests the frontend and backend images before publishing them to the GitHub Container Registry.
+
+![MovieTracker deployment](diagrams/deployment_diagram.png)
 
 ## 7.2 Container Architecture
 
 ### 7.2.1 Docker Compose Services
 
-The docker-compose.yml defines three services : 
+The docker-compose.yml defines three services :
 
 
 | Service | Image/Build | Port | Purpose |
@@ -19,7 +21,7 @@ The docker-compose.yml defines three services :
 
 
 
-## 7.3 Environment Configuration 
+## 7.3 Environment Configuration
 
 The runtime configuration is loaded from a .env file located in the project's root directory. The .env.example file serves as a template.
 
@@ -34,5 +36,7 @@ The runtime configuration is loaded from a .env file located in the project's ro
 
 ## 7.4 Network Topology
 
-![alt text](diagrams/network_topology.png)
+Traefik is the public entry point. It redirects HTTP to HTTPS, routes `/api` requests to the backend, and forwards all other requests to the frontend over the internal Docker network.
+
+![MovieTracker network topology](diagrams/network_topology.png)
 

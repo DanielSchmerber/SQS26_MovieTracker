@@ -15,6 +15,8 @@
   - Consistent movie data retrieval
 
 - **Maintainability**
+  - Separation between routers, services, and models
+  - Automated unit, integration, and architecture tests
 
 - **Security**
   - User authentication
