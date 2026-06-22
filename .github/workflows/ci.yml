@@ -19,7 +19,7 @@ env:
 jobs:
   backend-tests:
     name: Backend tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
 
     env:
       DATABASE_URL: sqlite:///./backend-test.db
