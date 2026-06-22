@@ -1,4 +1,4 @@
-# 01 - Introduction and goals
+# 1 - Introduction and goals
 
 Movie Tracker is a web application designed to help users search for movies, explore movie details, and manage a personal watchlist. The application integrates with the external TMDB (The Movie Database) API to retrieve movie information, ratings, and reviews from users who have watched the movies.
 
