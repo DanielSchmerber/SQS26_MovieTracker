@@ -15,6 +15,7 @@ Provide users with a simple and intuitive way to search for movies and access de
 Use the TMDB API as a reliable external source for:
 
 - Movie metadata
+- Ratings, release dates, descriptions, and images
 
 
 ## G3 – Personalized Watchlist Management
@@ -39,9 +40,11 @@ Protect user-specific features, such as watchlist management, through user authe
 
 ## 1.1 Requirements
 
+The following diagram shows the main user interactions. Movie search and details are public, while watchlist management and ratings require authentication.
+
 ![Use case diagram](diagrams/use_case_diagrams.png)
 
-| Id | Requirements | 
+| Id | Requirements |
 |----|--------------|
 | F1 | Register Account |
 | F2 | Login |
@@ -68,6 +71,6 @@ Protect user-specific features, such as watchlist management, through user authe
 | Role  | Expectations |
 |----|---------------|
 | End users | Search movies, view ratings and reviews, manage watchlists easily  |
-| Developer |   |
+| Developer | Maintainable code, clear component boundaries, and reliable automated tests |
 | TMDB API  | Movie tracker should avoid excessive or unnecessary requests, respect rate limits and API usage policies, and ensure that API calls do not negatively impact the availability or performance of TMDB services  |
-| Teacher |  Run the project without any issue |
+| Teacher | Run and evaluate the project without additional configuration issues |
