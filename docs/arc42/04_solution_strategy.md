@@ -4,7 +4,7 @@ The solution strategy summarizes the main architectural choices used to meet the
 
 The container diagram shows these main components and their communication paths.
 
-![MovieTracker container diagram](diagrams/MovietrackerContainerDiagramBackend.png)
+![MovieTracker container diagram](diagrams/MovietrackerContainerDiagram.png)
 
 | Goal / Requirement | Architectural Approach | Details |
 |---|---|---|
